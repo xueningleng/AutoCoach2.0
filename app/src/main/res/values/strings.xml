@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AutoCoach2.0</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="title">AutoCoach</string>
+    <string name="user_email">Enter Email:</string>
+    <string name="user_nickname">Enter Nickname:</string>
+    <string name="register">Register</string>
+    <string name="login">Log In</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="password">Enter Password:</string>
+</resources>
