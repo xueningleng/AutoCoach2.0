@@ -1,23 +1,33 @@
 package com.example.autocoach20.Activities;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.autocoach20.R;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class SignIn extends AppCompatActivity{
     private static final String TAG = null;
     private static final int MY_REQUEST_CODE = 1234;
 
-    List <AuthUI.IdpConfig> providers;
+    List<AuthUI.IdpConfig> providers;
     public FirebaseAuth mAuth;
 
     //UI fields
@@ -31,11 +41,7 @@ public class SignIn extends AppCompatActivity{
         setContentView(R.layout.activity_signin);
 
         providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build() //Email Builder
-                //, new AuthUI.IdpConfig.FacebookBuilder().build() //FaceBook Builder
-                , new AuthUI.IdpConfig.PhoneBuilder().build() //Phone Builder
-                //, new AuthUI.IdpConfig.GoogleBuilder().build() //Phone Builder
-        );
+                new AuthUI.IdpConfig.EmailBuilder().build());
         showSignInOptions();
         userEmail = (EditText)findViewById(R.id.editTextTextPersonName);
         userEmail.getText().toString();
@@ -48,15 +54,13 @@ public class SignIn extends AppCompatActivity{
     }
 
     private void showSignInOptions (){
-        startActivityForResult(
-                AuthUI.getInstance().
-                        createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setIsSmartLockEnabled(false),
 
-                        build(),
-                MY_REQUEST_CODE
-        );
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                MY_REQUEST_CODE);
     }
     @Override
     public void onStart(){
@@ -65,6 +69,9 @@ public class SignIn extends AppCompatActivity{
         updateUI(currentUser);
     }
 
+    private void updateUI(@Nullable FirebaseUser user) {
+        // No-op
+    }
     private void signIn (String email, String password){
 
         mAuth.signInWithEmailAndPassword(email, password)
