@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.autocoach20.Model.Trip;
 import com.example.autocoach20.R;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -39,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
     public double tripOverallScore;
     public long tripStartTime;
     public long tripEndTime = 0;
-    public Trip trip;
+    //public Trip trip;
+
+    AuthenticationActivity authActivity = new AuthenticationActivity();
+    FirebaseUser currentUser = authActivity.getCurrentUser();
 
     public double getTripOverallScore() {
         return tripOverallScore;
@@ -91,23 +93,25 @@ public class MainActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivity(new Intent(MainActivity.this, SignIn.class));
-            }
-        });
-        Button signUp = (Button) findViewById(R.id.buttonSignUp);
-        signIn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                startActivity(new Intent(MainActivity.this, SignUp.class));
+                signIn(view);
             }
         });
     }
+    public void signIn(View view){
+        Intent intent = new Intent(this, AuthenticationActivity.class);
+        Button signIn = (Button) findViewById(R.id.buttonSignIn);
+        startActivity(intent);
+    }
+    public void signUp(View view){
+        Intent intent = new Intent(this, SignUp.class);
+        Button signUp = (Button) findViewById(R.id.buttonSignUp);
+        startActivity(intent);
+    }
+
+
     public class MyReceiver extends BroadcastReceiver {
-        //What is intent? intent is the class to carry message in android
         @Override
         public void onReceive(Context context, Intent intent) {
-            //bundle is a object package the event
-            //what is bundle contain is the event (serializable object of Event)
             Bundle bundle = intent.getExtras(); //getExtras is a get function to get message in intent
             assert bundle != null;
 
