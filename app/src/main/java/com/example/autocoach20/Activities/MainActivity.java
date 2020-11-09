@@ -1,18 +1,12 @@
 package com.example.autocoach20.Activities;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,70 +18,21 @@ public class MainActivity extends AppCompatActivity {
     private int speed;
     public static MainActivity mainActivity;
 
-    private LocationManager locationManager;
+    public Trip trip;
 
-    private Messenger toFeedbackMessenger = null;
-    private MyReceiver detectReceiver;
-
-    private TextView current_score, current_score_n;
-    private TextView total_coins, total_coins_n;
-    private TextView trip_score, trip_score_n;
-    private TextView add_coins_n;
-
-    //score manipulation
-    public double tripOverallScore;
-    public long tripStartTime;
-    public long tripEndTime = 0;
-    //public Trip trip;
 
     AuthenticationActivity authActivity = new AuthenticationActivity();
     FirebaseUser currentUser = authActivity.getCurrentUser();
-
-    public double getTripOverallScore() {
-        return tripOverallScore;
-    }
-
-    public void setTripOverallScore(double tripOverallScore) {
-        this.tripOverallScore = tripOverallScore;
-    }
-
-    public long getTripStartTime() {
-        return tripStartTime;
-    }
-
-    public void setTripStartTime(long tripStartTime) {
-        this.tripStartTime = tripStartTime;
-    }
-
-    public long getTripEndTime() {
-        return tripEndTime;
-    }
-
-    public void setTripEndTime(long tripEndTime) {
-        this.tripEndTime = tripEndTime;
-    }
-
-    double[] driverMeans = new double[]{
-            //0.06031552, 0.05229149, 0.019399881, 0.017509023, 0.015382588, 0.8554055, 0.08283522, 0.06175925, 0.8509335, 0.09026337, 0.05880312, 0.8505389, 0.08672229, 0.06273885, 0.8562540, 0.08586243, 0.05788359
-            0.02031552, 0.0429149, 0.02399881, 0.07009023, 0.018382588, 0.9554055, 0.07283522, 0.05175925, 0.9509335, 0.05626337, 0.04680312, 0.9005389, 0.05272229, 0.07073885, 0.5062540, 0.08386243, 0.06788359
+    User current_user= new User(currentUser);
+    public FirebaseUser getUser(){
+        return currentUser;
     };
-    // service connection to bind feedback service: communicate with svm lda and feedback
-    private ServiceConnection serviceConnection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            System.out.println("Feedback Service is Connected");
-            toFeedbackMessenger = new Messenger(iBinder);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            //nothing
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         Button signIn = (Button) findViewById(R.id.buttonSignIn);
         signIn.setOnClickListener(new View.OnClickListener(){
@@ -109,41 +54,186 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class MyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras(); //getExtras is a get function to get message in intent
-            assert bundle != null;
-
-
-            Message msg = Message.obtain(null,1,0); //message is 1, refer to Feedback Service
-            msg.setData(bundle);
-            try{
-                toFeedbackMessenger.send(msg);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public MainActivity(){
         mainActivity = this;
-        tripStartTime = System.currentTimeMillis();
-    }
-
-    // ***************************************************************** //
-    // SETTERS AND GETTERS
-    // ***************************************************************** //
-    FirebaseUser user;
-
-    public FirebaseUser getUser(){
-        return this.user;
-    }
-
-    public void setUser(FirebaseUser u){
-        user = u;
+        trip.setTripStartTime(System.currentTimeMillis());
     }
 
     public static MainActivity getMainActivity(){
         return mainActivity;
+    }
+
+    public void setUpUI(){
+        TextView current_score, current_score_n;
+        TextView total_coins, total_coins_n;
+        TextView trip_score, trip_score_n;
+        TextView add_coins_n;
+
+        ImageView acc_bar_1, acc_bar_2, acc_bar_3, acc_bar_4, acc_bar_5, acc_bar_6, acc_bar_7, acc_bar_8, acc_bar_9, acc_bar_10;
+        ImageView brake_bar_1, brake_bar_2, brake_bar_3, brake_bar_4, brake_bar_5, brake_bar_6, brake_bar_7, brake_bar_8, brake_bar_9, brake_bar_10;
+        ImageView turn_bar_1, turn_bar_2, turn_bar_3, turn_bar_4, turn_bar_5, turn_bar_6, turn_bar_7, turn_bar_8, turn_bar_9, turn_bar_10;
+        ImageView swerve_bar_1, swerve_bar_2, swerve_bar_3, swerve_bar_4, swerve_bar_5, swerve_bar_6, swerve_bar_7, swerve_bar_8, swerve_bar_9, swerve_bar_10;
+
+        ImageView acceleration_threshold1, acceleration_threshold2, acceleration_threshold3, acceleration_threshold4, acceleration_threshold5;
+        ImageView acceleration_threshold6, acceleration_threshold7, acceleration_threshold8, acceleration_threshold9, acceleration_threshold10;
+
+        ImageView brakes_threshold1, brakes_threshold2, brakes_threshold3, brakes_threshold4, brakes_threshold5, brakes_threshold6;
+        ImageView brakes_threshold7, brakes_threshold8, brakes_threshold9, brakes_threshold10;
+
+        ImageView turns_threshold1, turns_threshold2, turns_threshold3, turns_threshold4, turns_threshold5, turns_threshold6, turns_threshold7;
+        ImageView turns_threshold8, turns_threshold9, turns_threshold10;
+
+        ImageView swerves_threshold1, swerves_threshold2, swerves_threshold3, swerves_threshold4, swerves_threshold5, swerves_threshold6;
+        ImageView swerves_threshold7, swerves_threshold8, swerves_threshold9, swerves_threshold10;
+
+        ImageView brake_icon, turn_icon, swerve_icon, acc_icon;
+
+        ImageView car, coins_box, feedback_icon;
+        ImageView add_coins;
+
+        ImageView acceleration_glow, brake_glow, turn_glow, swerve_glow;
+
+        Button end_btn;
+
+        MediaPlayer coin = new MediaPlayer();
+        MediaPlayer improved = new MediaPlayer();
+
+
+
+
+        // ************************************************************************** //
+        // INITIALIZE PARAMETERS AND IMAGES FOR THE SCREEN
+        // ************************************************************************** //
+        current_score_n = findViewById(R.id.score_n);    //It's the Current Score number
+        total_coins_n = findViewById(R.id.totalcoins_n); //Total coins number
+        trip_score_n = findViewById(R.id.tripscore_n);   //Trip score
+        current_score = findViewById(R.id.currentscore); //Current Score Text
+        total_coins = findViewById(R.id.totalcoins);     //Total Coins Text
+        trip_score = findViewById(R.id.tripscore);       //Trip Score Text
+        car = findViewById(R.id.car);                    //Car Icon - Image
+        coins_box = findViewById(R.id.coinsbox);         // Coin Box Icon - Image
+
+        //Feedback Icon - Center Image
+        feedback_icon= findViewById(R.id.feedback_icon);
+
+        //Give coins
+        add_coins = findViewById(R.id.gold_coin);
+
+        //Accelerometer Bar components
+        acc_bar_1 = findViewById(R.id.acc_bar_1);
+        acc_bar_2 = findViewById(R.id.acc_bar_2);
+        acc_bar_3 = findViewById(R.id.acc_bar_3);
+        acc_bar_4 = findViewById(R.id.acc_bar_4);
+        acc_bar_5 = findViewById(R.id.acc_bar_5);
+        acc_bar_6 = findViewById(R.id.acc_bar_6);
+        acc_bar_7 = findViewById(R.id.acc_bar_7);
+        acc_bar_8 = findViewById(R.id.acc_bar_8);
+        acc_bar_9 = findViewById(R.id.acc_bar_9);
+        acc_bar_10 = findViewById(R.id.acc_bar_10);
+
+        //Brakes Bar components
+        brake_bar_1 = findViewById(R.id.brake_bar_1);
+        brake_bar_2 = findViewById(R.id.brake_bar_2);
+        brake_bar_3 = findViewById(R.id.brake_bar_3);
+        brake_bar_4 = findViewById(R.id.brake_bar_4);
+        brake_bar_5 = findViewById(R.id.brake_bar_5);
+        brake_bar_6 = findViewById(R.id.brake_bar_6);
+        brake_bar_7 = findViewById(R.id.brake_bar_7);
+        brake_bar_8 = findViewById(R.id.brake_bar_8);
+        brake_bar_9 = findViewById(R.id.brake_bar_9);
+        brake_bar_10 = findViewById(R.id.brake_bar_10);
+
+        //Turns Bar components
+        turn_bar_1 = findViewById(R.id.turn_bar_1);
+        turn_bar_2 = findViewById(R.id.turn_bar_2);
+        turn_bar_3 = findViewById(R.id.turn_bar_3);
+        turn_bar_4 = findViewById(R.id.turn_bar_4);
+        turn_bar_5 = findViewById(R.id.turn_bar_5);
+        turn_bar_6 = findViewById(R.id.turn_bar_6);
+        turn_bar_7 = findViewById(R.id.turn_bar_7);
+        turn_bar_8 = findViewById(R.id.turn_bar_8);
+        turn_bar_9 = findViewById(R.id.turn_bar_9);
+        turn_bar_10 = findViewById(R.id.turn_bar_10);
+
+        //Swerves Bar components
+        swerve_bar_1 = findViewById(R.id.swerve_bar_1);
+        swerve_bar_2 = findViewById(R.id.swerve_bar_2);
+        swerve_bar_3 = findViewById(R.id.swerve_bar_3);
+        swerve_bar_4 = findViewById(R.id.swerve_bar_4);
+        swerve_bar_5 = findViewById(R.id.swerve_bar_5);
+        swerve_bar_6 = findViewById(R.id.swerve_bar_6);
+        swerve_bar_7 = findViewById(R.id.swerve_bar_7);
+        swerve_bar_8 = findViewById(R.id.swerve_bar_8);
+        swerve_bar_9 = findViewById(R.id.swerve_bar_9);
+        swerve_bar_10 = findViewById(R.id.swerve_bar_10);
+
+
+        // *************************************************************** //
+        // Assigning values to Threshold Attributes
+        // *************************************************************** //
+
+        acceleration_threshold1 = findViewById(R.id.accel_threshold1);
+        acceleration_threshold2 = findViewById(R.id.accel_threshold2);
+        acceleration_threshold3 = findViewById(R.id.accel_threshold6);
+        acceleration_threshold4 = findViewById(R.id.accel_threshold9);
+        acceleration_threshold5 = findViewById(R.id.accel_threshold8);
+        acceleration_threshold6 = findViewById(R.id.accel_threshold9);
+        acceleration_threshold7 = findViewById(R.id.accel_threshold9);
+        acceleration_threshold8 = findViewById(R.id.accel_threshold8);
+        acceleration_threshold9 = findViewById(R.id.accel_threshold2);
+        acceleration_threshold10 = findViewById(R.id.accel_threshold1);
+
+        brakes_threshold1 = findViewById(R.id.brakes_threshold1);
+        brakes_threshold2 = findViewById(R.id.brakes_threshold2);
+        brakes_threshold3 = findViewById(R.id.brakes_threshold3);
+        brakes_threshold4 = findViewById(R.id.brakes_threshold4);
+        brakes_threshold5 = findViewById(R.id.brakes_threshold5);
+        brakes_threshold6 = findViewById(R.id.brakes_threshold6);
+        brakes_threshold7 = findViewById(R.id.brakes_threshold7);
+        brakes_threshold8 = findViewById(R.id.brakes_threshold8);
+        brakes_threshold9 = findViewById(R.id.brakes_threshold9);
+        brakes_threshold10 = findViewById(R.id.brakes_threshold10);
+
+        turns_threshold1 = findViewById(R.id.turns_threshold1);
+        turns_threshold2 = findViewById(R.id.turns_threshold2);
+        turns_threshold3 = findViewById(R.id.turns_threshold3);
+        turns_threshold4 = findViewById(R.id.turns_threshold4);
+        turns_threshold5 = findViewById(R.id.turns_threshold5);
+        turns_threshold6 = findViewById(R.id.turns_threshold6);
+        turns_threshold7 = findViewById(R.id.turns_threshold7);
+        turns_threshold8 = findViewById(R.id.turns_threshold8);
+        turns_threshold9 = findViewById(R.id.turns_threshold9);
+        turns_threshold10 = findViewById(R.id.turns_threshold10);
+
+        swerves_threshold1 = findViewById(R.id.swerves_threshold1);
+        swerves_threshold2 = findViewById(R.id.swerves_threshold2);
+        swerves_threshold3 = findViewById(R.id.swerves_threshold3);
+        swerves_threshold4 = findViewById(R.id.swerves_threshold4);
+        swerves_threshold5 = findViewById(R.id.swerves_threshold5);
+        swerves_threshold6 = findViewById(R.id.swerves_threshold6);
+        swerves_threshold7 = findViewById(R.id.swerves_threshold7);
+        swerves_threshold8 = findViewById(R.id.swerves_threshold8);
+        swerves_threshold9 = findViewById(R.id.swerves_threshold9);
+        swerves_threshold10 = findViewById(R.id.swerves_threshold10);
+
+        // *************************************************************** //
+        // Setup Recommendation Bars Glow
+        // *************************************************************** //
+
+        acceleration_glow = findViewById(R.id.acceleration_glow);
+        brake_glow = findViewById(R.id.brake_glow);
+        turn_glow = findViewById(R.id.turn_glow);
+        swerve_glow = findViewById(R.id.swerve_glow);
+
+        acceleration_glow.setVisibility(View.INVISIBLE);
+        brake_glow.setVisibility(View.INVISIBLE);
+        turn_glow.setVisibility(View.INVISIBLE);
+        swerve_glow.setVisibility(View.INVISIBLE);
+
+        // *************************************************************** //
+        // Initialize End button
+        // *************************************************************** //
+
+        end_btn = findViewById(R.id.btn_end);
     }
 }
