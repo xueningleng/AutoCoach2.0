@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoCoach20">
         <activity android:name=".Activities.AuthenticationActivity"></activity>
+        <activity android:name=".Activities.DriverStatus"></activity>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     AuthenticationActivity authActivity = new AuthenticationActivity();
     FirebaseUser currentUser = authActivity.getCurrentUser();
-    User current_user= new User(currentUser);
+    User current_user= null;//new User(currentUser);
     public FirebaseUser getUser(){
         return currentUser;
     };
@@ -33,11 +33,20 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
         Button signIn = (Button) findViewById(R.id.buttonSignIn);
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 signIn(view);
+            }
+        });
+
+        Button signUp = (Button) findViewById(R.id.buttonSignUp);
+        signUp.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                signUp(view);
             }
         });
     }
@@ -47,15 +56,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void signUp(View view){
-        Intent intent = new Intent(this, SignUp.class);
-        Button signUp = (Button) findViewById(R.id.buttonSignUp);
+        Intent intent = new Intent(this, DriverStatus.class);
         startActivity(intent);
     }
 
 
     public MainActivity(){
         mainActivity = this;
-        trip.setTripStartTime(System.currentTimeMillis());
+//        trip.setTripStartTime(System.currentTimeMillis());
     }
 
     public static MainActivity getMainActivity(){
