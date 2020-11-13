@@ -70,7 +70,7 @@ public class AuthenticationActivity extends AppCompatActivity{
     }
 
 
-    private void showSignInOptions (){
+    private void showSignInOptions(){
 
         startActivityForResult(
                 AuthUI.getInstance()

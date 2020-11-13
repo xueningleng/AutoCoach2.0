@@ -15,7 +15,6 @@ import com.example.autocoach20.R;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private int speed;
     public static MainActivity mainActivity;
 
     public Trip trip;
