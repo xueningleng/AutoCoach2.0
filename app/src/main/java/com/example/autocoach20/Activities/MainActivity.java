@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     AuthenticationActivity authActivity = new AuthenticationActivity();
     FirebaseUser currentUser = authActivity.getCurrentUser();
-    User current_user= null;//new User(currentUser);
+    User current_user= new User(currentUser, 1, 21); //currently default, need to be taken by start activity
     public FirebaseUser getUser(){
         return currentUser;
     };

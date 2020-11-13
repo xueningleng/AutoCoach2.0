@@ -9,6 +9,7 @@
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
     <string name="password">Enter Password:</string>
+    <string name="user_age">Enter Age:</string>
     <string name="good">GOOD</string>
     <string name="bad">BAD</string>
     <string name="status_text"> </string>
