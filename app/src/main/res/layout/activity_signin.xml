@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/color3"
     tools:context=".Activities.AuthenticationActivity">
-
-
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/projectTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="@font/aclonica"
         android:text="@string/app_name"
         android:textColor="@color/color1"
@@ -20,59 +18,67 @@
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardInput"/>
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="180dp"
-        android:ems="14"
-        android:fontFamily="@font/aclonica"
-        android:hint="@string/user_email"
-        android:inputType="textPersonName"
-        android:textColor="@color/color2"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        android:importantForAutofill="no" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardInput"
+        android:layout_width="500dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/color2"
+        android:elevation="@dimen/fui_body_padding_bottom"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/projectTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/userEmail"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/aclonica"
+                android:hint="@string/user_email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/color3"
+                android:textSize="20sp"
+                android:autofillHints="Enter Email: " />
+
+            <EditText
+                android:id="@+id/userPword"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/aclonica"
+                android:autofillHints="Enter Password: "
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/color3"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/color1"
         android:fontFamily="@font/orbitron_bold"
         android:text="@string/login"
         android:textColor="@color/color3"
         app:icon="@android:drawable/ic_menu_add"
         app:iconTint="@color/color3"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPassword" />
+        app:layout_constraintStart_toEndOf="@id/cardInput"
+        app:layout_constraintTop_toBottomOf="@id/projectTitle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:fontFamily="@font/aclonica"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textColor="@color/color2"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-        android:importantForAutofill="no" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
