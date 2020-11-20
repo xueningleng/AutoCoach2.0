@@ -3,7 +3,9 @@ package com.example.autocoach20.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,7 +30,7 @@ import com.google.firebase.database.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class AuthenticationActivity extends AppCompatActivity{
+public class SignUpActivity extends AppCompatActivity{
     private static final String TAG = null;
     private static final int MY_REQUEST_CODE = 1234;
 
@@ -43,23 +45,23 @@ public class AuthenticationActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.activity_signup);
 
         Intent intent = getIntent();
-
-
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
-        showSignInOptions();
 
         mAuth = FirebaseAuth.getInstance();
 
-        userEmail = (EditText)findViewById(R.id.editTextTextPersonName);
-        userEmail.getText().toString();
+        userEmail = (EditText)findViewById(R.id.uEmail);
+        userPassword = (EditText)findViewById(R.id.uPword);
 
-        userPassword = (EditText)findViewById(R.id.editTextTextPassword);
-        userPassword.getText().toString();
-
+        btn_signIn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                createAccount();
+            }
+        });
     }
 
     @Override
@@ -97,8 +99,7 @@ public class AuthenticationActivity extends AppCompatActivity{
                 //Show email on Toast
                 Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                //Here we are switching to the other screen once being logged in
-                //Intent startAutoCoach = new Intent(AuthenticationActivity.this, StartAutoCoachActivity.class);
+
                 finish();
                 //startActivity(startAutoCoach);
 
@@ -116,45 +117,34 @@ public class AuthenticationActivity extends AppCompatActivity{
     private void updateUI(@Nullable FirebaseUser user) {
         // No-op
     }
-    private void signIn (String email, String password){
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                            //        Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-
-                        // ...
-                    }
-                });
-
-    }
-    private void createAccount (String email, String password){
+    private void createAccount (){
+        String email, password;
+        email = userEmail.getText().toString();
+        password = userPassword.getText().toString();
+        if (TextUtils.isEmpty(email)){
+            Toast.makeText(getApplicationContext(), "Please enter email", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)){
+            Toast.makeText(getApplicationContext(), "Please enter password", Toast.LENGTH_LONG).show();
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+                            Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                            startActivity(intent);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                            //        Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 

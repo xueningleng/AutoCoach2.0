@@ -15,7 +15,7 @@
         android:fontFamily="@font/aclonica"
         android:text="@string/app_name"
         android:textColor="@color/color1"
-        android:textSize="36sp"
+        android:textSize="48sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
