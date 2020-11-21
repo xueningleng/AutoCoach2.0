@@ -4,26 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color3"
+    android:background="@color/warm1"
     tools:context=".Activities.SignUpActivity">
+
     <TextView
         android:id="@+id/projectTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/aclonica"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/stalinist_one"
         android:text="@string/app_name"
-        android:textColor="@color/color1"
-        android:textSize="36sp"
+        android:textColor="@color/warm4"
+        android:textSize="48sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/inputGroup"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/inputGroup"
         android:layout_width="500dp"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/projectTitle"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,17 +37,19 @@
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:fontFamily="@font/aclonica"
+            android:background="@color/warm3"
+            android:elevation="2dp"
+            android:fontFamily="@font/sarpanch_bold"
             android:hint="@string/user_email"
             android:inputType="textPersonName"
             android:textAllCaps="false"
-            android:textColor="@color/color3"
-            android:textSize="20sp"
-            android:background="@color/color2"
+            android:textColor="@color/warm1"
+            android:textColorHint="@color/warm4"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@id/uPword"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf = "parent"
-            app:layout_constraintBottom_toTopOf = "@id/uPword"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/uPword"
@@ -53,16 +57,18 @@
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:fontFamily="@font/aclonica"
+            android:background="@color/warm2"
+            android:elevation="2dp"
+            android:fontFamily="@font/sarpanch_bold"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:textColor="@color/color3"
-            android:textSize="20sp"
-            android:background="@color/color2"
+            android:textColor="@color/warm1"
+            android:textColorHint="@color/warm4"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/uEmail"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/uEmail" />
 
     </LinearLayout>
 
@@ -70,16 +76,17 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/color1"
-        android:fontFamily="@font/orbitron_bold"
+        android:layout_marginTop="64dp"
+        android:backgroundTint="@color/warm4"
+        android:elevation="3dp"
+        android:fontFamily="@font/sarpanch_bold"
         android:text="@string/register"
-        android:textColor="@color/color3"
-        app:icon="@android:drawable/ic_menu_add"
-        app:iconTint="@color/color3"
+        android:textSize="20sp"
+        android:textColor="@color/warm1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/inputGroup"
-        app:layout_constraintTop_toBottomOf="@id/projectTitle"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@+id/inputGroup"
+        app:layout_constraintTop_toBottomOf="@id/projectTitle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public Trip trip;
 
 
-    AuthenticationActivity authActivity = new AuthenticationActivity();
+    SignUpActivity authActivity = new SignUpActivity();
     FirebaseUser currentUser = authActivity.getCurrentUser();
     User current_user= new User(currentUser, 1, 21); //currently default, need to be taken by start activity
     public FirebaseUser getUser(){
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void signIn(View view){
-        Intent intent = new Intent(this, AuthenticationActivity.class);
+        Intent intent = new Intent(this, SignUpActivity.class);
         Button signIn = (Button) findViewById(R.id.buttonSignIn);
         startActivity(intent);
     }
