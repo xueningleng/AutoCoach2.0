@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color3"
+    android:background="@color/warm1"
     tools:context=".Activities.UserInfoActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/projectTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/aclonica"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/stalinist_one"
         android:text="@string/app_name"
-        android:textColor="@color/color1"
+        android:textColor="@color/warm4"
         android:textSize="48sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,14 +23,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGender"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
-        app:cardBackgroundColor="@color/color1"
+        app:cardBackgroundColor="@color/warm2"
         app:cardElevation="@dimen/fui_body_padding_bottom"
         app:layout_constraintEnd_toStartOf="@+id/cardDOB"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView3">
+        app:layout_constraintTop_toBottomOf="@id/projectTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,11 +43,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/aclonica"
+                android:fontFamily="@font/sarpanch_bold"
                 android:inputType="textPersonName"
                 android:text="Gender: "
-                android:textColor="@color/color3"
-                android:textSize="20dp" />
+                android:textColor="@color/warm4"
+                android:textSize="25dp" />
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -65,10 +65,10 @@
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
                     android:checked="false"
-                    android:fontFamily="@font/aclonica"
+                    android:fontFamily="@font/sarpanch_bold"
                     android:text="Male"
-                    android:textColor="@color/color3"
-                    android:textSize="15dp" />
+                    android:textColor="@color/warm1"
+                    android:textSize="20dp" />
 
                 <RadioButton
                     android:id="@+id/radioButton2"
@@ -76,10 +76,10 @@
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
                     android:checked="false"
-                    android:fontFamily="@font/aclonica"
+                    android:fontFamily="@font/sarpanch_bold"
                     android:text="Female"
-                    android:textColor="@color/color3"
-                    android:textSize="15dp" />
+                    android:textColor="@color/warm1"
+                    android:textSize="20dp" />
             </RadioGroup>
 
         </LinearLayout>
@@ -88,15 +88,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDOB"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
 
-        app:cardBackgroundColor="@color/color1"
+        app:cardBackgroundColor="@color/warm3"
         app:cardElevation="@dimen/fui_body_padding_bottom"
         app:layout_constraintStart_toEndOf="@id/cardGender"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView3">
+        app:layout_constraintTop_toBottomOf="@id/projectTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,10 +109,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/aclonica"
+                android:fontFamily="@font/sarpanch_bold"
                 android:text="Date of Birth: "
-                android:textColor="@color/color3"
-                android:textSize="20dp"
+                android:textColor="@color/warm4"
+                android:textSize="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@id/textView3" />
@@ -121,14 +121,13 @@
                 android:id="@+id/show_date"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="35dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/color3"
-                android:fontFamily="@font/aclonica"
+                android:backgroundTint="@color/warm4"
+                android:fontFamily="@font/sarpanch_bold"
                 android:text="Select Date of Birth"
-                android:textColor="@color/color1"
-                android:textSize="10dp"
-
+                android:textColor="@color/warm1"
+                android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/date_text" />
