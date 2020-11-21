@@ -5,6 +5,11 @@
     <color name="color2">#CC9900</color>
     <color name="color3">#CCCC99</color>
 
+    <color name="warm1">#99CCCC</color>
+    <color name="warm2">#FFCC99</color>
+    <color name="warm3">#FFCCCC</color>
+    <color name="warm4">#FFFFCC</color>
+
     <color name="grey_blue">#666699</color>
     <color name="grey">#CCCCCC</color>
     <color name="dark_orange">#CC9966</color>
