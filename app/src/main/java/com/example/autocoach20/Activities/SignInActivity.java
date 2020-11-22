@@ -1,6 +1,7 @@
 package com.example.autocoach20.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -60,13 +61,34 @@ public class SignInActivity extends AppCompatActivity{
                             Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
-                            Intent intent = new Intent(SignInActivity.this, StartAutoCoachActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+
+    }
+    public FirebaseUser getCurrentUser (){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+        }
+
+        return user;
 
     }
 }

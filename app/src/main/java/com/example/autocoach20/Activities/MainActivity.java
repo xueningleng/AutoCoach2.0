@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
     public Trip trip;
 
 
-    SignUpActivity authActivity = new SignUpActivity();
-    FirebaseUser currentUser = authActivity.getCurrentUser();
-    User current_user= new User(currentUser, 1, 21); //currently default, need to be taken by start activity
+    SignInActivity authActivity = new SignInActivity();
+    FirebaseUser currentUser= authActivity.getCurrentUser();
+   // User current_user= new User(currentUser, 1, 21); //currently default, need to be taken by start activity
     public FirebaseUser getUser(){
         return currentUser;
     };
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 signUp(view);
             }
         });
+
     }
     public void signIn(View view){
         Intent intent = new Intent(this, SignUpActivity.class);
