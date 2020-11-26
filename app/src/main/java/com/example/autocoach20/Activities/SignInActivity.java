@@ -30,14 +30,18 @@ public class SignInActivity extends AppCompatActivity{
         setContentView(R.layout.activity_signin);
 
         mAuth = FirebaseAuth.getInstance();
-        userEmail = (EditText)findViewById(R.id.uEmail);
-        userPassword = (EditText)findViewById(R.id.uPword);
+        initializeUI();
         signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                signIn();
             }
         });
+    }
+    private void initializeUI(){
+        userEmail = (EditText)findViewById(R.id.uEmail);
+        userPassword = (EditText)findViewById(R.id.uPword);
+        signInBtn = findViewById(R.id.signInButton);
     }
     private void signIn (){
         String email, password;
@@ -60,8 +64,7 @@ public class SignInActivity extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, UserInfoActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();

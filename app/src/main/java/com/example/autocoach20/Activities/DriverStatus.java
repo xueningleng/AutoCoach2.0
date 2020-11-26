@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.autocoach20.R;
 
 public class DriverStatus extends AppCompatActivity {
-
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,4 +34,8 @@ public class DriverStatus extends AppCompatActivity {
 
         });
     }
+    public void setUpUser(){
+
+    }
+
 }

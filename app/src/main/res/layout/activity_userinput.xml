@@ -55,12 +55,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:checkedButton="@id/radioButton"
+                android:checkedButton="@id/radio_male"
                 android:layoutDirection="locale"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/radio_male"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
@@ -71,7 +71,7 @@
                     android:textSize="20dp" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/radio_female"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
@@ -135,7 +135,19 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="<-SUBMIT->"
+        android:backgroundTint="@color/warm1"
+        android:textColor="@color/warm4"
+        android:textSize="15dp"
+        android:fontFamily="@font/sarpanch_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardGender" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

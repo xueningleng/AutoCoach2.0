@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.autocoach20.R;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -23,7 +22,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.annotations.Nullable;
 
@@ -52,9 +50,7 @@ public class SignUpActivity extends AppCompatActivity{
                 new AuthUI.IdpConfig.EmailBuilder().build());
 
         mAuth = FirebaseAuth.getInstance();
-
-        userEmail = (EditText)findViewById(R.id.uEmail);
-        userPassword = (EditText)findViewById(R.id.uPword);
+        initializeUI();
 
         btn_signIn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -64,53 +60,12 @@ public class SignUpActivity extends AppCompatActivity{
         });
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
 
+    private void initializeUI(){
+        userEmail = (EditText)findViewById(R.id.uEmail);
+        userPassword = (EditText)findViewById(R.id.uPword);
+        btn_signIn = findViewById(R.id.button);
 
-    private void showSignInOptions(){
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setLogo(R.drawable.logobw)
-                        .build(),
-                MY_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        //setContentView(R.layout.activity_firebase_ui);
-
-
-        if (requestCode == MY_REQUEST_CODE){
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK){
-                //Get User
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                //Show email on Toast
-                Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-
-
-                finish();
-                //startActivity(startAutoCoach);
-
-                //set Button signOut
-                //btn_sign_out.setEnabled(true);
-            }
-
-            else {
-                Toast.makeText(this, ""+response.getError().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
 
@@ -223,12 +178,7 @@ public class SignUpActivity extends AppCompatActivity{
         // [END auth_differentiate_link]
     }
 
-    public void getGoogleCredentials() {
-        String googleIdToken = "";
-        // [START auth_google_cred]
-        AuthCredential credential = GoogleAuthProvider.getCredential(googleIdToken, null);
-        // [END auth_google_cred]
-    }
+
 
     public void getEmailCredentials() {
         String email = "";
