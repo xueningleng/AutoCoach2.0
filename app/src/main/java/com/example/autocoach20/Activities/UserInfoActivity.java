@@ -13,20 +13,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.autocoach20.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
 
 public class UserInfoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
-    private int userAge;
-    private int userGender;
+    int userAge;
+    int userGender;
     private TextView dateText;
     private Button submitBtn;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexBtn, radioFemale, radioMale;
     private DatePicker datePicker;
-
+    public final static String
+            MESSAGE_KEY ="com.example.autocoach20.message_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,6 +33,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         setContentView(R.layout.activity_userinput);
         initializeUI();
 
+        sendInfo();
     }
     private void initializeUI(){
         dateText = findViewById(R.id.date_text);
@@ -83,11 +83,10 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         String d = month + "/"+dayOfMonth+"/"+year+" (mm/dd/yyyy)";
         dateText.setText(d);
     }
-    public void setUser(){
-
-        FirebaseUser currentUser= FirebaseAuth.getInstance().getCurrentUser();
-        User current_user= new User(currentUser, userAge, userGender); //currently default, need to be taken by start activity
+    public void sendInfo(){
         Intent intent = new Intent(getBaseContext(), DriverStatus.class);
+        intent.putExtra(MESSAGE_KEY,userAge);
+        intent.putExtra(MESSAGE_KEY,userGender);
         startActivity(intent);
     }
 }

@@ -115,7 +115,7 @@
                 android:textSize="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/radioGroup"
-                app:layout_constraintTop_toBottomOf="@id/textView3" />
+                app:layout_constraintTop_toBottomOf="@id/projectTitle" />
 
             <Button
                 android:id="@+id/show_date"
