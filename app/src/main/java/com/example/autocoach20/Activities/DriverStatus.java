@@ -2,6 +2,7 @@ package com.example.autocoach20.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class DriverStatus extends AppCompatActivity {
     private User user;
     private int userAge, userGender;
-    String outputBP, outputHR, outputF;
+    String oBP, oHR, oF;
+    TextView outTxtBP, outTxtHR, outTxtF;
+    boolean checkBP, checkHR, checkF;
     public final static String
             MESSAGE_KEY ="com.example.autocoach20.message_key";
 
@@ -25,10 +28,26 @@ public class DriverStatus extends AppCompatActivity {
         userGender = intent.getIntExtra(MESSAGE_KEY,0);
 
     }
-    public void setUpUser(){
+    private void initializeUI(){
+        outTxtBP = (TextView) findViewById(R.id.outputBP);
+        outTxtHR = (TextView) findViewById(R.id.outputHR);
+        outTxtF = (TextView) findViewById(R.id.outputF);
+    }
+    private void updateUI(){
+        outTxtBP.setText(oBP);
+        outTxtHR.setText(oHR);
+        outTxtF.setText(oF);
+    }
+    public void setUpUser(int curHR, int curBPmin, int curBPmax){
         FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
         user = new User(u ,userAge, userGender);
-
+        user.setCurrentHeartRate(curHR); //enter measured heartrate from device
+        user.setCurrentBloodPressure(curBPmax,curBPmin); //enter measured bloodpressure from device
+    }
+    public void runCheck(){
+        oBP = user.checkBloodPressure();
+        oHR = user.checkHeartRate();
+        oF = "COMING SOON"; //add face examination result
     }
 
 }

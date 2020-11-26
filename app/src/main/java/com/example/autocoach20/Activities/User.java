@@ -43,7 +43,7 @@ public class User {
     };
 
     private void SetNormalHeartRate(int heartRateMax){
-        if (heartRateMax >=0) { // no input
+        if (heartRateMax <=0) { // no input
             this.normal_heart_rate_max = heartRateMax;
         }
         else{
