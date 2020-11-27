@@ -42,6 +42,12 @@ public class User {
         this.gender = userGender;
     };
 
+    public String getUser_name(){
+        return user_name;
+    }
+    public String getUser_id(){
+        return user_id;
+    }
     private void SetNormalHeartRate(int heartRateMax){
         if (heartRateMax <=0) { // no input
             this.normal_heart_rate_max = heartRateMax;
