@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
-public class Trip {
+public class UserTrip {
     //score manipulation
     public double tripOverallScore;
     public long tripStartTime;
@@ -15,7 +15,7 @@ public class Trip {
 
     public int getDBTripId () { return DBTripId; }
 
-    public Trip(){
+    public UserTrip(){
 
     }
     public double getTripOverallScore() {
@@ -43,7 +43,7 @@ public class Trip {
     }
 
     @SuppressLint("RestrictedApi")
-    private void addTripToDB(long tripStartTime, long tripEndTime){
+    void addTripToDB(){
         //Don't use another thread, let it record as part of the main thread so app doesnt crash
 
         dbOperations.addToTableTrip(getApplicationContext(), null, getTripOverallScore(), tripStartTime, tripEndTime, 0);

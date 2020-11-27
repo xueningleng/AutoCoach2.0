@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,9 +18,12 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     public static MainActivity mainActivity;
 
-    public Trip trip;
-
-
+    public UserTrip userTrip;
+    ImageButton sufolder;
+    ImageButton sifolder;
+    Button subtn;
+    Button sibtn;
+    TextView title;
     SignInActivity authActivity = new SignInActivity();
     FirebaseUser currentUser= authActivity.getCurrentUser();
    // User current_user= new User(currentUser, 1, 21); //currently default, need to be taken by start activity
@@ -34,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+
+
+    }
+
+    public void initializeUI(){
+        title = findViewById(R.id.projectTitle);
+        sufolder = findViewById(R.id.signUpFolder);
+        sifolder = findViewById(R.id.signInFolder);
         Button signIn = (Button) findViewById(R.id.buttonSignIn);
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -49,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 signUp(view);
             }
         });
-
     }
     public void signIn(View view){
         Intent intent = new Intent(this, SignUpActivity.class);

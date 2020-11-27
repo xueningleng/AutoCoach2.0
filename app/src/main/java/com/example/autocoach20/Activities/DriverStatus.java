@@ -2,6 +2,7 @@ package com.example.autocoach20.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,14 @@ public class DriverStatus extends AppCompatActivity {
         oBP = user.checkBloodPressure();
         oHR = user.checkHeartRate();
         oF = "COMING SOON"; //add face examination result
+    }
+    public User getReadyUser(){
+        return user;
+    }
+    public void sendInfo(){
+        Intent intent = new Intent(getBaseContext(), StartAutoCoachActivity.class);
+        intent.putExtra(MESSAGE_KEY, (Parcelable) user);
+        startActivity(intent);
     }
 
 }
