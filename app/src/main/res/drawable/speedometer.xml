@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/warm3"></solid>
+    <corners android:radius="@dimen/fui_auth_method_button_width">
+    </corners>
+    <size android:width="200dp"
+        android:height="200dp"></size>
+
+</shape>
