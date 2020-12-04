@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.AutoCoach20" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color1</item>
-        <item name="colorPrimaryVariant">@color/color2</item>
-        <item name="colorOnPrimary">@color/color3</item>
+        <item name="colorPrimary">@color/warm1</item>
+        <item name="colorPrimaryVariant">@color/warm3</item>
+        <item name="colorOnPrimary">@color/warm4</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/dark_pink</item>
+        <item name="colorSecondary">@color/warm2</item>
         <item name="colorSecondaryVariant">@color/dark_orange</item>
-        <item name="colorOnSecondary">@color/dark_grey</item>
+        <item name="colorOnSecondary">@color/grey_blue</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

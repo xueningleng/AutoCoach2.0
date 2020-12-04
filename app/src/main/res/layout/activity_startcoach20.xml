@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="match_parent"
-    android:background="@color/warm1"
+    android:background="@color/warm4"
     tools:context=".Activities.StartAutoCoachActivity">
 
     <ImageView
@@ -65,7 +64,7 @@
             android:fontFamily="@font/stalinist_one"
             android:gravity="center"
             android:text="NORMAL"
-            android:textColor="@color/warm4"
+            android:textColor="@color/warm1"
             android:textSize="25dp"
             android:textColorHighlight="@color/warm2"
             />
@@ -144,7 +143,7 @@
             android:fontFamily="@font/stalinist_one"
             android:gravity="center"
             android:text="NORMAL"
-            android:textColor="@color/warm4"
+            android:textColor="@color/warm1"
             android:textSize="25dp"
             android:textColorHighlight="@color/warm2"
             />

@@ -15,7 +15,7 @@
         android:fontFamily="@font/stalinist_one"
         android:text="@string/app_name"
         android:textColor="@color/warm4"
-        android:textSize="48sp"
+        android:textSize="32sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,11 +23,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardGender"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
         app:cardBackgroundColor="@color/warm2"
-        app:cardElevation="@dimen/fui_body_padding_bottom"
         app:layout_constraintEnd_toStartOf="@+id/cardDOB"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/projectTitle">
@@ -47,7 +46,7 @@
                 android:inputType="textPersonName"
                 android:text="Gender: "
                 android:textColor="@color/warm4"
-                android:textSize="25dp" />
+                android:textSize="20sp" />
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -65,10 +64,11 @@
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|left"
                     android:checked="false"
+                    android:background="@color/warm4"
                     android:fontFamily="@font/sarpanch_bold"
                     android:text="Male"
                     android:textColor="@color/warm1"
-                    android:textSize="20dp" />
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
@@ -78,8 +78,9 @@
                     android:checked="false"
                     android:fontFamily="@font/sarpanch_bold"
                     android:text="Female"
-                    android:textColor="@color/warm1"
-                    android:textSize="20dp" />
+                    android:textColor="@color/warm4"
+                    android:background="@color/warm1"
+                    android:textSize="15sp" />
             </RadioGroup>
 
         </LinearLayout>
@@ -88,12 +89,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDOB"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
 
         app:cardBackgroundColor="@color/warm3"
-        app:cardElevation="@dimen/fui_body_padding_bottom"
         app:layout_constraintStart_toEndOf="@id/cardGender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/projectTitle">
@@ -112,7 +112,7 @@
                 android:fontFamily="@font/sarpanch_bold"
                 android:text="Date of Birth: "
                 android:textColor="@color/warm4"
-                android:textSize="25dp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@id/projectTitle" />
@@ -121,13 +121,13 @@
                 android:id="@+id/show_date"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/warm4"
                 android:fontFamily="@font/sarpanch_bold"
                 android:text="Select Date of Birth"
                 android:textColor="@color/warm1"
-                android:textSize="15dp"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/date_text" />
@@ -139,8 +139,8 @@
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="<-SUBMIT->"
-        android:backgroundTint="@color/warm1"
+        android:text="SUBMIT"
+        android:backgroundTint="@color/warm3"
         android:textColor="@color/warm4"
         android:textSize="15dp"
         android:fontFamily="@font/sarpanch_bold"

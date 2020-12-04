@@ -12,7 +12,7 @@
         android:id="@+id/signUpFolder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         app:srcCompat="@drawable/sign_up_folder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf ="parent"/>
@@ -25,7 +25,7 @@
         android:fontFamily="@font/stalinist_one"
         android:text="@string/sign_up"
         android:textColor="@color/warm1"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toTopOf="@id/signUpFolder"
         app:layout_constraintStart_toStartOf="@id/signUpFolder" />
@@ -34,8 +34,8 @@
         android:id="@+id/signInFolder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="270dp"
-        android:layout_marginLeft="300dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginLeft="200dp"
         app:srcCompat="@drawable/sign_in_folder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf ="parent" />
@@ -49,7 +49,7 @@
         android:layout_marginLeft="16dp"
         android:text="@string/sign_in"
         android:textColor="@color/warm1"
-        android:textSize="20sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@id/signInFolder"
         app:layout_constraintBottom_toTopOf="@+id/signInFolder" />
 
@@ -59,15 +59,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="32dp"
         android:fontFamily="@font/stalinist_one"
+        android:shadowColor="@color/warm2"
+        android:shadowRadius="2"
         android:text="@string/app_name"
         android:textColor="@color/warm4"
-        android:textSize="48sp"
-        android:shadowRadius="2"
-        android:shadowColor="@color/warm2"
+        android:textSize="32sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toTopOf="@id/signUpFolder"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

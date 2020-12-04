@@ -28,9 +28,9 @@ public class SignInActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
-        mAuth = FirebaseAuth.getInstance();
         initializeUI();
+        mAuth = FirebaseAuth.getInstance();
+        Intent intent = getIntent();
         signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -63,7 +63,6 @@ public class SignInActivity extends AppCompatActivity{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(SignInActivity.this, UserInfoActivity.class);
                             startActivity(intent);
                         } else {

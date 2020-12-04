@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-
-
+        initializeUI();
     }
 
     public void initializeUI(){
@@ -63,12 +62,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void signIn(View view){
-        Intent intent = new Intent(this, SignUpActivity.class);
-        Button signIn = (Button) findViewById(R.id.buttonSignIn);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
     public void signUp(View view){
-        Intent intent = new Intent(this, DriverStatus.class);
+        Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
 

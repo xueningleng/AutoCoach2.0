@@ -31,6 +31,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinput);
+        Intent intent = getIntent();
         initializeUI();
 
         sendInfo();

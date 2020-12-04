@@ -14,7 +14,7 @@
         android:fontFamily="@font/stalinist_one"
         android:text="@string/app_name"
         android:textColor="@color/warm4"
-        android:textSize="48sp"
+        android:textSize="32sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,26 +77,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <ImageButton
+    <Button
         android:id="@+id/proceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/warmbtn"
-        android:elevation="@dimen/material_emphasis_disabled"
         app:layout_constraintStart_toStartOf="@id/warm3bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/warm1card3"
-        app:layout_constraintEnd_toEndOf="@id/warm3bg">
-        <TextView
-            android:id="@+id/proceedTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PROCEED"
-            android:fontFamily="@font/stalinist_one"
-            android:textColor="@color/grey_blue"
-            android:textSize="15dp"
-            />
-    </ImageButton>
+        app:layout_constraintEnd_toEndOf="@id/warm3bg"
+        android:text="PROCEED"
+        android:fontFamily="@font/stalinist_one"
+        android:textColor="@color/grey_blue"
+        android:textSize="15dp">
+
+
+    </Button>
 
     <TextView
         android:id="@+id/heartRateHint"

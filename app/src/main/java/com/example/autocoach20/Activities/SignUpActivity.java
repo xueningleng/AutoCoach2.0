@@ -44,13 +44,12 @@ public class SignUpActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
         Intent intent = getIntent();
+        initializeUI();
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
 
         mAuth = FirebaseAuth.getInstance();
-        initializeUI();
 
         btn_signIn.setOnClickListener(new View.OnClickListener(){
             @Override
