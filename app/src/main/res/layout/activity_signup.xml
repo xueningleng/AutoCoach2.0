@@ -23,13 +23,13 @@
 
     <LinearLayout
         android:id="@+id/inputGroup"
-        android:layout_width="400dp"
-        android:layout_height="150dp"
+        android:layout_width="500dp"
+        android:layout_height="200dp"
         android:layout_marginTop="32dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/projectTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button">
+        app:layout_constraintEnd_toStartOf="@id/signUpButton">
 
         <EditText
             android:id="@+id/uEmail"
@@ -45,7 +45,7 @@
             android:textAllCaps="false"
             android:textColor="@color/warm1"
             android:textColorHint="@color/warm4"
-            android:textSize="30sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/uPword"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,23 +70,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/uEmail" />
 
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/sarpanch_bold"
+            android:textSize="10sp"
+            android:textColor="@color/dark_orange"
+            android:text="TextView" />
+
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:backgroundTint="@color/warm4"
-        android:elevation="3dp"
+        android:elevation="12dp"
         android:fontFamily="@font/sarpanch_bold"
         android:text="@string/register"
         android:textSize="15sp"
         android:textColor="@color/warm1"
+        app:layout_constraintTop_toBottomOf="@id/projectTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/inputGroup"
-        app:layout_constraintTop_toBottomOf="@id/projectTitle" />
+        app:layout_constraintStart_toEndOf="@+id/inputGroup" />
 
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="RETURN"
+        android:backgroundTint="@color/warm4"
+        android:elevation="3dp"
+        android:fontFamily="@font/sarpanch_bold"
+        android:textColor="@color/warm1"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/inputGroup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,8 @@ public class SignUpActivity extends AppCompatActivity{
     //UI fields
     EditText userEmail;
     EditText userPassword;
-    Button btn_signIn;
+    Button btn_signIn, homeBtn;
+    TextView resultHint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -57,13 +59,19 @@ public class SignUpActivity extends AppCompatActivity{
                 createAccount();
             }
         });
+        homeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){finish();}
+        });
     }
 
 
     private void initializeUI(){
         userEmail = (EditText)findViewById(R.id.uEmail);
         userPassword = (EditText)findViewById(R.id.uPword);
-        btn_signIn = findViewById(R.id.button);
+        btn_signIn = findViewById(R.id.signUpButton);
+        homeBtn = findViewById(R.id.returnButton);
+        resultHint = findViewById(R.id.result);
 
     }
 
@@ -89,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            resultHint.setText("Registration Successful");
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -96,6 +105,7 @@ public class SignUpActivity extends AppCompatActivity{
                             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
                         } else {
+                            resultHint.setText("Registration Failed");
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
