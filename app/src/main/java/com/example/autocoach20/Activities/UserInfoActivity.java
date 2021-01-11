@@ -34,7 +34,6 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         Intent intent = getIntent();
         initializeUI();
 
-        sendInfo();
     }
     private void initializeUI(){
         dateText = findViewById(R.id.date_text);
@@ -57,6 +56,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
                         userGender = 1;
                         break;
                 }
+                sendInfo();
 
             }
         });
@@ -85,7 +85,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         dateText.setText(d);
     }
     public void sendInfo(){
-        Intent intent = new Intent(getBaseContext(), DriverStatus.class);
+        Intent intent = new Intent(UserInfoActivity.this, DriverStatus.class);
         intent.putExtra(MESSAGE_KEY,userAge);
         intent.putExtra(MESSAGE_KEY,userGender);
         startActivity(intent);

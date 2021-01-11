@@ -78,7 +78,7 @@
                 android:fontFamily="@font/sarpanch_bold"
                 android:textSize="10sp"
                 android:textColor="@color/dark_orange"
-                android:text="TextView" />
+                android:text="" />
 
         </LinearLayout>
 
