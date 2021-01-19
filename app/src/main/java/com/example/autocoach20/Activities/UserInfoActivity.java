@@ -46,16 +46,18 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                int selectedId = radioSexGroup.getCheckedRadioButtonId();
-                radioSexBtn = (RadioButton) findViewById(selectedId);
-                switch(selectedId){
-                    case R.id.radio_female:
-                        userGender = 0;
-                        break;
-                    case R.id.radio_male:
-                        userGender = 1;
-                        break;
-                }
+//                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+//                radioSexBtn = (RadioButton) findViewById(selectedId);
+//                switch(selectedId){
+//                    case R.id.radio_female:
+//                        userGender = 0;
+//                        break;
+//                    case R.id.radio_male:
+//                        userGender = 1;
+//                        break;
+//                }
+
+                userGender = 0;
                 sendInfo();
 
             }
@@ -81,6 +83,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         Calendar today = Calendar.getInstance();
         int age = today.get(Calendar.YEAR) - year;
         userAge = age;
+        month++;
         String d = month + "/"+dayOfMonth+"/"+year+" (mm/dd/yyyy)";
         dateText.setText(d);
     }
