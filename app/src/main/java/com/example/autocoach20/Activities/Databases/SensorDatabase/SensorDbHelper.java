@@ -6,9 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.autocoach20.Activities.MainActivity;
 import com.example.autocoach20.Activities.Model.Trip;
 import com.example.autocoach20.Activities.Operations;
+import com.example.autocoach20.Activities.StartAutoCoachActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +117,7 @@ public class SensorDbHelper extends SQLiteOpenHelper {
         sensorDbHelper = new SensorDbHelper(context);
         SQLiteDatabase db = sensorDbHelper.getReadableDatabase();
 
-        String userId = MainActivity.getMainActivity().getUser().getUid();
+        String userId = StartAutoCoachActivity.getMainActivity().getUser().getUser_id();
 
         //GET THE TRIP ID
         Trip trip = op.readCurrentTripDetails(context);

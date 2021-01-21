@@ -25,8 +25,8 @@ public class DriverStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driverstatus);
         Intent intent = getIntent();
-        userAge = intent.getIntExtra(MESSAGE_KEY,0);
-        userGender = intent.getIntExtra(MESSAGE_KEY,0);
+        //userAge = intent.getIntExtra(MESSAGE_KEY,0);
+        //userGender = intent.getIntExtra(MESSAGE_KEY,0);
 
     }
     private void initializeUI(){
