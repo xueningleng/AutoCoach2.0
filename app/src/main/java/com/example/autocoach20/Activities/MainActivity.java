@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     public static MainActivity mainActivity;
 
-    public UserTrip userTrip;
     ImageButton sufolder;
     ImageButton sifolder;
     Button subtn;

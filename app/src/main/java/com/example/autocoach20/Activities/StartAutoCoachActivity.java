@@ -62,7 +62,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     Operations dbOperations = new Operations();
     public int DBTripId;
     public int getDBTripId () { return DBTripId; }
-    public UserTrip userTrip;
     public Trip trip;
     public User user;
     public User getUser(){return user;}
@@ -124,12 +123,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         setContentView(R.layout.activity_startcoach20);
         //add user to local database
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        user = new User(fbUser,20,0);//change age and gender with given info
+        //TODO: arrange user data collection
+        user = new User(fbUser,20,0);
         try{
-            //if tables do not exist
-            //TODO: add check on existence
-            mydb.createUserTable();
-            mydb.createTripTable();
+
+            if (!mydb.checkTableExist("trips")) {
+                mydb.createTripTable();
+            }
+            if (!mydb.checkTableExist("users")){
+                mydb.createUserTable();
+            }
+            if (!mydb.checkTableExist("records")) {
+                mydb.createRecordTable();
+            }
         }catch(Exception e){
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("Cause: " + e.getCause());
@@ -141,14 +147,13 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         //end
-        userTrip.tripStartTime =System.currentTimeMillis();
-        userTrip.tripEndTime = 0;
+        trip.setTripStartTime(System.currentTimeMillis());
+        trip.setTripEndTime(0);
         try{
-           DBTripId = mydb.insertTrip(fbUser.getUid(),userTrip.tripStartTime,userTrip.tripEndTime);
+           DBTripId = mydb.insertTrip(fbUser.getUid(),trip.getTripStartTime(),trip.getTripEndTime());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //userTrip.addTripToDB();
         try {
             trip = mydb.fetchTripData(DBTripId);
         } catch (Exception e) {
@@ -260,7 +265,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
             Operations op = new Operations();
-            op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), userTrip.getTripOverallScore());
+            op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
 
             /**
              * Uploading trip data without using the worker, bc the worker will take the old trip data

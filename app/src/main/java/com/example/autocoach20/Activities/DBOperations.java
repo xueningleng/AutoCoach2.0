@@ -4,6 +4,7 @@ package com.example.autocoach20.Activities;
 import com.example.autocoach20.Activities.Model.Trip;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,23 @@ public class DBOperations {
         // db.writeSpeed("tripRecord" ,"user1", 124,1,62);
         //db.fetch("tripRecord","speed");
     }*/
+    public boolean checkTableExist(String table) throws ClassNotFoundException, SQLException {
+        try {
+            String myDriver = "org.gjt.mm.mysql.Driver";
+            String myUrl = "jdbc:mysql://localhost:3306/autocoach";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "root", "password");
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet res = meta.getTables(null, null, table,
+                    new String[]{"TABLE"});
+            while (res.next()) {
+                //System.out.println(res.getString("TABLE_NAME"));
+                return true;
+            }
+        }catch(SQLException e){
+        }
+        return false;
+    }
     public void createRecordTable()throws SQLException{
         try {
             String myDriver = "org.gjt.mm.mysql.Driver";
