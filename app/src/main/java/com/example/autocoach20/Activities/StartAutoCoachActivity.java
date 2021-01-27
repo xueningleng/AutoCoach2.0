@@ -128,7 +128,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         if (trip.getTripId()!=0)
             DBTripId = trip.getTripId();
         user= intent.getParcelableExtra(MESSAGE_KEY);
-
+        //android library
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //Get available Location providers
