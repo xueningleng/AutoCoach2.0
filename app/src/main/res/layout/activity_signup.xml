@@ -24,7 +24,7 @@
     <LinearLayout
         android:id="@+id/inputGroup"
         android:layout_width="500dp"
-        android:layout_height="200dp"
+        android:layout_height="400dp"
         android:layout_marginTop="32dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/projectTitle"
@@ -36,7 +36,7 @@
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:background="@color/warm3"
             android:elevation="2dp"
             android:fontFamily="@font/sarpanch_bold"
@@ -52,12 +52,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/uName"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/warm2"
+            android:elevation="2dp"
+            android:fontFamily="@font/sarpanch_bold"
+            android:hint="Enter Nickname: "
+            android:inputType="textPassword"
+            android:textColor="@color/warm1"
+            android:textColorHint="@color/warm4"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/uEmail" />
+
+        <EditText
             android:id="@+id/uPword"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:background="@color/warm2"
+            android:layout_marginTop="16dp"
+            android:background="@color/warm3"
             android:elevation="2dp"
             android:fontFamily="@font/sarpanch_bold"
             android:hint="@string/password"
@@ -68,7 +87,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/uEmail" />
+            app:layout_constraintTop_toBottomOf="@id/uName" />
 
         <TextView
             android:id="@+id/result"
@@ -80,6 +99,7 @@
             android:textSize="10sp"
             android:textColor="@color/dark_orange"
             android:text="" />
+
 
 
     </LinearLayout>

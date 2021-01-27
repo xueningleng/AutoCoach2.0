@@ -14,7 +14,7 @@ public class Trip {
         this.tripUserId = tripUserId;
     }
 
-    public Trip(int tripId, long tripStartTime, String tripUserId, long tripEndTime, double tripScore) {
+    public Trip(int tripId, String tripUserId, long tripStartTime, long tripEndTime, double tripScore) {
         this.tripId = tripId;
         this.tripStartTime = tripStartTime;
         this.tripUserId = tripUserId;

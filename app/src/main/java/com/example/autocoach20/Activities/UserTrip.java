@@ -10,6 +10,7 @@ public class UserTrip {
     public long tripStartTime;
     public long tripEndTime = 0;
 
+    DBOperations mydb = new DBOperations();
     Operations dbOperations = new Operations();
     public int DBTripId;
 

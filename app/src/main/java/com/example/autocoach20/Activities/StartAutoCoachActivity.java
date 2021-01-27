@@ -33,6 +33,7 @@ import com.example.autocoach20.Activities.SyncServices.EventDetection.SensorRead
 import com.example.autocoach20.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,6 +58,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private TextView score;
     private int speed;
     //trip info
+    DBOperations mydb = new DBOperations();
     Operations dbOperations = new Operations();
     public int DBTripId;
     public int getDBTripId () { return DBTripId; }
@@ -115,19 +117,47 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         setContentView(R.layout.activity_startcoach20);
+        //add user to local database
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        user = new User(fbUser,20,0);//change age and gender with given info
+        try{
+            //if tables do not exist
+            //TODO: add check on existence
+            mydb.createUserTable();
+            mydb.createTripTable();
+        }catch(Exception e){
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("Cause: " + e.getCause());
+        }
+        try {
+            mydb.insertUser(fbUser.getUid(), fbUser.getDisplayName(), fbUser.getEmail());
 
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        //end
         userTrip.tripStartTime =System.currentTimeMillis();
         userTrip.tripEndTime = 0;
-        userTrip.addTripToDB();
-        trip = dbOperations.readCurrentTripDetails(this);
-        if (trip.getTripId()!=0)
-            DBTripId = trip.getTripId();
-        user= intent.getParcelableExtra(MESSAGE_KEY);
+        try{
+           DBTripId = mydb.insertTrip(fbUser.getUid(),userTrip.tripStartTime,userTrip.tripEndTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //userTrip.addTripToDB();
+        try {
+            trip = mydb.fetchTripData(DBTripId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //trip = dbOperations.readCurrentTripDetails(this);
+        //if (trip.getTripId()!=0)
+        //    DBTripId = trip.getTripId();
+        //user= intent.getParcelableExtra(MESSAGE_KEY);
         //android library
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 

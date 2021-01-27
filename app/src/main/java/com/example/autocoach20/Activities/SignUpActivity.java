@@ -24,6 +24,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.annotations.Nullable;
 
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity{
     //UI fields
     EditText userEmail;
     EditText userPassword;
+    EditText userName;
     Button btn_signIn, homeBtn;
     TextView resultHint;
 
@@ -69,6 +71,7 @@ public class SignUpActivity extends AppCompatActivity{
     private void initializeUI(){
         userEmail = (EditText)findViewById(R.id.uEmail);
         userPassword = (EditText)findViewById(R.id.uPword);
+        userName = (EditText)findViewById(R.id.uName);
         btn_signIn = findViewById(R.id.signUpButton);
         homeBtn = findViewById(R.id.returnButton);
         resultHint = findViewById(R.id.result);
@@ -81,9 +84,10 @@ public class SignUpActivity extends AppCompatActivity{
     }
 
     private void createAccount (){
-        String email, password;
+        String email, password,name;
         email = userEmail.getText().toString();
         password = userPassword.getText().toString();
+        name = userName.getText().toString();
         if (TextUtils.isEmpty(email)){
             Toast.makeText(getApplicationContext(), "Please enter email", Toast.LENGTH_LONG).show();
             return;
@@ -101,7 +105,19 @@ public class SignUpActivity extends AppCompatActivity{
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name)
+                                    .build();
+
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
+                                            }
+                                        }
+                                    });
                             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
                         } else {
@@ -109,7 +125,6 @@ public class SignUpActivity extends AppCompatActivity{
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
 
                     }
@@ -136,6 +151,7 @@ public class SignUpActivity extends AppCompatActivity{
         }
 
         return user;
+
 
     }
 
