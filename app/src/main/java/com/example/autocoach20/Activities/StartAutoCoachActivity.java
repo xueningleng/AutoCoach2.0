@@ -59,7 +59,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private int speed;
     //trip info
     DBOperations mydb = new DBOperations();
-    Operations dbOperations = new Operations();
+    //Operations dbOperations = new Operations();
     public int DBTripId;
     public int getDBTripId () { return DBTripId; }
     public Trip trip;
@@ -121,10 +121,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         setContentView(R.layout.activity_startcoach20);
-        //add user to local database
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        //TODO: arrange user data collection
         user = new User(fbUser,20,0);
+        //create tables on database
         try{
 
             if (!mydb.checkTableExist("trips")) {
@@ -140,13 +139,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("Cause: " + e.getCause());
         }
-        try {
-            mydb.insertUser(fbUser.getUid(), fbUser.getDisplayName(), fbUser.getEmail());
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        //end
         trip.setTripStartTime(System.currentTimeMillis());
         trip.setTripEndTime(0);
         try{
@@ -159,10 +151,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //trip = dbOperations.readCurrentTripDetails(this);
-        //if (trip.getTripId()!=0)
-        //    DBTripId = trip.getTripId();
-        //user= intent.getParcelableExtra(MESSAGE_KEY);
+
         //android library
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -197,7 +186,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
-                updateSpeedByLocation(location);
+                mydb.insertRecord(getDBTripId(),updateSpeedByLocation(location));
             }
             //Set the timer for 5 seconds to request location information
             locationManager.requestLocationUpdates(provider, 5000, 1,
@@ -218,7 +207,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                     But its okay for now
                      */
                         new Thread(() -> {
-                            dbOperations.addToTableUser(documentReference, getApplicationContext(), fbUser);
+                            try {
+                                mydb.insertUser(documentReference.getId(), fbUser.getDisplayName(), fbUser.getEmail());
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }).start();
                     }
                 })
@@ -264,9 +257,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             running = false; // This variable controls the Feedback Activity Threads while loop
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
-            Operations op = new Operations();
-            op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
-
+            mydb.updateTrip(getDBTripId(),tripEndTime);
             /**
              * Uploading trip data without using the worker, bc the worker will take the old trip data
              * before it's been updated. So we update it, send it, then call the worker to upload
@@ -346,8 +337,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     };
 
     //This calculates the speed -- no need to change it
-    private void updateSpeedByLocation(Location location) {
+    private int updateSpeedByLocation(Location location) {
         speed = (int) (location.getSpeed() * 3.6); // m/s --> Km/h
+        return speed;
     }
 
     public int getSpeed() {
