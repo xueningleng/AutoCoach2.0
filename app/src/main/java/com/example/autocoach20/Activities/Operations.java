@@ -277,7 +277,7 @@ public class Operations {
                 tripStartTime = cursor.getLong(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_START_TIME));
                 tripScore = cursor.getLong(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_SCORE));
                 tripEndTime = cursor.getLong(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_END_TIME));
-                trip = new Trip(tripId, tripStartTime, tripUserId, tripEndTime, tripScore);
+                trip = new Trip(tripId, tripUserId, tripStartTime, tripEndTime, tripScore);
             }
 
         } catch (Exception e) {

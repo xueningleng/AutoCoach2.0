@@ -54,8 +54,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     }
     //ui items
     private Button end_btn;
-    private TextView uname;
-    private TextView score;
+    private TextView display_uname;
+    private TextView display_score;
+    private TextView display_speed;
     private int speed;
     //trip info
     DBOperations mydb = new DBOperations();
@@ -186,7 +187,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
-                mydb.insertRecord(getDBTripId(),updateSpeedByLocation(location));
+                int currentSpeed = updateSpeedByLocation(location);
+                mydb.insertRecord(getDBTripId(),currentSpeed);
+                display_speed.setText(currentSpeed);
             }
             //Set the timer for 5 seconds to request location information
             locationManager.requestLocationUpdates(provider, 5000, 1,
@@ -208,7 +211,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                      */
                         new Thread(() -> {
                             try {
-                                mydb.insertUser(documentReference.getId(), fbUser.getDisplayName(), fbUser.getEmail());
+                                mydb.insertUser(fbUser.getUid(), fbUser.getDisplayName(), fbUser.getEmail());
                             }catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -333,6 +336,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             // update speed by current location
             updateSpeedByLocation(location);
+
         }
     };
 
@@ -381,10 +385,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
 
     private void initializeUI(){
-        uname = findViewById(R.id.display_name);
-        score = findViewById(R.id.display_score);
-        uname.setText("User ID: " + user.getUser_name());
-        score.setText("100/100");
+        display_uname = findViewById(R.id.display_name);
+        display_score = findViewById(R.id.display_score);
+        display_uname.setText("User ID: " + fbUser.getDisplayName());
+        display_score.setText("100/100");
         end_btn = findViewById(R.id.endBtn);
 
     }
