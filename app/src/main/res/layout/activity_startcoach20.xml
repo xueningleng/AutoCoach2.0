@@ -11,145 +11,143 @@
         android:id="@+id/outter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/speedometer"
-        app:layout_constraintTop_toTopOf="@id/display_name"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/display_name"
+        app:srcCompat="@drawable/speedometer" />
 
 
     <ImageView
         android:id="@+id/inner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/speedometerin"
-        app:layout_constraintTop_toTopOf="@id/outter"
         app:layout_constraintBottom_toBottomOf="@id/outter"
-        app:layout_constraintStart_toStartOf="@id/outter"
         app:layout_constraintEnd_toEndOf="@id/outter"
-        />
+        app:layout_constraintStart_toStartOf="@id/outter"
+        app:layout_constraintTop_toTopOf="@id/outter"
+        app:srcCompat="@drawable/speedometerin" />
 
-<LinearLayout
-    android:id="@+id/groupdisplay"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@id/display_name"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:orientation="horizontal"
-    android:elevation="@dimen/material_emphasis_disabled">
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/braketext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text="Brake Frequency"
-            android:textColor="@color/warm2"
-            android:textSize="15dp"
-            />
-        <TextView
-            android:id="@+id/brakewarn"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:ems="6"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/warm1"
-            android:textSize="25dp"
-            android:textColorHighlight="@color/warm2"
-            />
-
-    </LinearLayout>
-    <LinearLayout
+        android:id="@+id/groupdisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/display_name"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:orientation="vertical"
-        android:elevation="@dimen/fui_field_padding_vert">
-        <TextView
-            android:id="@+id/speedtext"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text="SPEED"
-            android:textColor="@color/warm2"
-            android:textSize="15dp"
-            />
-        <TextView
-            android:id="@+id/speednum"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:ems="10"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/dark_orange"
-            android:textSize="50dp"
-            android:textColorHighlight="@color/warm2"
-            />
-        <TextView
-            android:id="@+id/speedunit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text="mph"
-            android:textColor="@color/warm2"
-            android:textSize="20dp"
-            />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/display_name">
 
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/braketext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text="Brake Frequency"
+                android:textColor="@color/warm2"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/brakewarn"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:ems="6"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/warm1"
+                android:textColorHighlight="@color/warm2"
+                android:textSize="22dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/display_name">
+
+            <TextView
+                android:id="@+id/speedtext"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text="SPEED"
+                android:textColor="@color/warm2"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/speednum"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:ems="10"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/dark_orange"
+                android:textColorHighlight="@color/warm2"
+                android:textSize="45dp" />
+
+            <TextView
+                android:id="@+id/speedunit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text="mph"
+                android:textColor="@color/warm2"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lanetext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text="Lane Switch"
+                android:textColor="@color/warm2"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/lanewarn"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:ems="6"
+                android:fontFamily="@font/stalinist_one"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/dark_orange"
+                android:textColorHighlight="@color/warm2"
+                android:textSize="22dp" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/lanetext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text="Lane Switch"
-            android:textColor="@color/warm2"
-            android:textSize="15dp"
-            />
-        <TextView
-            android:id="@+id/lanewarn"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:ems="6"
-            android:fontFamily="@font/stalinist_one"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/dark_orange"
-            android:textSize="25dp"
-            android:textColorHighlight="@color/warm2"
-            />
-
-    </LinearLayout>
-</LinearLayout>
     <ImageView
         android:id="@+id/userIcon"
         android:layout_width="wrap_content"
@@ -157,34 +155,36 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:outlineAmbientShadowColor="@color/warm1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/display_name_hint"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/display_name_hint"
         app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
     <TextView
         android:id="@+id/display_name_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="UserName: "
         android:fontFamily="@font/stalinist_one"
+        android:text="UserName: "
         android:textColor="@color/warm2"
-        android:textSize="17dp"
-        app:layout_constraintStart_toEndOf = "@id/userIcon"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/display_name_hint"/>
+        android:textSize="13dp"
+        app:layout_constraintEnd_toStartOf="@id/display_name_hint"
+        app:layout_constraintStart_toEndOf="@id/userIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text=""
         android:fontFamily="@font/stalinist_one"
+        android:text=""
         android:textColor="@color/warm1"
-        android:textSize="17dp"
+        android:textSize="13dp"
         app:layout_constraintEnd_toStartOf="@id/display_score_hint"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/display_name_hint"/>
+        app:layout_constraintStart_toEndOf="@id/display_name_hint"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -193,41 +193,65 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Score: "
         android:fontFamily="@font/stalinist_one"
+        android:text="Score: "
         android:textColor="@color/warm2"
-        android:textSize="17dp"
+        android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="@id/display_score"
         app:layout_constraintStart_toEndOf="@+id/display_name"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/display_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text=""
         android:fontFamily="@font/stalinist_one"
+        android:text=""
         android:textColor="@color/warm1"
-        android:textSize="17dp"
+        android:textSize="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/display_score_hint"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 
     <Button
         android:id="@+id/endBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="END TRIP"
         android:fontFamily="@font/stalinist_one"
+        android:text="END TRIP"
         android:textColor="@color/warm3"
-        android:textSize="17dp"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/resume"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/outter" />
+
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/stalinist_one"
+        android:text="RESUME"
+        android:textColor="@color/warm3"
+        android:textSize="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/endBtn"
+        app:layout_constraintEnd_toStartOf="@+id/endBtn"
+        app:layout_constraintStart_toEndOf="@+id/pause" />
+
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/stalinist_one"
+        android:text="PAUSE"
+        android:textColor="@color/warm3"
+        android:textSize="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/resume"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/resume"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

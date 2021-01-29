@@ -25,6 +25,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_USER);
         db.execSQL(SQL_CREATE_TRIP);
+        db.execSQL(SQL_CREATE_SPEEDRECORD);
         db.execSQL(SQL_CREATE_EVENT);
         db.execSQL(SQL_CREATE_PATTERN_WINDOW);
         db.execSQL(SQL_CREATE_RECOMMENDATION);
@@ -36,6 +37,7 @@ public class DbHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_USER);
         db.execSQL(SQL_DELETE_TRIP);
+        db.execSQL(SQL_DELETE_SPEEDRECORD);
         db.execSQL(SQL_DELETE_EVENT);
         db.execSQL(SQL_DELETE_PATTERN_WINDOW);
         db.execSQL(SQL_DELETE_RECOMMENDATION);
@@ -61,7 +63,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_UID + " VARCHAR PRIMARY KEY, " +
                     FeedReaderContract.FeedEntry.COLUMN_FIRST_NAME + " TEXT, " +
                     FeedReaderContract.FeedEntry.COLUMN_LAST_NAME + " TEXT, " +
-                    FeedReaderContract.FeedEntry.COLUMN_CREATED_AT + " LONG " +
+                    FeedReaderContract.FeedEntry.COLUMN_CREATED_AT + " LONG," +
+                    FeedReaderContract.FeedEntry.COLUMN_GENDER + " INT, " +
+                    FeedReaderContract.FeedEntry.COLUMN_AGE + " INT " +
                     ")";
 
     private static final String SQL_CREATE_TRIP =
@@ -75,6 +79,14 @@ public class DbHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (" + FeedReaderContract.FeedEntry.COLUMN_USER_ID + ") REFERENCES " + FeedReaderContract.FeedEntry.TABLE_USER + " (" + FeedReaderContract.FeedEntry.COLUMN_UID + ")" +
                     ")";
 
+    private static final String SQL_CREATE_SPEEDRECORD =
+            "CREATE TABLE " + FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD+ " (" +
+                    FeedReaderContract.FeedEntry.COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    FeedReaderContract.FeedEntry.COLUMN_TRIP_ID+ " INTEGER, " +
+                    FeedReaderContract.FeedEntry.COLUMN_SPEED + " INT, " +
+                    FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP + " TIMESTAMP, " +
+                    "FOREIGN KEY (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ") REFERENCES " + FeedReaderContract.FeedEntry.TABLE_TRIP + " (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ")" +
+                    ")";
     private static final String SQL_CREATE_EVENT =
             "CREATE TABLE " + FeedReaderContract.FeedEntry.TABLE_EVENT + " (" +
                     FeedReaderContract.FeedEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + //For all trips
@@ -123,6 +135,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DELETE_PATTERN_WINDOW =
             "DROP TABLE IF EXISTS " + FeedReaderContract.FeedEntry.TABLE_PATTERN_WINDOW;
+
+    private static final String SQL_DELETE_SPEEDRECORD =
+            "DROP TABLE IF EXISTS " + FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD;
 
     private static final String SQL_DELETE_EVENT =
             "DROP TABLE IF EXISTS " + FeedReaderContract.FeedEntry.TABLE_EVENT;

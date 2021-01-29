@@ -15,6 +15,7 @@ import com.example.autocoach20.Activities.Model.Window;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,34 @@ public class Operations {
         }
     }
 
+    synchronized public void updateUser (DocumentReference documentReference, Context context, FirebaseUser currentUser, int gender, int age){
+        dbHelper = new DbHelper(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            Log.d(TAG, "Updating info for User ID: " + documentReference.getId());
+
+            // Create a new map of values, where column names are the keys
+            ContentValues UserValues = new ContentValues();
+            UserValues.put(FeedReaderContract.FeedEntry.COLUMN_GENDER, gender); //This needs to be read from Firebase Authentication
+            UserValues.put(FeedReaderContract.FeedEntry.COLUMN_AGE, age); //This needs to be read from Firebase Authentication
+
+            db.update(FeedReaderContract.FeedEntry.TABLE_USER, UserValues,  FeedReaderContract.FeedEntry.COLUMN_USER_ID + " = ?", new String[]{documentReference.getId()});
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_USER, null, UserValues);
+
+            Log.i(TAG, "Primary Id of the inserted row into TABLE USER=" + newRowId);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            dbHelper.closeDB(db);
+        }
+    }
 
     /**
      *
@@ -93,6 +122,33 @@ public class Operations {
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_TRIP, null, TripValues);
+
+            Log.i(TAG, "Primary Id of the inserted row into TABLE TRIP =" + newRowId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            dbHelper.closeDB(db);
+        }
+    }
+
+    synchronized public void addToTableSpeedRecord (Context context, int tripId, int speed, Timestamp time){
+        dbHelper = new DbHelper(context);
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            Log.d(TAG, "Inserting Speed Record: ");
+
+            // Create a new map of values, where column names are the keys
+            ContentValues TripValues = new ContentValues();
+            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_TRIP_ID, tripId);
+            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_SPEED, speed);
+            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP, String.valueOf(time));
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD, null, TripValues);
 
             Log.i(TAG, "Primary Id of the inserted row into TABLE TRIP =" + newRowId);
 

@@ -26,6 +26,14 @@ public class FeedReaderContract {
         public static final String COLUMN_FIRST_NAME = "first_name";
         public static final String COLUMN_LAST_NAME = "last_name";
         public static final String COLUMN_CREATED_AT = "created_at";
+        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_AGE = "age";
+
+        //TABLE SPEEDRECORD FOR TEMPORARY DEBUG USE
+        public static final String TABLE_SPEEDRECORD = "speed_record";
+        public static final String COLUMN_RECORD_ID = "srecord_id";
+        public static final String COLUMN_SPEED = "capture_speed";
+        public static final String COLUMN_TIMESTAMP = "capture_time";
 
         //TABLE TRIP
         public static final String TABLE_TRIP = "trip";

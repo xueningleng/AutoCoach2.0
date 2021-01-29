@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.autocoach20.Activities.DBOperations;
 import com.example.autocoach20.Activities.Model.Trip;
+import com.example.autocoach20.Activities.Operations;
 import com.example.autocoach20.Activities.StartAutoCoachActivity;
 
 import java.util.ArrayList;
@@ -28,7 +28,8 @@ public class SensorDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2; //Version 2 included the trip ID
 
     private static final String TAG = "SensorDbHelper";
-    private DBOperations mydb = new DBOperations();
+    private Operations op = new Operations();
+  //  private DBOperations mydb = new DBOperations();
     private static SensorDbHelper sensorDbHelper;
 
 
@@ -120,7 +121,7 @@ public class SensorDbHelper extends SQLiteOpenHelper {
         String userId = StartAutoCoachActivity.getMainActivity().getUser().getUser_id();
 
         //GET THE TRIP ID
-        Trip trip = mydb.fetchCurrentTripData();
+        Trip trip = op.readCurrentTripDetails(context);
         int tripId = trip.getTripId();
 
         //ALL DATA FOR THIS CURRENT TRIP QUERY
@@ -131,7 +132,7 @@ public class SensorDbHelper extends SQLiteOpenHelper {
         try {
             while(cursor.moveToNext()){
                 Map<String, Object> data = new HashMap<>();
-/*
+
                 cursor.getInt(cursor.getColumnIndex(SensorContract.SensorEntry.COLUMN_DATE));
                 data.put("trip_id", cursor.getInt(cursor.getColumnIndex(SensorContract.SensorEntry.COLUMN_TRIP_ID)));
 
@@ -152,14 +153,9 @@ public class SensorDbHelper extends SQLiteOpenHelper {
 
                 data.put("speed", cursor.getInt(cursor.getColumnIndex(SensorContract.SensorEntry.COLUMN_SPEED)));
                 data.put("classification", cursor.getInt(cursor.getColumnIndex(SensorContract.SensorEntry.COLUMN_CLASSIFICATION)));
-*/
-
 
                 //ADD USER ID TOO FOR FIRESTORE
                 data.put("user_id", userId);
-
-
-
                 allSensorData.add(data);
             }
 

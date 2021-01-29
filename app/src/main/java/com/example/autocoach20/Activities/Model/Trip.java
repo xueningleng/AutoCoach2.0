@@ -1,7 +1,5 @@
 package com.example.autocoach20.Activities.Model;
 
-import com.example.autocoach20.Activities.DBOperations;
-
 public class Trip {
 
     private int tripId;
@@ -9,7 +7,6 @@ public class Trip {
     private long tripEndTime;
     private String tripUserId;
     private double tripScore; //Average score of all trip windows
-    DBOperations mydb = new DBOperations();
 
     public Trip(int tripId, long tripStartTime, String tripUserId) {
         this.tripId = tripId;

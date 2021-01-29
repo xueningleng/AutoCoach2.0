@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class StartAutoCoachActivity extends AppCompatActivity {
@@ -53,14 +54,14 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         return running;
     }
     //ui items
-    private Button end_btn;
-    private TextView display_uname;
-    private TextView display_score;
+    private Button end_btn, pause_btn,resume_btn;
+    private TextView display_uname_hint,display_uname;
+    private TextView display_score_hint,display_score;
     private TextView display_speed;
     private int speed;
     //trip info
-    DBOperations mydb = new DBOperations();
-    //Operations dbOperations = new Operations();
+    //DBOperations mydb = new DBOperations();
+    Operations dbOperations = new Operations();
     public int DBTripId;
     public int getDBTripId () { return DBTripId; }
     public Trip trip;
@@ -120,38 +121,28 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
+
         setContentView(R.layout.activity_startcoach20);
+        initializeUI();
+        /*pause_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onPause();
+            }
+        });
+        resume_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){onResume();}
+        });*/
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         user = new User(fbUser,20,0);
-        //create tables on database
-        try{
 
-            if (!mydb.checkTableExist("trips")) {
-                mydb.createTripTable();
-            }
-            if (!mydb.checkTableExist("users")){
-                mydb.createUserTable();
-            }
-            if (!mydb.checkTableExist("records")) {
-                mydb.createRecordTable();
-            }
-        }catch(Exception e){
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("Cause: " + e.getCause());
-        }
-        trip.setTripStartTime(System.currentTimeMillis());
-        trip.setTripEndTime(0);
-        try{
-           DBTripId = mydb.insertTrip(fbUser.getUid(),trip.getTripStartTime(),trip.getTripEndTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            trip = mydb.fetchTripData(DBTripId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        long tripStartTime = System.currentTimeMillis();
+        dbOperations.addToTableTrip(getApplicationContext(), fbUser.getUid(), 0 ,tripStartTime, 0,0);
+        trip = dbOperations.readCurrentTripDetails(this); //Read trip information
+
+        updateUI();
 
         //android library
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -180,15 +171,12 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
             //Get location service
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            /*
-            Get the currently available location providers
-            List<String> list = locationManager.getProviders(true);
-            */
 
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
                 int currentSpeed = updateSpeedByLocation(location);
-                mydb.insertRecord(getDBTripId(),currentSpeed);
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                dbOperations.addToTableSpeedRecord(getApplicationContext(),getDBTripId(),currentSpeed,timestamp);
                 display_speed.setText(currentSpeed);
             }
             //Set the timer for 5 seconds to request location information
@@ -210,11 +198,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                     But its okay for now
                      */
                         new Thread(() -> {
-                            try {
-                                mydb.insertUser(fbUser.getUid(), fbUser.getDisplayName(), fbUser.getEmail());
-                            }catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            dbOperations.addToTableUser(documentReference, getApplicationContext(), fbUser);
                         }).start();
                     }
                 })
@@ -260,7 +244,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             running = false; // This variable controls the Feedback Activity Threads while loop
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
-            mydb.updateTrip(getDBTripId(),tripEndTime);
+            Operations op = new Operations();
+            op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
             /**
              * Uploading trip data without using the worker, bc the worker will take the old trip data
              * before it's been updated. So we update it, send it, then call the worker to upload
@@ -291,15 +276,15 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //Go to Summary Page
             //Intent intent = new Intent(StartAutoCoachActivity.this, SummaryActivity.class);
             finish();
-            startActivity(intent);
+            startActivity(getIntent());
         });
     }
 
-
-    /*@Nullable
+/*
+    @Nullable
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        setTheme(R.style.MySuperAppTheme);
+        setTheme(R.style.Theme_AutoCoach20);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -311,8 +296,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         }
 
         return super.onCreateView(name, context, attrs);
-    }*/
-
+    }
+*/
 
     // ************************************************************************** //
     // LOCATION MANAGER LISTENER
@@ -385,11 +370,27 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
 
     private void initializeUI(){
+        display_score_hint = findViewById(R.id.display_score_hint);
+        display_uname_hint = findViewById(R.id.display_name_hint);
         display_uname = findViewById(R.id.display_name);
         display_score = findViewById(R.id.display_score);
-        display_uname.setText("User ID: " + fbUser.getDisplayName());
-        display_score.setText("100/100");
+
+        pause_btn = findViewById(R.id.pause);
+        resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
+    }
+
+    private void updateUI(){
+        display_uname.setText(user.getUser_name());
+        display_score.setText("100/100");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+        // Release the Camera because we don't need it when paused
+        // and other activities might need to use it.
 
     }
 

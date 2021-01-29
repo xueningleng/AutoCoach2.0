@@ -34,7 +34,9 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".Activities.StartAutoCoachActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape">
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

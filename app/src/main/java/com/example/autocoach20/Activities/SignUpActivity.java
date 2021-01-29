@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.autocoach20.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +47,9 @@ public class SignUpActivity extends AppCompatActivity{
     EditText userName;
     Button btn_signIn, homeBtn;
     TextView resultHint;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Operations dbOperations = new Operations();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -118,7 +125,8 @@ public class SignUpActivity extends AppCompatActivity{
                                             }
                                         }
                                     });
-                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                            //uploadUserInfo();
+                            Intent intent = new Intent(SignUpActivity.this, UserInfoActivity.class);
                             startActivity(intent);
                         } else {
                             resultHint.setText("Registration Failed");
@@ -132,6 +140,31 @@ public class SignUpActivity extends AppCompatActivity{
 
     }
 
+    public void uploadUserInfo(){
+        //dbOperations.addToTableUser(getCurrentUser().getIdToken(true),getApplicationContext(),getCurrentUser());
+        db.collection("user")
+                .add(getCurrentUser())
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    /*
+                    Save the User information to the local database
+                    This code requires checking if ID is there, then don't store it anymore
+                    But its okay for now
+                     */
+                        new Thread(() -> {
+                            dbOperations.addToTableUser(documentReference, getApplicationContext(), getCurrentUser());
+                        }).start();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
     public FirebaseUser getCurrentUser (){
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

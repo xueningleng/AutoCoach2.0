@@ -48,3 +48,14 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19' //This is for GIF files
 
 }
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "androidx.appcompat") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "1.+"
+            }
+        }
+    }
+}

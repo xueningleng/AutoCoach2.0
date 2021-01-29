@@ -61,7 +61,7 @@
             android:elevation="2dp"
             android:fontFamily="@font/sarpanch_bold"
             android:hint="Enter Nickname: "
-            android:inputType="textPassword"
+            android:inputType="textPersonName"
             android:textColor="@color/warm1"
             android:textColorHint="@color/warm4"
             android:textSize="20sp"
