@@ -174,11 +174,17 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
+                Toast.makeText(this, "Current Location is "+location,
+                        Toast.LENGTH_SHORT).show();
                 int currentSpeed = updateSpeedByLocation(location);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                Toast.makeText(this, "Current Speed is "+currentSpeed,
+                        Toast.LENGTH_SHORT).show();
                 dbOperations.addToTableSpeedRecord(getApplicationContext(),getDBTripId(),currentSpeed,timestamp);
                 display_speed.setText(currentSpeed);
             }
+            Toast.makeText(this, "No Location ",
+                    Toast.LENGTH_SHORT).show();
             //Set the timer for 5 seconds to request location information
             locationManager.requestLocationUpdates(provider, 5000, 1,
                     locationListener);
