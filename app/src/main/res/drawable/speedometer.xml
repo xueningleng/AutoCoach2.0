@@ -4,7 +4,7 @@
     <solid android:color="@color/warm3"></solid>
     <corners android:radius="@dimen/fui_auth_method_button_width">
     </corners>
-    <size android:width="200dp"
-        android:height="200dp"></size>
+    <size android:width="170dp"
+        android:height="170dp"></size>
 
 </shape>
