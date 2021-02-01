@@ -26,6 +26,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -62,7 +64,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private TextView display_uname_hint,display_uname;
     private TextView display_score_hint,display_score;
     private TextView display_speed;
-    private int speed;
+    private int speed = -1;
     //trip info
     //DBOperations mydb = new DBOperations();
     Operations dbOperations = new Operations();
@@ -114,6 +116,21 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Toast.makeText(this, "Location Permission Granted",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Location Permission Denied",
+                            Toast.LENGTH_SHORT).show();
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });
     public StartAutoCoachActivity(){
         mainActivity = this;
     }
@@ -159,8 +176,12 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         String provider;
         if (providerList.contains(LocationManager.GPS_PROVIDER)) {
             provider = LocationManager.GPS_PROVIDER;
+            Toast.makeText(this, "Got GPS as location provider",
+                    Toast.LENGTH_SHORT).show();
         } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
+            Toast.makeText(this, "Got NETWORK as location provider",
+                    Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "No location provider to use",
                     Toast.LENGTH_SHORT).show();
@@ -172,7 +193,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         //requestLocationUpdates is used for monitoring device location
         //The time interval of the manager is 5 sec. Distance is 5 meters (about 200 inches)
         //which means locationListener would update the location info every 5 sec or 5 meters
+        //Toast.makeText(this, ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION),Toast.LENGTH_LONG).show();
         if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Entered location check ...",
+                    Toast.LENGTH_SHORT).show();
             //Get location service
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -192,6 +216,12 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //Set the timer for 5 seconds to request location information
             locationManager.requestLocationUpdates(provider, 5000, 1,
                     locationListener);
+        }
+        else{
+        Toast.makeText(this, "Location permission not granted, asking ...",
+                Toast.LENGTH_SHORT).show();
+        requestPermissionLauncher.launch(
+                    Manifest.permission.ACCESS_FINE_LOCATION);
         }
         // ************************************************************************** //
         // CREATE USER AND ADD DATA TO GOOGLE FIREBASE STORE
@@ -338,6 +368,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     //This calculates the speed -- no need to change it
     private int updateSpeedByLocation(Location location) {
         speed = (int) (location.getSpeed() * 3.6); // m/s --> Km/h
+        display_speed.setText(speed);
         return speed;
     }
 
@@ -350,7 +381,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //initPermission(); //For Android 6.0 or above //Initiate permission for we need file reading, writing, GPS, WiFI permission
+        initPermission(); //For Android 6.0 or above //Initiate permission for we need file reading, writing, GPS, WiFI permission
     }
 
     //This function checks permission and asks for permission
