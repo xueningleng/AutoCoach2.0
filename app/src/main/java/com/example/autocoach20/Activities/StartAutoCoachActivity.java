@@ -16,9 +16,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.text.method.LinkMovementMethod;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -286,7 +290,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         });
     }
 
-/*
+
     @Nullable
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
@@ -303,7 +307,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         return super.onCreateView(name, context, attrs);
     }
-*/
+
 
     // ************************************************************************** //
     // LOCATION MANAGER LISTENER
