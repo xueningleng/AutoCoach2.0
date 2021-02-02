@@ -56,27 +56,41 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private MyReceiver detectReceiver;
     //service status
     public boolean running = true;
-    public boolean isRunning(){
+
+    public boolean isRunning() {
         return running;
     }
+
     //ui items
-    private Button end_btn, pause_btn,resume_btn;
-    private TextView display_uname_hint,display_uname;
-    private TextView display_score_hint,display_score;
+    private Button end_btn, pause_btn, resume_btn;
+    private TextView display_uname_hint, display_uname;
+    private TextView display_score_hint, display_score;
     private TextView display_speed;
     private int speed = -1;
     //trip info
     //DBOperations mydb = new DBOperations();
     Operations dbOperations = new Operations();
     public int DBTripId;
-    public int getDBTripId () { return DBTripId; }
+
+    public int getDBTripId() {
+        return DBTripId;
+    }
+
     public Trip trip;
     public User user;
-    public User getUser(){return user;}
+
+    public User getUser() {
+        return user;
+    }
+
     public FirebaseUser fbUser; //currentUser
-    public FirebaseUser getFbUser(){return fbUser;}
+
+    public FirebaseUser getFbUser() {
+        return fbUser;
+    }
+
     public final static String
-            MESSAGE_KEY ="com.example.autocoach20.message_key";
+            MESSAGE_KEY = "com.example.autocoach20.message_key";
     // service connection to bind feedback service: communicate with svm lda and feedback
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -90,6 +104,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //nothing
         }
     };
+
     public class MyReceiver extends BroadcastReceiver {
         //What is intent? intent is the class to carry message in android
         @Override
@@ -100,22 +115,24 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             assert bundle != null;
 
 
-            Message msg = Message.obtain(null,1,0); //message is 1, refer to Feedback Service
+            Message msg = Message.obtain(null, 1, 0); //message is 1, refer to Feedback Service
             msg.setData(bundle);
-            try{
+            try {
                 toFeedbackMessenger.send(msg);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
     }
+
     //Calibration message
-    public void sensorsCalibratedToast(){
+    public void sensorsCalibratedToast() {
         Toast toast = Toast.makeText(getApplicationContext(),
                 "Sensors Successfully Calibrated", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -131,15 +148,17 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                     // decision.
                 }
             });
-    public StartAutoCoachActivity(){
+
+    public StartAutoCoachActivity() {
         mainActivity = this;
     }
-    public static StartAutoCoachActivity getMainActivity(){
+
+    public static StartAutoCoachActivity getMainActivity() {
         return mainActivity;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Intent intent = getIntent();
@@ -157,10 +176,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             public void onClick(View v){onResume();}
         });*/
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        user = new User(fbUser,20,0);
+        user = new User(fbUser, 20, 0);
 
         long tripStartTime = System.currentTimeMillis();
-        dbOperations.addToTableTrip(getApplicationContext(), fbUser.getUid(), 0 ,tripStartTime, 0,0);
+        dbOperations.addToTableTrip(getApplicationContext(), fbUser.getUid(), 0, tripStartTime, 0, 0);
         trip = dbOperations.readCurrentTripDetails(this); //Read trip information
 
         updateUI();
@@ -194,33 +213,29 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         //The time interval of the manager is 5 sec. Distance is 5 meters (about 200 inches)
         //which means locationListener would update the location info every 5 sec or 5 meters
         //Toast.makeText(this, ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION),Toast.LENGTH_LONG).show();
-        if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Entered location check ...",
                     Toast.LENGTH_SHORT).show();
-            //Get location service
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
-                Toast.makeText(this, "Current Location is "+location,
+                Toast.makeText(this, "Current Location is " + location,
                         Toast.LENGTH_SHORT).show();
                 int currentSpeed = updateSpeedByLocation(location);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                Toast.makeText(this, "Current Speed is "+currentSpeed,
+                Toast.makeText(this, "Current Speed is " + currentSpeed,
                         Toast.LENGTH_SHORT).show();
-                dbOperations.addToTableSpeedRecord(getApplicationContext(),getDBTripId(),currentSpeed,timestamp);
-                display_speed.setText(currentSpeed);
+                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp);
             }
             Toast.makeText(this, "No Location ",
                     Toast.LENGTH_SHORT).show();
             //Set the timer for 5 seconds to request location information
             locationManager.requestLocationUpdates(provider, 5000, 1,
                     locationListener);
-        }
-        else{
-        Toast.makeText(this, "Location permission not granted, asking ...",
-                Toast.LENGTH_SHORT).show();
-        requestPermissionLauncher.launch(
+        } else {
+            Toast.makeText(this, "Location permission not granted, asking ...",
+                    Toast.LENGTH_SHORT).show();
+            requestPermissionLauncher.launch(
                     Manifest.permission.ACCESS_FINE_LOCATION);
         }
         // ************************************************************************** //
@@ -326,8 +341,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
         setTheme(R.style.Theme_AutoCoach20);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             //Needs permission to run getting location of the phone
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -368,7 +382,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     //This calculates the speed -- no need to change it
     private int updateSpeedByLocation(Location location) {
         speed = (int) (location.getSpeed() * 3.6); // m/s --> Km/h
-        display_speed.setText(speed);
+        display_speed.setText(String.valueOf(speed));
         return speed;
     }
 
@@ -390,7 +404,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //Request permission
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
         }
 
     }
@@ -409,19 +423,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     }
 
 
-
-    private void initializeUI(){
+    private void initializeUI() {
         display_score_hint = findViewById(R.id.display_score_hint);
         display_uname_hint = findViewById(R.id.display_name_hint);
         display_uname = findViewById(R.id.display_name);
         display_score = findViewById(R.id.display_score);
+        display_speed = findViewById(R.id.speednum);
 
         pause_btn = findViewById(R.id.pause);
         resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
     }
 
-    private void updateUI(){
+    private void updateUI() {
         display_uname.setText(user.getUser_name());
         display_score.setText("100/100");
     }
@@ -434,9 +448,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         // and other activities might need to use it.
 
     }
-
-
-
 
 
 }
