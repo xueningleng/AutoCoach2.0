@@ -181,7 +181,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         long tripStartTime = System.currentTimeMillis();
         dbOperations.addToTableTrip(getApplicationContext(), fbUser.getUid(), 0, tripStartTime, 0, 0);
         trip = dbOperations.readCurrentTripDetails(this); //Read trip information
-
+        DBTripId = trip.getTripId();
         updateUI();
 
         //android library
@@ -299,8 +299,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             running = false; // This variable controls the Feedback Activity Threads while loop
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
+            dbOperations.onClose(this);
             Operations op = new Operations();
             op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
+            op.onClose(this);
             /**
              * Uploading trip data without using the worker, bc the worker will take the old trip data
              * before it's been updated. So we update it, send it, then call the worker to upload

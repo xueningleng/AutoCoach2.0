@@ -63,7 +63,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
         }
     }
 
@@ -92,7 +92,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
         }
     }
 
@@ -129,7 +129,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
         }
     }
 
@@ -156,7 +156,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
         }
     }
 
@@ -213,7 +213,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
         }
     }
 
@@ -254,7 +254,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+          //  dbHelper.closeDB(db);
         }
     }
 
@@ -295,7 +295,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+          //  dbHelper.closeDB(db);
         }
     }
 
@@ -340,7 +340,7 @@ public class Operations {
 
             Log.d(TAG, "Error while trying to get trip details from database");
         } finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -393,7 +393,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -430,7 +430,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -470,7 +470,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -536,7 +536,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -584,7 +584,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -632,7 +632,7 @@ public class Operations {
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get events from database");
         } finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -680,7 +680,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
         }
 
         return isUpdated;
@@ -717,7 +717,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+           // dbHelper.closeDB(db);
         }
 
         return isUpdated;
@@ -796,7 +796,7 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
         }
     }
 
@@ -827,11 +827,16 @@ public class Operations {
             e.printStackTrace();
         }
         finally {
-            dbHelper.closeDB(db);
+            //dbHelper.closeDB(db);
         }
     }
 
 
+    public void onClose(Context context){
+        dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper.closeDB(db);
+    }
     // ****************************************************************** //
     // PRIVATE METHODS
     // ****************************************************************** //
@@ -926,5 +931,6 @@ public class Operations {
 
         }
     }
+
 
 }
