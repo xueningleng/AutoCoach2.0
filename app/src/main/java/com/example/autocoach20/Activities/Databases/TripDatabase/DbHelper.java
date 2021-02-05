@@ -14,7 +14,7 @@ public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     // New in version 11: added filtered data
     public static final int DATABASE_VERSION = 14;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    public static final String DATABASE_NAME = "TripReader.db";
 
 
     public DbHelper(Context context) {

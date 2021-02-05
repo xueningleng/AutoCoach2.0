@@ -73,8 +73,9 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
 //                }
 
                 userGender = 0;
-                sendInfo();
-
+                //sendInfo();
+                Intent intent = new Intent(UserInfoActivity.this, SignInActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -119,6 +120,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
                      */
                         new Thread(() -> {
                             dbOperations.updateUser(documentReference,getApplicationContext(),fbUser,userGender, userAge);
+                            dbOperations.onClose(getApplicationContext());
                         }).start();
                     }
                 })
@@ -128,8 +130,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-        Intent intent = new Intent(UserInfoActivity.this, SignInActivity.class);
-        startActivity(intent);
+
     }
 
 

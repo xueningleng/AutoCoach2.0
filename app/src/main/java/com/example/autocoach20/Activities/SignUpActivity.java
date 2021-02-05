@@ -131,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity{
                         } else {
                             resultHint.setText("Registration Failed");
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                            Toast.makeText(getApplicationContext(), "Registration Failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -155,6 +155,7 @@ public class SignUpActivity extends AppCompatActivity{
                      */
                         new Thread(() -> {
                             dbOperations.addToTableUser(documentReference, getApplicationContext(), getCurrentUser());
+                            dbOperations.onClose(getApplicationContext());
                         }).start();
                     }
                 })
