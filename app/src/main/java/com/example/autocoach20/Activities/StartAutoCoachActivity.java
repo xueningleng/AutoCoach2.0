@@ -230,7 +230,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             Toast.makeText(this, "No Location ",
                     Toast.LENGTH_SHORT).show();
             //Set the timer for 5 seconds to request location information
-            locationManager.requestLocationUpdates(provider, 5000, 1,
+            locationManager.requestLocationUpdates(provider, 2000, 1,
                     locationListener);
         } else {
             Toast.makeText(this, "Location permission not granted, asking ...",
@@ -383,7 +383,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     //This calculates the speed -- no need to change it
     private int updateSpeedByLocation(Location location) {
-        speed = (int) (location.getSpeed() * 3.6); // m/s --> Km/h
+        speed = (int) (location.getSpeed() * 2.23694); // m/s --> 3.6 for Km/h --> 2.23694 mph
         display_speed.setText(String.valueOf(speed));
         return speed;
     }
