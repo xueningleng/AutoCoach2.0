@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.autocoach20.R;
 import com.firebase.ui.auth.AuthUI;
@@ -34,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Arrays;
 import java.util.List;
 
-public class SignUpActivity extends AppCompatActivity{
+public class SignUpActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener {
     private static final String TAG = null;
     private static final int MY_REQUEST_CODE = 1234;
 
@@ -46,8 +47,8 @@ public class SignUpActivity extends AppCompatActivity{
     EditText userPassword;
     EditText userName;
     Button btn_signIn, homeBtn;
-    TextView resultHint;
-
+    TextView consent;
+    boolean checked;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Operations dbOperations = new Operations();
 
@@ -57,23 +58,39 @@ public class SignUpActivity extends AppCompatActivity{
         setContentView(R.layout.activity_signup);
         Intent intent = getIntent();
         initializeUI();
+
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
 
         mAuth = FirebaseAuth.getInstance();
 
-        btn_signIn.setOnClickListener(new View.OnClickListener(){
+        consent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                createAccount();
+                showConsentDialog();
             }
         });
-        homeBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){finish();}
+        if (checked) {
+            showConsentDialog();
+            btn_signIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createAccount();
+                }
+            });
+        }
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
         });
     }
 
+    private void showConsentDialog() {
+        DialogFragment dialog = new NoticeDialogFragment();
+        dialog.show(getSupportFragmentManager(),"NoticeDialogFragment");
+    }
 
     private void initializeUI(){
         userEmail = (EditText)findViewById(R.id.uEmail);
@@ -81,8 +98,7 @@ public class SignUpActivity extends AppCompatActivity{
         userName = (EditText)findViewById(R.id.uName);
         btn_signIn = findViewById(R.id.signUpButton);
         homeBtn = findViewById(R.id.returnButton);
-        resultHint = findViewById(R.id.result);
-
+        consent = findViewById(R.id.consent);
     }
 
 
@@ -108,7 +124,6 @@ public class SignUpActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            resultHint.setText("Registration Successful");
                             Log.d(TAG, "createUserWithEmail:success");
                             Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -129,7 +144,6 @@ public class SignUpActivity extends AppCompatActivity{
                             Intent intent = new Intent(SignUpActivity.this, UserInfoActivity.class);
                             startActivity(intent);
                         } else {
-                            resultHint.setText("Registration Failed");
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Registration Failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -252,4 +266,8 @@ public class SignUpActivity extends AppCompatActivity{
         // [END auth_sign_out]
     }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        checked = true;
+    }
 }

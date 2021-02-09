@@ -15,5 +15,11 @@
     <string name="status_text"> </string>
     <string name="content_authority">com.example.autocoach</string>
     <string name="sync_account_type">com.example.autocoach</string>
+    <string name="consent_dialogue_message">
+        Your name, e-mail address, gender, age, health information, location, and driving performances collected by us will be used for providing personalized feedback for you \nand for compiling aggregate statistics on users of the service provided by AutoCoach2.0. \nSuch statistics are collected for the purpose of managing and improving the design of AutoCoach2.0.\nWe cannot use your personal data unless we have received your onset or indication of no objection.
+    </string>
+    <string name="consent_dialogue_title">
+        Privacy Policy and Terms of Service
+    </string>
 
 </resources>
