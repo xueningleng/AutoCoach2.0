@@ -21,5 +21,17 @@
     <string name="consent_dialogue_title">
         Privacy Policy and Terms of Service
     </string>
+    <string name="ack_dialogue_message">
+        You are about to start experiencing the AutoCoach2.0 Alpha version.
+        \nThe Alpha version supports
+        \n1.User registration and authentication
+        \n2.User driving speed monitor
+        \n3.User steering wheel angle
+        \n4.User head position
+        \nIf you have any complaints or advices, please reach us using the contact information displayed below.
+    </string>
+    <string name="ack_dialogue_title">
+        Version Acknowledgement
+    </string>
 
 </resources>

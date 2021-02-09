@@ -9,10 +9,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.autocoach20.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LaunchDialogFragment.LaunchDialogListener{
     public static MainActivity mainActivity;
 
     ImageButton sufolder;
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
         initializeUI();
     }
 
@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 signUp(view);
             }
         });
+        showAckDialog();
+    }
+    private void showAckDialog() {
+        DialogFragment dialog = new LaunchDialogFragment();
+        dialog.show(getSupportFragmentManager(),"LaunchDialogFragment");
     }
     public void signIn(View view){
         Intent intent = new Intent(this, SignInActivity.class);
@@ -67,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getMainActivity(){
         return mainActivity;
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
     }
 
 }
