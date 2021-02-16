@@ -451,7 +451,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         pause_btn = findViewById(R.id.pause);
         resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
-        terminal = (TextView) findViewById(R.id.terminal);
+        terminal = findViewById(R.id.terminal);
         input = (EditText) findViewById(R.id.rpiInput);
     }
 
@@ -521,10 +521,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         if(terminal==null)
             return;
 
-        CharSequence oldText = terminal.getText();
-        CharSequence newText = oldText + "\n" + text;
+        //CharSequence oldText = terminal.getText();
+        //CharSequence newText = oldText + "\n" + text;
 
-        terminal.setText(newText);
+        terminal.setText(text);
 
     }
 }
