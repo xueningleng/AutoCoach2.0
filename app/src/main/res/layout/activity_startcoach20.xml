@@ -252,7 +252,8 @@
         android:textSize="10dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/resume"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/resume"/>
+        app:layout_constraintEnd_toStartOf="@id/resume"
+        android:onClick="pauseButtonHandler"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -105,6 +105,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         }
     };
 
+    public void pauseButtonHandler(View view) {
+        Intent intent = new Intent(this, CommunicationActivity.class);
+        startActivity(intent);
+    }
+
     public class MyReceiver extends BroadcastReceiver {
         //What is intent? intent is the class to carry message in android
         @Override

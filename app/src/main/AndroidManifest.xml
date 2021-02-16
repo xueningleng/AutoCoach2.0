@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.autocoach20">
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-
-    <!-- @author: Zahraa
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--
+ @author: Zahraa
          @date: 08/11/2020
          @reason: to resolve E/Perf: getFolderSize() : Exception_1 = java.lang.NullPointerException
-        -->
+    -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AutoCoach20">
+        android:theme="@style/Theme.AutoCoach20"
+        android:usesCleartextTraffic="true">
 
-        <activity android:name=".Activities.MainActivity"
+        <activity
+            android:name=".Activities.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SignUpActivity"
+        <activity
+            android:name=".Activities.SignUpActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".Activities.SignInActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Activities.SignInActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".Activities.UserInfoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Activities.UserInfoActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".Activities.DriverStatus"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Activities.DriverStatus"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".Activities.StartAutoCoachActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Activities.StartAutoCoachActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape">
-
-        </activity>
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".Activities.CommunicationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>
