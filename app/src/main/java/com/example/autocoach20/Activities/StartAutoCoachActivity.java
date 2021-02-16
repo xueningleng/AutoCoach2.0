@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,12 @@ import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -61,6 +69,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         return running;
     }
 
+    //raspberry pi
+    TextView terminal;
+    EditText input;
+    String new_rpi_input;
     //ui items
     private Button end_btn, pause_btn, resume_btn;
     private TextView display_uname_hint, display_uname;
@@ -440,6 +452,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         pause_btn = findViewById(R.id.pause);
         resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
+        terminal = (TextView) findViewById(R.id.terminal);
+        input = (EditText) findViewById(R.id.editText);
     }
 
     private void updateUI() {
@@ -455,6 +469,63 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         // and other activities might need to use it.
 
     }
+    //raspberry pi
+    public void sendCommand(View view) {
+        if (terminal == null || input == null)
+            return;
+
+        CharSequence command = input.getText();
+        appendLineToTerminal("Command: " + command);
 
 
+        final Handler handler = new Handler();
+        Thread thread = new Thread((new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket s = new Socket("cyh-pi", 65432);
+
+                    OutputStream out = s.getOutputStream();
+                    PrintWriter output = new PrintWriter(out);
+                    output.println(command);
+                    output.flush();
+
+                    BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                    final String st = input.readLine();
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String oldText = terminal.getText().toString();
+                            if (st.trim().length() != 0)
+                                appendLineToTerminal("Response: "+st);
+                                new_rpi_input = st;
+                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input);
+
+                        }
+                    });
+
+                    output.close();
+                    out.close();
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+
+        thread.start();
+    }
+
+    private void appendLineToTerminal(String text){
+        if(terminal==null)
+            return;
+
+        CharSequence oldText = terminal.getText();
+        CharSequence newText = oldText + "\n" + text;
+
+        terminal.setText(newText);
+
+    }
 }
