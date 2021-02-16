@@ -453,7 +453,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
         terminal = (TextView) findViewById(R.id.terminal);
-        input = (EditText) findViewById(R.id.editText);
+        input = (EditText) findViewById(R.id.rpiInput);
     }
 
     private void updateUI() {

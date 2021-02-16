@@ -66,18 +66,20 @@
             </ScrollView>
 
             <EditText
-                android:id="@+id/editText"
-                android:layout_width="0dp"
+                android:id="@+id/rpiInput"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/warm3"
                 android:ems="10"
-                android:hint="Command"
+                android:fontFamily="@font/stalinist_one"
+                android:textSize="15dp"
+                android:hint=" Command: "
                 android:inputType="text"
                 android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_send"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
