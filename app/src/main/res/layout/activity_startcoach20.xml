@@ -7,34 +7,12 @@
     android:background="@color/warm4"
     tools:context=".Activities.StartAutoCoachActivity">
 
-    <ImageView
-        android:id="@+id/outter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/display_name"
-        app:srcCompat="@drawable/speedometer" />
-
-
-    <ImageView
-        android:id="@+id/inner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/outter"
-        app:layout_constraintEnd_toEndOf="@id/outter"
-        app:layout_constraintStart_toStartOf="@id/outter"
-        app:layout_constraintTop_toTopOf="@id/outter"
-        app:srcCompat="@drawable/speedometerin" />
-
     <LinearLayout
         android:id="@+id/groupdisplay"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:layout_marginBottom="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
-
 
             <TextView
                 android:id="@+id/terminal"
@@ -104,11 +81,9 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:orientation="vertical"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/speedometer"
+            >
 
             <TextView
                 android:id="@+id/speedtext"
@@ -119,7 +94,11 @@
                 android:gravity="center"
                 android:text="SPEED"
                 android:textColor="@color/warm2"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                />
+
 
             <TextView
                 android:id="@+id/speednum"
@@ -131,7 +110,9 @@
                 android:text=""
                 android:textColor="@color/dark_orange"
                 android:textColorHighlight="@color/warm2"
-                android:textSize="45dp" />
+                android:textSize="30dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                />
 
             <TextView
                 android:id="@+id/speedunit"
@@ -142,7 +123,9 @@
                 android:gravity="center"
                 android:text="mph"
                 android:textColor="@color/warm2"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                />
 
         </LinearLayout>
 
@@ -208,11 +191,11 @@
         android:id="@+id/display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/stalinist_one"
         android:text=""
         android:textColor="@color/warm1"
-        android:textSize="13dp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toStartOf="@id/display_score_hint"
         app:layout_constraintStart_toEndOf="@id/display_name_hint"
         app:layout_constraintTop_toTopOf="parent" />
@@ -227,7 +210,7 @@
         android:fontFamily="@font/stalinist_one"
         android:text="Score: "
         android:textColor="@color/warm2"
-        android:textSize="13dp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="@id/display_score"
         app:layout_constraintStart_toEndOf="@+id/display_name"
         app:layout_constraintTop_toTopOf="parent" />
@@ -241,7 +224,7 @@
         android:fontFamily="@font/stalinist_one"
         android:text=""
         android:textColor="@color/warm1"
-        android:textSize="13dp"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/display_score_hint"
         app:layout_constraintTop_toTopOf="parent" />
@@ -255,10 +238,11 @@
         android:text="END TRIP"
         android:textColor="@color/warm3"
         android:textSize="10dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/resume"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outter" />
+         />
 
     <Button
         android:id="@+id/resume"

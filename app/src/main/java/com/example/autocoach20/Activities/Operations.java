@@ -110,6 +110,7 @@ public class Operations {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
+            dbHelper.onUpgrade(db,0,1);
             Log.d(TAG, "Inserting Trip: ");
 
             // Create a new map of values, where column names are the keys

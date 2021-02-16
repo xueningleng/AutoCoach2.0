@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <solid android:color="@color/warm3"></solid>
-    <corners android:radius="@dimen/fui_auth_method_button_width">
-    </corners>
-    <size android:width="170dp"
-        android:height="170dp"></size>
-
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/warm3"></solid>
+            <corners android:radius="@dimen/fui_auth_method_button_width">
+            </corners>
+            <size android:width="170dp"
+                android:height="170dp"></size>
+        </shape>
+    </item>
+    <item android:top="10dp" android:left="10dp" android:right="10dp" android:bottom="10dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/warm1"></solid>
+            <corners android:radius="@dimen/fui_auth_method_button_width">
+            </corners>
+            <size android:width="150dp"
+                android:height="150dp"></size>
+        </shape>
+    </item>
+</layer-list>
