@@ -72,7 +72,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     //raspberry pi
     TextView terminal;
     EditText input;
-    String new_rpi_input;
+    private String new_rpi_input = "";
     //ui items
     private Button end_btn, pause_btn, resume_btn;
     private TextView display_uname_hint, display_uname;
@@ -242,7 +242,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 Toast.makeText(this, "Current Speed is " + currentSpeed,
                         Toast.LENGTH_SHORT).show();
-                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp,"");
+                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp,new_rpi_input);
             }
             Toast.makeText(this, "No Location ",
                     Toast.LENGTH_SHORT).show();
