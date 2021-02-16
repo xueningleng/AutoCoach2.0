@@ -34,6 +34,7 @@ public class FeedReaderContract {
         public static final String COLUMN_RECORD_ID = "srecord_id";
         public static final String COLUMN_SPEED = "capture_speed";
         public static final String COLUMN_TIMESTAMP = "capture_time";
+        public static final String COLUMN_RASPI = "raspi_data";
 
         //TABLE TRIP
         public static final String TABLE_TRIP = "trip";
@@ -53,6 +54,7 @@ public class FeedReaderContract {
         public static final String COLUMN_WINDOW_ID = "window_id";
         public static final String COLUMN_EVENT_FILTERED_DATA = "filtered_data";
         public static final String COLUMN_EVENT_RAW_DATA = "raw_data";
+
 
         //TABLE RECOMMENDATION
         public static final String TABLE_RECOMMENDATION = "recommendation";

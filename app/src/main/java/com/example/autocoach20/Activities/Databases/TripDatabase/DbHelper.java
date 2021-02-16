@@ -85,6 +85,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_TRIP_ID+ " INTEGER, " +
                     FeedReaderContract.FeedEntry.COLUMN_SPEED + " INT, " +
                     FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP + " TIMESTAMP, " +
+                    FeedReaderContract.FeedEntry.COLUMN_RASPI + " VARCHAR, " +
                     "FOREIGN KEY (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ") REFERENCES " + FeedReaderContract.FeedEntry.TABLE_TRIP + " (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ")" +
                     ")";
     private static final String SQL_CREATE_EVENT =
