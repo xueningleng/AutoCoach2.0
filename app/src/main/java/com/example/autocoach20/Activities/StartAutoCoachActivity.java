@@ -54,7 +54,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
-
 public class StartAutoCoachActivity extends AppCompatActivity {
     public static StartAutoCoachActivity mainActivity;
     private static final String TAG = "StartAutoCoachActivity";
@@ -502,7 +501,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                                 new_rpi_input = st;
                                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                                 dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input);
-
+                            Toast.makeText(StartAutoCoachActivity.this, new_rpi_input, Toast.LENGTH_SHORT).show();
                         }
                     });
 
