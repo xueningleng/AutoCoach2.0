@@ -6,8 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * @author Zahraa Marafie
- * @version 5.0
- * @since AutoCoach V4.2
+ * @modified Xuening Leng
+ * @version 6.0
+ * @since AutoCoach2.0
  */
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -86,6 +87,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_SPEED + " INT, " +
                     FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP + " TIMESTAMP, " +
                     FeedReaderContract.FeedEntry.COLUMN_RASPI + " VARCHAR, " +
+                    FeedReaderContract.FeedEntry.COLUMN_GYRO+ "DOUBLE , " +
                     "FOREIGN KEY (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ") REFERENCES " + FeedReaderContract.FeedEntry.TABLE_TRIP + " (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ")" +
                     ")";
     private static final String SQL_CREATE_EVENT =

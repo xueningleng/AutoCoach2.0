@@ -19,7 +19,7 @@
         app:layout_constraintTop_toBottomOf="@id/display_name">
 
         <LinearLayout
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
@@ -103,7 +103,7 @@
             <TextView
                 android:id="@+id/speednum"
                 android:layout_width="130dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
@@ -130,24 +130,24 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/lanetext"
+                android:id="@+id/gyrotext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
-                android:text="Lane Switch"
+                android:text=" Gyroscope:"
                 android:textColor="@color/warm2"
                 android:textSize="13dp" />
 
             <TextView
-                android:id="@+id/lanewarn"
+                android:id="@+id/gyrodata"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:ems="6"
@@ -178,7 +178,7 @@
         android:id="@+id/display_name_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/stalinist_one"
         android:text="UserName: "
         android:textColor="@color/warm2"
@@ -206,7 +206,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/stalinist_one"
         android:text="Score: "
         android:textColor="@color/warm2"
@@ -219,7 +219,7 @@
         android:id="@+id/display_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/stalinist_one"
         android:text=""
@@ -229,45 +229,22 @@
         app:layout_constraintStart_toEndOf="@+id/display_score_hint"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
         android:id="@+id/endBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/stalinist_one"
         android:text="END TRIP"
-        android:textColor="@color/warm3"
+        android:backgroundTint="@color/dark_orange"
+        android:textColor="@color/warm4"
         android:textSize="10dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/resume"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
          />
 
-    <Button
-        android:id="@+id/resume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/stalinist_one"
-        android:text="RESUME"
-        android:textColor="@color/warm3"
-        android:textSize="10dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/endBtn"
-        app:layout_constraintEnd_toStartOf="@+id/endBtn"
-        app:layout_constraintStart_toEndOf="@+id/pause" />
 
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/stalinist_one"
-        android:text="PAUSE"
-        android:textColor="@color/warm3"
-        android:textSize="10dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/resume"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/resume"
-        android:onClick="pauseButtonHandler"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

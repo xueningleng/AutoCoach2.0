@@ -134,7 +134,7 @@ public class Operations {
         }
     }
 
-    synchronized public void addToTableSpeedRecord (Context context, int tripId, int speed, Timestamp time, String rpi_data){
+    synchronized public void addToTableSpeedRecord (Context context, int tripId, int speed, Timestamp time, String rpi_data, double gyro_data){
         dbHelper = new DbHelper(context);
 
         // Gets the data repository in write mode
@@ -148,6 +148,8 @@ public class Operations {
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_SPEED, speed);
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP, String.valueOf(time));
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_RASPI, rpi_data);
+            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_GYRO, gyro_data);
+
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD, null, TripValues);

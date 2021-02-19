@@ -54,6 +54,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
+
+/**
+ * @author Xuening Leng, Yuehan Cui
+ * @since AutoCoach2.0
+ */
 public class StartAutoCoachActivity extends AppCompatActivity {
     public static StartAutoCoachActivity mainActivity;
     private static final String TAG = "StartAutoCoachActivity";
@@ -71,11 +76,13 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     //raspberry pi
     TextView terminal;
     EditText input;
+    TextView gyro;
     private String new_rpi_input = "";
+    double gyro_data = 0;
     //ui items
-    private Button end_btn, pause_btn, resume_btn;
-    private TextView display_uname_hint, display_uname;
-    private TextView display_score_hint, display_score;
+    private Button end_btn;
+    private TextView display_uname;
+    private TextView display_score;
     private TextView display_speed;
     private int speed = -1;
     //trip info
@@ -241,7 +248,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 Toast.makeText(this, "Current Speed is " + currentSpeed,
                         Toast.LENGTH_SHORT).show();
-                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp,new_rpi_input);
+                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp, new_rpi_input, gyro_data);
             }
             Toast.makeText(this, "No Location ",
                     Toast.LENGTH_SHORT).show();
@@ -442,17 +449,14 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
 
     private void initializeUI() {
-        display_score_hint = findViewById(R.id.display_score_hint);
-        display_uname_hint = findViewById(R.id.display_name_hint);
         display_uname = findViewById(R.id.display_name);
         display_score = findViewById(R.id.display_score);
         display_speed = findViewById(R.id.speednum);
 
-        pause_btn = findViewById(R.id.pause);
-        resume_btn = findViewById(R.id.resume);
         end_btn = findViewById(R.id.endBtn);
         terminal = findViewById(R.id.terminal);
-        input = (EditText) findViewById(R.id.rpiInput);
+        input = findViewById(R.id.rpiInput);
+        gyro = findViewById(R.id.gyrodata);
     }
 
     private void updateUI() {
@@ -500,7 +504,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                                 appendLineToTerminal("Response: "+st);
                                 new_rpi_input = st;
                                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input);
+                                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
                             Toast.makeText(StartAutoCoachActivity.this, new_rpi_input, Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -526,5 +530,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         terminal.setText(text);
 
+    }
+    private void onUpdateGyro(double g){
+        gyro_data = g;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
+        gyro.setText(Double.toString(g));
     }
 }

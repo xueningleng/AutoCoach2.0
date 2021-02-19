@@ -35,6 +35,7 @@ public class FeedReaderContract {
         public static final String COLUMN_SPEED = "capture_speed";
         public static final String COLUMN_TIMESTAMP = "capture_time";
         public static final String COLUMN_RASPI = "raspi_data";
+        public static final String COLUMN_GYRO = "gyro_data";
 
         //TABLE TRIP
         public static final String TABLE_TRIP = "trip";
