@@ -140,6 +140,7 @@ public class Operations {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
+            dbHelper.onUpgrade(db,1,2);
             Log.d(TAG, "Inserting Speed Record: ");
 
             // Create a new map of values, where column names are the keys
