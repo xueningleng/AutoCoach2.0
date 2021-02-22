@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.HeadPositionDebugActivity">
+
+    <ScrollView
+        android:id="@+id/headpositiondebug_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/headpositiondebug_terminal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terminal" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/headpositiondebug_onleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Left"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/headpositiondebug_onfront"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Front"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/headpositiondebug_onright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Right"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headpositiondebug_host"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Host"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/headpositiondebug_hostedit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:inputType="text"
+                android:text="example.com" />
+
+            <TextView
+                android:id="@+id/headpositiondebug_connstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disconnected"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headpositiondebug_port"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Port"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/headpositiondebug_portedit"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:inputType="number"
+                android:text="65432" />
+
+            <Button
+                android:id="@+id/headpositiondebug_connectbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connect"
+                android:textSize="18sp"
+                android:onClick="btnConnectHandler"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headpositiondebug_leftangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Left Angle"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/headpositiondebug_leftanglevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headpositiondebug_frontangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Front Angle"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/headpositiondebug_frontanglevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/headpositiondebug_calibratebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calibrate"
+                android:textSize="18sp"
+                android:onClick="btnCalibrateHandler"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/rightangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Right Angle"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/headpositiondebug_rightanglevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textSize="18sp" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headpositiondebug_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interval"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/headpositiondebug_intervaledit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:inputType="text"
+                android:text="Name"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/headpositiondebug_startbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:textSize="18sp"
+                android:onClick="btnStartHandler"/>
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

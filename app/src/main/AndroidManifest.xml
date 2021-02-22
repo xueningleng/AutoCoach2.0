@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoCoach20"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Activities.HeadPositionDebugActivity"></activity>
         <activity
             android:name=".Activities.MainActivity"
             android:configChanges="orientation"
@@ -55,11 +55,11 @@
         <activity
             android:name=".Activities.StartAutoCoachActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".Activities.CommunicationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
 
         <meta-data
             android:name="preloaded_fonts"

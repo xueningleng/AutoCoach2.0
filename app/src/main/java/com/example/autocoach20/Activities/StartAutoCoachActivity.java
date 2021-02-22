@@ -124,7 +124,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     };
 
     public void pauseButtonHandler(View view) {
-        Intent intent = new Intent(this, CommunicationActivity.class);
+        Intent intent = new Intent(this, HeadPositionDebugActivity.class);
         startActivity(intent);
     }
 
@@ -355,8 +355,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             }*/
             //Go to Summary Page
             //Intent intent = new Intent(StartAutoCoachActivity.this, SummaryActivity.class);
-            finish();
-            startActivity(getIntent());
+            //finish();
+
+            Intent intent = new Intent(this, HeadPositionDebugActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -486,7 +488,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Socket s = new Socket("cyh-pi", 65432);
+                    Socket s = new Socket("ct-rmbp-16", 65432);
 
                     OutputStream out = s.getOutputStream();
                     PrintWriter output = new PrintWriter(out);
