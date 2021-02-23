@@ -44,7 +44,7 @@ public class HeadPositionDataHub {
     }
 
     Float sampleAndAverage() {
-        return sampleAndAverage(3);
+        return sampleAndAverage(15);
     }
 
     Float sampleAndAverage(int samplingTime) {

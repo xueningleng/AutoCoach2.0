@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.autocoach20.R;
 
+import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HeadPositionDebugActivity extends AppCompatActivity {
@@ -51,6 +52,8 @@ public class HeadPositionDebugActivity extends AppCompatActivity {
     Thread runner;
     final AtomicBoolean stopSignal = new AtomicBoolean(false);
     final AtomicBoolean threadStopped = new AtomicBoolean(false);
+
+    Operations dbOperations = new Operations();
 
 
     @Override
@@ -239,6 +242,9 @@ public class HeadPositionDebugActivity extends AppCompatActivity {
                     terminal.setText(newText);
 
                     scroll.fullScroll(View.FOCUS_DOWN);
+
+                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                    dbOperations.addToTableSpeedRecord(getApplicationContext(), 65535, 0, timestamp, Float.toString(angle), 0.0);
 
 
                     // Update flag
