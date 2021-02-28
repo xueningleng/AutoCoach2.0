@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
@@ -497,7 +498,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
                     BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
                     final String st = input.readLine();
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -510,7 +510,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                             Toast.makeText(StartAutoCoachActivity.this, new_rpi_input, Toast.LENGTH_SHORT).show();
                         }
                     });
-
                     output.close();
                     out.close();
                     s.close();
@@ -533,10 +532,54 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         terminal.setText(text);
 
     }
-    private void onUpdateGyro(double g){
-        gyro_data = g;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
-        gyro.setText(Double.toString(g));
+
+    public void gyroService(View view) {
+        final Handler handler = new Handler();
+
+        Thread thread = new Thread((new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket s = new Socket("192.168.43.240", 80);
+                    OutputStream out = s.getOutputStream();
+                    PrintWriter output = new PrintWriter(out);
+                    output.println("command");
+                    output.flush();
+                    
+                    while(true) {
+                        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                        final String st = input.readLine();
+                        onUpdateGyro(st);
+                        try{
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
+
+        thread.start();
+    }
+
+    private void onUpdateGyro(String g) {
+        String[] arr = g.split(",", 2);
+        try{
+            String out = arr[0] + '\n' + arr[1];
+            double angle = Double.parseDouble(arr[1]);
+            gyro_data = angle;
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
+            gyro.setText(out);
+        }catch(ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
     }
 }
