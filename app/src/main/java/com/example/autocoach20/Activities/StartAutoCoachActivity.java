@@ -18,13 +18,18 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,10 +56,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Xuening Leng, Yuehan Cui
@@ -67,47 +72,77 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private Messenger toFeedbackMessenger = null;
     private MyReceiver detectReceiver;
-    //service status
-    public boolean running = true;
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    //raspberry pi
-    TextView terminal;
-    EditText input;
-    TextView gyro;
-    private String new_rpi_input = "";
-    double gyro_data = 0;
     //ui items
     private Button end_btn;
     private TextView display_uname;
     private TextView display_score;
     private TextView display_speed;
     private int speed = -1;
+    //raspberry pi
+    TextView terminal;
+    EditText input;
+    TextView gyro;
+    private String new_rpi_input = "";
+    double gyro_data = 0;
+    TextView leftIndicator;
+    TextView frontIndicator;
+    TextView rightIndicator;
+
+    EditText hostInput;
+    EditText portInput;
+    TextView leftCalibrateAngle;
+    TextView frontCalibrateAngle;
+    TextView rightCalibrateAngle;
+    EditText intervalInput;
+
+    TextView connectionIndicator;
+    Button connectButton;
+    Button calibrateButton;
+    Button startButton;
+
+    boolean connected;
+    boolean calibrated;
+
+    float leftCalibrationAngle;
+    float frontCalibrationAngle;
+    float rightCalibrationAngle;
+
+    boolean running;
+
+    HeadPositionDataHub hpdh;
+
+    Thread runner;
+    final AtomicBoolean stopSignal = new AtomicBoolean(false);
+    final AtomicBoolean threadStopped = new AtomicBoolean(false);
+    enum Direction{
+        NONE,
+        LEFT,
+        FRONT,
+        RIGHT
+    }
+
+    //service status
+    public boolean isRunning() {
+        return running;
+    }
+
+
     //trip info
     //DBOperations mydb = new DBOperations();
     Operations dbOperations = new Operations();
     public int DBTripId;
-
     public int getDBTripId() {
         return DBTripId;
     }
-
     public Trip trip;
     public User user;
-
     public User getUser() {
         return user;
     }
-
     public FirebaseUser fbUser; //currentUser
-
     public FirebaseUser getFbUser() {
         return fbUser;
     }
-
     public final static String
             MESSAGE_KEY = "com.example.autocoach20.message_key";
     // service connection to bind feedback service: communicate with svm lda and feedback
@@ -358,7 +393,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //Intent intent = new Intent(StartAutoCoachActivity.this, SummaryActivity.class);
             //finish();
 
-            Intent intent = new Intent(this, HeadPositionDebugActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
     }
@@ -457,9 +492,24 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         display_speed = findViewById(R.id.speednum);
 
         end_btn = findViewById(R.id.endBtn);
-        terminal = findViewById(R.id.terminal);
-        input = findViewById(R.id.rpiInput);
+        //gyro module
         gyro = findViewById(R.id.gyrodata);
+        //head detection module
+        //terminal = findViewById(R.id.terminal);
+        //input = findViewById(R.id.rpiInput);
+        leftIndicator = (TextView) findViewById(R.id.headpositiondebug_onleft);
+        frontIndicator = (TextView) findViewById(R.id.headpositiondebug_onfront);
+        rightIndicator = (TextView) findViewById(R.id.headpositiondebug_onright);
+        Button fetchHead = (Button) findViewById(R.id.headBtn);
+        fetchHead.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //Intent intent = new Intent(getApplication(), HeadPositionDebugActivity.class);
+                //startActivity(intent);
+                PopUpHead popUpHead = new PopUpHead();
+                popUpHead.showPopupWindow(view);
+            }
+        });
     }
 
     private void updateUI() {
@@ -476,63 +526,344 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     }
     //raspberry pi
-    public void sendCommand(View view) {
-        if (terminal == null || input == null)
-            return;
+//    public void sendCommand(View view) {
+//        if (terminal == null || input == null)
+//            return;
+//
+//        CharSequence command = input.getText();
+//        appendLineToTerminal("Command: " + command);
+//
+//
+//        final Handler handler = new Handler();
+//        Thread thread = new Thread((new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Socket s = new Socket("ct-rmbp-16", 65432);
+//
+//                    OutputStream out = s.getOutputStream();
+//                    PrintWriter output = new PrintWriter(out);
+//                    output.println(command);
+//                    output.flush();
+//
+//                    BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+//                    final String st = input.readLine();
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            String oldText = terminal.getText().toString();
+//                            if (st.trim().length() != 0)
+//                                appendLineToTerminal("Response: "+st);
+//                                new_rpi_input = st;
+//                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//                                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
+//                            Toast.makeText(StartAutoCoachActivity.this, new_rpi_input, Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    output.close();
+//                    out.close();
+//                    s.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }));
+//
+//        thread.start();
+//    }
+//
+//    private void appendLineToTerminal(String text){
+//        if(terminal==null)
+//            return;
+//
+//        //CharSequence oldText = terminal.getText();
+//        //CharSequence newText = oldText + "\n" + text;
+//
+//        terminal.setText(text);
+//
+//    }
 
-        CharSequence command = input.getText();
-        appendLineToTerminal("Command: " + command);
+    public void showPopupWindow(final View view) {
+        //****following section setting pop up window***
+        //Create a View object yourself through inflater
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.activity_popupface, null);
 
+        //Specify the length and width through constants
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
 
-        final Handler handler = new Handler();
-        Thread thread = new Thread((new Runnable() {
+        //Make Inactive Items Outside Of PopupWindow
+        boolean focusable = true;
+
+        //Create a window with our parameters
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        //Set the location of the window on the screen
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        //****End of section setting pop up window***
+
+        terminal = (TextView) popupView.findViewById(R.id.headpositiondebug_terminal);
+
+        leftIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onleft);
+        frontIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onfront);
+        rightIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onright);
+
+        hostInput = (EditText) popupView.findViewById(R.id.headpositiondebug_hostedit);
+        portInput = (EditText) popupView.findViewById(R.id.headpositiondebug_portedit);
+        leftCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_leftanglevalue);
+        frontCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_frontanglevalue);
+        rightCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_rightanglevalue);
+        intervalInput = (EditText) popupView.findViewById(R.id.headpositiondebug_intervaledit);
+
+        connectionIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_connstatus);
+        connectButton = (Button) popupView.findViewById(R.id.headpositiondebug_connectbtn);
+        connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                try {
-                    Socket s = new Socket("ct-rmbp-16", 65432);
+            public void onClick(View v) {
 
-                    OutputStream out = s.getOutputStream();
-                    PrintWriter output = new PrintWriter(out);
-                    output.println(command);
-                    output.flush();
+                //As an example, display the message
+                Toast.makeText(view.getContext(), "Wow, popup action button", Toast.LENGTH_SHORT).show();
 
-                    BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                    final String st = input.readLine();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String oldText = terminal.getText().toString();
-                            if (st.trim().length() != 0)
-                                appendLineToTerminal("Response: "+st);
-                                new_rpi_input = st;
-                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
-                            Toast.makeText(StartAutoCoachActivity.this, new_rpi_input, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    output.close();
-                    out.close();
-                    s.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
-        }));
+        });
+        calibrateButton = (Button) popupView.findViewById(R.id.headpositiondebug_calibratebtn);
+        calibrateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        thread.start();
+                //As an example, display the message
+                Toast.makeText(view.getContext(), "Wow, popup action button", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        startButton = (Button) popupView.findViewById(R.id.headpositiondebug_startbtn);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+
+                //As an example, display the message
+                Toast.makeText(view.getContext(), "Wow, popup action button", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        displayDirection(HeadPositionDebugActivity.Direction.NONE);
+
+        //Handler for clicking on the inactive zone of the window
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                //Close the window when clicked
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
-    private void appendLineToTerminal(String text){
-        if(terminal==null)
+    void connect(){
+        String host = hostInput.getText().toString();
+        int port;
+        try{
+            port=Integer.parseInt(portInput.getText().toString());
+        }catch (Exception e){
             return;
+        }
 
-        //CharSequence oldText = terminal.getText();
-        //CharSequence newText = oldText + "\n" + text;
+        hpdh = new HeadPositionDataHub(host, port);
+        connected=true;
+        connectionIndicator.setText("Connected");
+        connectButton.setText("Disconnect");
+        hostInput.setEnabled(false);
+        portInput.setEnabled(false);
 
-        terminal.setText(text);
-
+        if(calibrated)
+            hpdh.setRegularizationParam(frontCalibrationAngle, leftCalibrationAngle,rightCalibrationAngle);
     }
 
+    void disconnect(){
+        hpdh=null;
+        connected=false;
+        connectionIndicator.setText("Disconnected");
+        connectButton.setText("Connect");
+        hostInput.setEnabled(true);
+        portInput.setEnabled(true);
+    }
+
+    public void btnConnectHandler(View view) {
+        if(running){
+            //Toast.makeText(getContext(),"Please stop running before disconnecting", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(connected)
+            disconnect();
+        else
+            connect();
+    }
+
+    boolean tryCalibrate(){
+        final int delay=3000;
+
+        // Front
+        displayDirection(HeadPositionDebugActivity.Direction.FRONT);
+        //Toast.makeText(this,"Please look at the front", Toast.LENGTH_SHORT).show();
+        SystemClock.sleep(delay);
+        Float front = hpdh.sampleAndAverage();
+
+        // Left
+        displayDirection(HeadPositionDebugActivity.Direction.LEFT);
+        //Toast.makeText(this,"Please look at the left", Toast.LENGTH_SHORT).show();
+        SystemClock.sleep(delay);
+        Float left = hpdh.sampleAndAverage();
+
+        // Right
+        displayDirection(HeadPositionDebugActivity.Direction.RIGHT);
+        //Toast.makeText(this,"Please look at the right", Toast.LENGTH_SHORT).show();
+        SystemClock.sleep(delay);
+        Float right = hpdh.sampleAndAverage();
+
+        displayDirection(HeadPositionDebugActivity.Direction.NONE);
+
+        if(front==null || left==null || right==null)
+            return false;
+
+        leftCalibrationAngle=left;
+        frontCalibrationAngle=front;
+        rightCalibrationAngle=right;
+        return true;
+    }
+
+
+    public void btnCalibrateHandler(View view) {
+        if(!connected){
+            //Toast.makeText(this, "Please connect to the device first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(running){
+            //Toast.makeText(this, "Please stop running before calibration", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        boolean success = tryCalibrate();
+
+        if(success){
+            //Toast.makeText(this,"Calibration Success",Toast.LENGTH_SHORT).show();
+            calibrated=true;
+            leftCalibrateAngle.setText(Float.toString(leftCalibrationAngle));
+            frontCalibrateAngle.setText(Float.toString(frontCalibrationAngle));
+            rightCalibrateAngle.setText(Float.toString(rightCalibrationAngle));
+            hpdh.setRegularizationParam(frontCalibrationAngle, leftCalibrationAngle, rightCalibrationAngle);
+        }else{
+            //Toast.makeText(this,"Calibration Failed",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void btnStartHandler(View view) {
+        if(!connected){
+            //Toast.makeText(this, "Please connect to the device first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!calibrated){
+            //Toast.makeText(this, "Please calibrate first before using", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(running){
+            boolean result = stop();
+            if(result){
+                startButton.setText("Start");
+                running=false;
+                displayDirection(HeadPositionDebugActivity.Direction.NONE);
+                intervalInput.setEnabled(true);
+            }
+        }else{
+            boolean result=run();
+            if(result){
+                startButton.setText("Stop");
+                running=true;
+                intervalInput.setEnabled(false);
+            }
+        }
+
+    }
+    void displayDirection(HeadPositionDebugActivity.Direction direction){
+        leftIndicator.setVisibility(View.INVISIBLE);
+        frontIndicator.setVisibility(View.INVISIBLE);
+        rightIndicator.setVisibility(View.INVISIBLE);
+
+        switch(direction){
+            case NONE:
+                break;
+            case LEFT:
+                leftIndicator.setVisibility(View.VISIBLE);
+                break;
+            case FRONT:
+                frontIndicator.setVisibility(View.VISIBLE);
+                break;
+            case RIGHT:
+                rightIndicator.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+
+    boolean run(){
+        stopSignal.set(false);
+
+        final Handler handler= new Handler();
+        runner = new Thread(() -> {
+            threadStopped.set(false);
+
+            while (!stopSignal.get()){
+                Float angle = hpdh.getLastRegularizedAngle(3);
+
+                if(angle==null)
+                    continue;
+
+                HeadPositionDebugActivity.Direction dir;
+                if(angle<-70.0f)
+                    // Left
+                    dir= HeadPositionDebugActivity.Direction.LEFT;
+                else if(angle>70.0f)
+                    // Right
+                    dir= HeadPositionDebugActivity.Direction.RIGHT;
+                else
+                    // Front
+                    dir= HeadPositionDebugActivity.Direction.FRONT;
+
+
+                handler.post(()->{
+                    // Update Terminal
+                    //CharSequence oldText = terminal.getText();
+                    //CharSequence newText = oldText+"\nRegularized Angle: "+Float.toString(angle);
+                    //terminal.setText(newText);
+                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                    dbOperations.addToTableSpeedRecord(getApplicationContext(), 65535, speed, timestamp, Float.toString(angle), gyro_data);
+                    // Update flag
+                    displayDirection(dir);
+                });
+            }
+            threadStopped.set(true);
+        });
+
+        runner.start();
+        return true;
+    }
+
+    boolean stop(){
+        stopSignal.set(true);
+        while(!threadStopped.get())
+            SystemClock.sleep(100);
+
+        return true;
+
+    }
     public void gyroService(View view) {
         final Handler handler = new Handler();
 
@@ -545,7 +876,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                     PrintWriter output = new PrintWriter(out);
                     output.println("command");
                     output.flush();
-                    
+
                     while(true) {
                         BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
                         final String st = input.readLine();
@@ -566,7 +897,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         thread.start();
     }
-
     private void onUpdateGyro(String g) {
         String[] arr = g.split(",", 2);
         try{

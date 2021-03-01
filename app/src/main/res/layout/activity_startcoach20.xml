@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,55 +22,111 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="2">
 
-            <TextView
-                android:id="@+id/terminal"
+<!--            <TextView-->
+<!--                android:id="@+id/terminal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/overlock_black"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:textSize="13dp"-->
+<!--                android:hint=" Command: "-->
+<!--                android:inputType="text"-->
+<!--                android:singleLine="true"-->
+<!--                android:text="Please send first command."-->
+<!--                />-->
+
+
+<!--            <EditText-->
+<!--                android:id="@+id/rpiInput"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:background="@color/warm3"-->
+<!--                android:ems="10"-->
+<!--                android:fontFamily="@font/overlock_black"-->
+<!--                android:textSize="13dp"-->
+<!--                android:hint=" Command: "-->
+<!--                android:inputType="text"-->
+<!--                android:singleLine="true"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent" />-->
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/overlock_black"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:textSize="13dp"
-                android:hint=" Command: "
-                android:inputType="text"
-                android:singleLine="true"
-                android:text="Please send first command."
-                />
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintBottom_toTopOf="@+id/headBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
+                <TextView
+                    android:id="@+id/headpositiondebug_onleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:fontFamily="@font/overlock_black"
+                    android:gravity="center"
+                    android:text="Left"
+                    android:textColor="@color/dark_pink"
+                    android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/rpiInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@color/warm3"
-                android:ems="10"
-                android:fontFamily="@font/overlock_black"
-                android:textSize="13dp"
-                android:hint=" Command: "
-                android:inputType="text"
-                android:singleLine="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/headpositiondebug_onfront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:fontFamily="@font/overlock_black"
+                    android:gravity="center"
+                    android:text="Front"
+                    android:textColor="@color/dark_pink"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/headpositiondebug_onright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:fontFamily="@font/overlock_black"
+                    android:gravity="center"
+                    android:text="Right"
+                    android:textColor="@color/dark_pink"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <Button
-                android:id="@+id/button_send"
+                android:id="@+id/headBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="8dp"
-                android:text="Fetch Pi"
-                android:layout_gravity="center"
-                android:fontFamily="@font/overlock_black"
+                android:fontFamily="@font/stalinist_one"
+                android:text="Connect Camera"
+                android:backgroundTint="@color/warm1"
                 android:textColor="@color/warm4"
                 android:textSize="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollview"
-                android:onClick="sendCommand"/>
+                android:layout_marginBottom="8dp"
+
+                />
+<!--            <Button-->
+<!--                android:id="@+id/button_send"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:text="Fetch Pi"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:fontFamily="@font/overlock_black"-->
+<!--                android:textColor="@color/warm4"-->
+<!--                android:textSize="10dp"-->
+<!--                android:onClick="sendCommand"/>-->
 
 
         </LinearLayout>
@@ -83,6 +139,7 @@
             android:orientation="vertical"
             android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/speedometer"
+            android:weightSum="3"
             >
 
             <TextView
@@ -93,7 +150,7 @@
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text="SPEED"
-                android:textColor="@color/warm2"
+                android:textColor="@color/warm4"
                 android:textSize="13dp"
                 android:layout_marginTop="16dp"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -109,7 +166,7 @@
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/dark_orange"
-                android:textColorHighlight="@color/warm2"
+                android:textColorHighlight="@color/warm4"
                 android:textSize="30dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 />
@@ -122,7 +179,7 @@
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text="mph"
-                android:textColor="@color/warm2"
+                android:textColor="@color/warm4"
                 android:textSize="18dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 />
@@ -133,7 +190,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="3">
 
             <TextView
                 android:id="@+id/gyrotext"
@@ -143,7 +201,7 @@
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text=" Gyroscope:"
-                android:textColor="@color/warm2"
+                android:textColor="@color/dark_pink"
                 android:textSize="13dp" />
 
             <TextView
@@ -158,6 +216,19 @@
                 android:textColorHighlight="@color/warm2"
                 android:textSize="22dp" />
 
+            <Button
+                android:id="@+id/Gyro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/stalinist_one"
+                android:onClick="gyroService"
+                android:layout_gravity="center"
+                android:text="GYRO"
+                android:backgroundTint="@color/dark_pink"
+                android:textColor="@color/warm4"
+                android:textSize="10dp"
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -239,21 +310,12 @@
         android:textColor="@color/warm4"
         android:textSize="10dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/groupdisplay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
          />
 
-    <Button
-        android:id="@+id/Gyro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="74dp"
-        android:layout_marginBottom="10dp"
-        android:onClick="gyroService"
-        android:text="GYRO"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
