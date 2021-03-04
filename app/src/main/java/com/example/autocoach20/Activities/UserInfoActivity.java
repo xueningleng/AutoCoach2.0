@@ -24,22 +24,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
-public class UserInfoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class UserInfoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    // DBOperations mydb = new DBOperations();
+    public final static String
+            MESSAGE_KEY = "com.example.autocoach20.message_key";
+    private static final String TAG = "UserInfoActivity";
+    public FirebaseUser fbUser; //currentUser
     int userAge;
     int userGender;
+    Operations dbOperations = new Operations();
     private TextView dateText;
     private Button submitBtn;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexBtn, radioFemale, radioMale;
     private DatePicker datePicker;
-    Operations dbOperations = new Operations();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public FirebaseUser fbUser; //currentUser
-    private static final String TAG = "UserInfoActivity";
 
-    // DBOperations mydb = new DBOperations();
-    public final static String
-            MESSAGE_KEY ="com.example.autocoach20.message_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,18 +49,19 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         Intent intent = getIntent();
         initializeUI();
     }
-    private void initializeUI(){
+
+    private void initializeUI() {
         dateText = findViewById(R.id.date_text);
 
-        findViewById(R.id.show_date).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.show_date).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 showDatePickerDialog();
             }
         });
-        findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 //                int selectedId = radioSexGroup.getCheckedRadioButtonId();
 //                radioSexBtn = (RadioButton) findViewById(selectedId);
 //                switch(selectedId){
@@ -79,7 +80,8 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
             }
         });
     }
-    private void showDatePickerDialog(){
+
+    private void showDatePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (DatePickerDialog.OnDateSetListener) this,
@@ -100,10 +102,11 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         int age = today.get(Calendar.YEAR) - year;
         userAge = age;
         month++;
-        String d = month + "/"+dayOfMonth+"/"+year+" (mm/dd/yyyy)";
+        String d = month + "/" + dayOfMonth + "/" + year + " (mm/dd/yyyy)";
         dateText.setText(d);
     }
-    public void sendInfo(){
+
+    public void sendInfo() {
 
         //intent.putExtra(MESSAGE_KEY,userAge);
         //intent.putExtra(MESSAGE_KEY,userGender);
@@ -119,7 +122,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
                     But its okay for now
                      */
                         new Thread(() -> {
-                            dbOperations.updateUser(documentReference,getApplicationContext(),fbUser,userGender, userAge);
+                            dbOperations.updateUser(documentReference, getApplicationContext(), fbUser, userGender, userAge);
                             dbOperations.onClose(getApplicationContext());
                         }).start();
                     }

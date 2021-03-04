@@ -11,9 +11,9 @@
         android:id="@+id/groupdisplay"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="100dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/display_name">
@@ -25,36 +25,7 @@
             android:orientation="vertical"
             android:weightSum="2">
 
-<!--            <TextView-->
-<!--                android:id="@+id/terminal"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/overlock_black"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:textSize="13dp"-->
-<!--                android:hint=" Command: "-->
-<!--                android:inputType="text"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Please send first command."-->
-<!--                />-->
 
-
-<!--            <EditText-->
-<!--                android:id="@+id/rpiInput"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:background="@color/warm3"-->
-<!--                android:ems="10"-->
-<!--                android:fontFamily="@font/overlock_black"-->
-<!--                android:textSize="13dp"-->
-<!--                android:hint=" Command: "-->
-<!--                android:inputType="text"-->
-<!--                android:singleLine="true"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
@@ -107,26 +78,15 @@
                 android:id="@+id/headBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/stalinist_one"
-                android:text="Connect Camera"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/warm1"
+                android:fontFamily="@font/stalinist_one"
+                android:onClick="onClickHeadBtn"
+                android:text="Connect Camera"
                 android:textColor="@color/warm4"
                 android:textSize="10dp"
-                android:layout_marginBottom="8dp"
 
                 />
-<!--            <Button-->
-<!--                android:id="@+id/button_send"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:layout_marginBottom="8dp"-->
-<!--                android:text="Fetch Pi"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:fontFamily="@font/overlock_black"-->
-<!--                android:textColor="@color/warm4"-->
-<!--                android:textSize="10dp"-->
-<!--                android:onClick="sendCommand"/>-->
 
 
         </LinearLayout>
@@ -134,55 +94,51 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical|center_horizontal"
             android:background="@drawable/speedometer"
-            android:weightSum="3"
-            >
+            android:orientation="vertical"
+            android:weightSum="3">
 
             <TextView
                 android:id="@+id/speedtext"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text="SPEED"
                 android:textColor="@color/warm4"
-                android:textSize="13dp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                />
+                android:textSize="13dp" />
 
 
             <TextView
                 android:id="@+id/speednum"
                 android:layout_width="130dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/dark_orange"
                 android:textColorHighlight="@color/warm4"
-                android:textSize="30dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/speedunit"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text="mph"
                 android:textColor="@color/warm4"
-                android:textSize="18dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                />
+                android:textSize="18dp" />
 
         </LinearLayout>
 
@@ -220,15 +176,13 @@
                 android:id="@+id/Gyro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/stalinist_one"
-                android:onClick="gyroService"
                 android:layout_gravity="center"
-                android:text="GYRO"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/dark_pink"
+                android:fontFamily="@font/stalinist_one"
+                android:text="Connect Gyro"
                 android:textColor="@color/warm4"
-                android:textSize="10dp"
-                />
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -304,18 +258,15 @@
         android:id="@+id/endBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/dark_orange"
         android:fontFamily="@font/stalinist_one"
         android:text="END TRIP"
-        android:backgroundTint="@color/dark_orange"
         android:textColor="@color/warm4"
         android:textSize="10dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/groupdisplay"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-         />
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/groupdisplay" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

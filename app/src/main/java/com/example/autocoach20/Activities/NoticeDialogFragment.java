@@ -11,12 +11,9 @@ import androidx.fragment.app.DialogFragment;
 import com.example.autocoach20.R;
 
 public class NoticeDialogFragment extends DialogFragment {
-    public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        //public void onDialogNegativeClick(DialogFragment dialog);
-    }
     NoticeDialogListener listener;
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.consent_dialogue_message)
                 .setTitle(R.string.consent_dialogue_title)
@@ -29,6 +26,7 @@ public class NoticeDialogFragment extends DialogFragment {
 
         return builder.create();
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -40,5 +38,10 @@ public class NoticeDialogFragment extends DialogFragment {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException();
         }
+    }
+
+    public interface NoticeDialogListener {
+        public void onDialogPositiveClick(DialogFragment dialog);
+        //public void onDialogNegativeClick(DialogFragment dialog);
     }
 }

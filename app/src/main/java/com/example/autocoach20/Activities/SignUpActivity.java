@@ -38,10 +38,8 @@ import java.util.List;
 public class SignUpActivity extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener {
     private static final String TAG = null;
     private static final int MY_REQUEST_CODE = 1234;
-
-    List<AuthUI.IdpConfig> providers;
     public FirebaseAuth mAuth;
-
+    List<AuthUI.IdpConfig> providers;
     //UI fields
     EditText userEmail;
     EditText userPassword;
@@ -49,11 +47,11 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
     Button btn_signIn, homeBtn;
     TextView consent;
     boolean checked;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Operations dbOperations = new Operations();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         Intent intent = getIntent();
@@ -64,9 +62,9 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
 
         mAuth = FirebaseAuth.getInstance();
 
-        consent.setOnClickListener(new View.OnClickListener(){
+        consent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 showConsentDialog();
             }
         });
@@ -80,22 +78,22 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
             });
         }
         homeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
 
     private void showConsentDialog() {
         DialogFragment dialog = new NoticeDialogFragment();
-        dialog.show(getSupportFragmentManager(),"NoticeDialogFragment");
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
     }
 
-    private void initializeUI(){
-        userEmail = (EditText)findViewById(R.id.uEmail);
-        userPassword = (EditText)findViewById(R.id.uPword);
-        userName = (EditText)findViewById(R.id.uName);
+    private void initializeUI() {
+        userEmail = (EditText) findViewById(R.id.uEmail);
+        userPassword = (EditText) findViewById(R.id.uPword);
+        userName = (EditText) findViewById(R.id.uName);
         btn_signIn = findViewById(R.id.signUpButton);
         homeBtn = findViewById(R.id.returnButton);
         consent = findViewById(R.id.consent);
@@ -106,16 +104,16 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
         // No-op
     }
 
-    private void createAccount (){
-        String email, password,name;
+    private void createAccount() {
+        String email, password, name;
         email = userEmail.getText().toString();
         password = userPassword.getText().toString();
         name = userName.getText().toString();
-        if (TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
@@ -154,7 +152,7 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
 
     }
 
-    public void uploadUserInfo(){
+    public void uploadUserInfo() {
         //dbOperations.addToTableUser(getCurrentUser().getIdToken(true),getApplicationContext(),getCurrentUser());
         db.collection("user")
                 .add(getCurrentUser())
@@ -180,7 +178,8 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
                     }
                 });
     }
-    public FirebaseUser getCurrentUser (){
+
+    public FirebaseUser getCurrentUser() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -249,7 +248,6 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
                 });
         // [END auth_differentiate_link]
     }
-
 
 
     public void getEmailCredentials() {

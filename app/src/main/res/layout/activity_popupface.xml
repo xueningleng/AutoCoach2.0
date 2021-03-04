@@ -17,72 +17,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/headpositiondebug_terminal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Terminal"
-                android:fontFamily="@font/overlock_black"
-                android:gravity="center"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/headpositiondebug_onleft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:fontFamily="@font/overlock_black"
-                    android:gravity="center"
-                    android:text="Left"
-                    android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/headpositiondebug_onfront"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:fontFamily="@font/overlock_black"
-                    android:gravity="center"
-                    android:text="Front"
-                    android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/headpositiondebug_onright"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:fontFamily="@font/overlock_black"
-                    android:gravity="center"
-                    android:text="Right"
-                    android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
-            </LinearLayout>
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -97,18 +31,18 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/headpositiondebug_host"
+                        android:id="@+id/headpositiondebug_camerahost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/warm3"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:text="Host"
+                        android:text="Camera Host"
                         android:textSize="15sp" />
 
                     <EditText
-                        android:id="@+id/headpositiondebug_hostedit"
+                        android:id="@+id/headpositiondebug_camerahostedit"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@color/warm4"
@@ -120,16 +54,7 @@
                         android:textColorHint="@color/dark_orange"
                         android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/headpositiondebug_connstatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/warm3"
-                        android:ems="10"
-                        android:fontFamily="@font/overlock_black"
-                        android:gravity="center"
-                        android:text="Disconnected"
-                        android:textSize="15sp" />
+
                 </TableRow>
 
                 <TableRow
@@ -137,18 +62,18 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/headpositiondebug_port"
+                        android:id="@+id/headpositiondebug_cameraport"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/warm2"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:text="Port"
+                        android:text="Camera Port"
                         android:textSize="15sp" />
 
                     <EditText
-                        android:id="@+id/headpositiondebug_portedit"
+                        android:id="@+id/headpositiondebug_cameraportedit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/warm4"
@@ -161,14 +86,14 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/headpositiondebug_connectbtn"
+                        android:id="@+id/headpositiondebug_cameraconnectbtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/warm2"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnConnectHandler"
+
                         android:text="Connect"
                         android:textSize="15sp" />
                 </TableRow>
@@ -235,7 +160,7 @@
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnCalibrateHandler"
+
                         android:text="Calibrate"
                         android:textSize="15sp" />
                 </TableRow>
@@ -274,40 +199,73 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/headpositiondebug_interval"
+                        android:id="@+id/headpositiondebug_gyrohost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/warm2"
+                        android:background="@color/warm3"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:text="Interval"
+                        android:text="Gyroscope Host"
                         android:textSize="15sp" />
 
+
                     <EditText
-                        android:id="@+id/headpositiondebug_intervaledit"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/headpositiondebug_gyrohostedit"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@color/warm4"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:hint="Name"
+                        android:hint="example.com"
                         android:inputType="text"
                         android:textColorHint="@color/dark_orange"
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/headpositiondebug_startbtn"
+                        android:id="@+id/headpositiondebug_gyroconnectbtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/warm2"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnStartHandler"
-                        android:text="Start"
+
+                        android:text="Connect"
                         android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/headpositiondebug_gyroport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/warm3"
+                        android:ems="10"
+                        android:fontFamily="@font/overlock_black"
+                        android:gravity="center"
+                        android:text="Gyroscope Port"
+                        android:textSize="15sp" />
+
+
+                    <EditText
+                        android:id="@+id/headpositiondebug_gyroportedit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/warm4"
+                        android:ems="8"
+                        android:fontFamily="@font/overlock_black"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="80"
+                        android:textColor="@color/dark_orange"
+                        android:textSize="15sp" />
+
+
                 </TableRow>
             </TableLayout>
         </LinearLayout>
