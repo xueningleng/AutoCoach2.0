@@ -44,6 +44,8 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
 
+// TODO: create background thread to write data(speed, head position, gyroscope) to DB on a regular basis.
+
 /**
  * @author Xuening Leng, Yuehan Cui
  * @since AutoCoach2.0
@@ -371,6 +373,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     public void gyroService(View view) {
         // TODO: Pop up window asking for ip and port
+        // TODO: Move this part to GyroDataHub
         final Handler handler = new Handler();
 
         // Create new popup window and get Host Port
