@@ -38,8 +38,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.sql.Timestamp;
 import java.util.List;
 
-// TODO: create background thread to write data(speed, head position, gyroscope) to DB on a regular basis.
-
 /**
  * @author Xuening Leng, Yuehan Cui
  * @since AutoCoach2.0
@@ -115,7 +113,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         }
     };
 
-    private String new_rpi_input = "";
+
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -267,6 +265,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             Operations op = new Operations();
             op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
             op.onClose(this);
+
+            // Export DB
+            dbOperations.exportDB();
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

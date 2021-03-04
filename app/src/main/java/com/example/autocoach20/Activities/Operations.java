@@ -4,14 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.autocoach20.Activities.Databases.TripDatabase.DbHelper;
 import com.example.autocoach20.Activities.Databases.TripDatabase.FeedReaderContract;
 import com.example.autocoach20.Activities.Model.Trip;
+import com.example.autocoach20.BuildConfig;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.sql.Timestamp;
 
 /**
@@ -249,9 +255,32 @@ public class Operations {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         dbHelper.closeDB(db);
     }
-    // ****************************************************************** //
-    // PRIVATE METHODS
-    // ****************************************************************** //
+
+    public void exportDB() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String currentDBPath = "//data//" + BuildConfig.APPLICATION_ID
+                        + "//databases//" + dbHelper.DATABASE_NAME;
+                String backupDBPath = "autocoach.db";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Log.d(TAG, "DB Export success");
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "DB Export failed");
+    }
 
 
 }
