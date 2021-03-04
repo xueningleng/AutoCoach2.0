@@ -113,6 +113,7 @@
                 android:textColor="@color/warm4"
                 android:textSize="10dp"
                 android:layout_marginBottom="8dp"
+                android:onClick="onClickHeadBtn"
 
                 />
 <!--            <Button-->
@@ -220,15 +221,14 @@
                 android:id="@+id/Gyro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/dark_pink"
                 android:fontFamily="@font/stalinist_one"
                 android:onClick="gyroService"
-                android:layout_gravity="center"
-                android:text="GYRO"
-                android:backgroundTint="@color/dark_pink"
+                android:text="Connect Gyro"
                 android:textColor="@color/warm4"
-                android:textSize="10dp"
-                />
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 

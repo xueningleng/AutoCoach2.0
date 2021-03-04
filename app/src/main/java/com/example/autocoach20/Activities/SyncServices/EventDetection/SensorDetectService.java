@@ -204,7 +204,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 sinCalibrate = -meanX/temp;
                 cosCalibrate = meanZ/temp;
                 isCalibrateEnd=false;
-                StartAutoCoachActivity.getMainActivity().sensorsCalibratedToast();
+
             }
 
             // do the calibration
