@@ -20,7 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoCoach20"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.HeadPositionDebugActivity"></activity>
         <activity
             android:name=".Activities.MainActivity"
             android:configChanges="orientation"

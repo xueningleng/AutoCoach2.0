@@ -6,23 +6,32 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * This data hub is used to exchange commands with server. All operations are blocking.
+ */
 public class HardwareDataHub {
-    String host;
-    int port;
-    Socket socket;
-    boolean connected;
+    private String host;
+    private int port;
+    private Socket socket;
+    private boolean connected;
 
-    PrintWriter out;
-    BufferedReader in;
+    private PrintWriter out;
+    private BufferedReader in;
 
-    HardwareDataHub(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public HardwareDataHub() {
     }
 
-    boolean connect() {
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public boolean connect(String host, int port) {
+        // If connected, close old connection
         if (connected)
-            return true;
+            close();
+
+        this.host = host;
+        this.port = port;
 
         try {
             socket = new Socket(host, port);
@@ -30,20 +39,50 @@ public class HardwareDataHub {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             connected = true;
         } catch (IOException e) {
-            connected = false;
+            close();
         }
 
         return connected;
     }
 
-    String sendCommand(String command) {
-        // Try to connect to the server
-        connect();
+    public void close() {
+        host = null;
 
-        // Dont continue if connection DNE
+        port = -1;
+
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+
+            }
+            in = null;
+        }
+
+        if (out != null) {
+            out.close();
+            out = null;
+        }
+
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+
+            }
+            socket = null;
+        }
+
+        connected = false;
+    }
+
+
+    public String sendCommandAndWaitResponse(String command) {
+        // Make sure datahub is connected
         if (!connected)
-            return null;
+            throw new IllegalStateException("Calling sendCommand on non-connected HardwareDataHub is not allowed");
 
+        // Send command
         out.println(command);
         out.flush();
 

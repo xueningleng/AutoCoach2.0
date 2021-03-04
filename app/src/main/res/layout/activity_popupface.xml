@@ -168,7 +168,7 @@
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnConnectHandler"
+
                         android:text="Connect"
                         android:textSize="15sp" />
                 </TableRow>
@@ -235,7 +235,7 @@
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnCalibrateHandler"
+
                         android:text="Calibrate"
                         android:textSize="15sp" />
                 </TableRow>
@@ -298,15 +298,15 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/headpositiondebug_startbtn"
+                        android:id="@+id/headpositiondebug_returnbtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/warm2"
                         android:ems="10"
                         android:fontFamily="@font/overlock_black"
                         android:gravity="center"
-                        android:onClick="btnStartHandler"
-                        android:text="Start"
+
+                        android:text="Return"
                         android:textSize="15sp" />
                 </TableRow>
             </TableLayout>

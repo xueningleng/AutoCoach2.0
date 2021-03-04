@@ -50,7 +50,12 @@ import java.util.List;
  */
 public class StartAutoCoachActivity extends AppCompatActivity {
     private static final String TAG = "StartAutoCoachActivity";
-    public static StartAutoCoachActivity mainActivity;
+    private static final int DATA_QUEUE_SIZE = 30;
+    private static final float HEAD_DIR_THRESHOLD = 66.6f;
+    // Handler
+    final Handler handler = new Handler();
+    //
+    public StartAutoCoachActivity mainActivity;
     public int DBTripId;
     public Trip trip;
     public User user;
@@ -64,6 +69,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     boolean running;
     //trip info
     Operations dbOperations = new Operations();
+    // Data Hubs
+    HeadPositionDataHub headPositionDataHub = new HeadPositionDataHub(DATA_QUEUE_SIZE, HEAD_DIR_THRESHOLD);
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LocationManager locationManager;
     //ui items
@@ -96,20 +103,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             updateSpeedByLocation(location);
         }
     };
+
     private String new_rpi_input = "";
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    Toast.makeText(this, "Location Permission Granted",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Location Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Location Permission Denied",
-                            Toast.LENGTH_SHORT).show();
                     // Explain to the user that the feature is unavailable because the
                     // features requires a permission that the user has denied. At the
                     // same time, respect the user's decision. Don't link to system
                     // settings in an effort to convince the user to change their
                     // decision.
+                    Toast.makeText(this, "Location Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -117,9 +123,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         mainActivity = this;
     }
 
-    public static StartAutoCoachActivity getMainActivity() {
-        return mainActivity;
-    }
 
     public int getDBTripId() {
         return DBTripId;
@@ -283,8 +286,35 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         return speed;
     }
 
-    public int getSpeed() {
-        return speed;
+    private void updateDirection() {
+        HeadPositionDataHub.Direction dir = headPositionDataHub.getLastHeadDirection();
+
+        handler.post(() -> {
+            leftIndicator.setVisibility(View.INVISIBLE);
+            frontIndicator.setVisibility(View.INVISIBLE);
+            rightIndicator.setVisibility(View.INVISIBLE);
+        });
+
+        TextView viewToUpdate = null;
+        switch (dir) {
+            case NONE:
+                break;
+            case LEFT:
+                viewToUpdate = leftIndicator;
+                break;
+            case RIGHT:
+                viewToUpdate = rightIndicator;
+                break;
+            case FRONT:
+                viewToUpdate = frontIndicator;
+                break;
+        }
+
+        final TextView v = viewToUpdate;
+        if (v != null)
+            handler.post(() -> {
+                v.setVisibility(View.VISIBLE);
+            });
     }
 
 
@@ -303,7 +333,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             //Request permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
         }
-
     }
 
 
@@ -321,7 +350,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     public void onClickHeadBtn(View view) {
         PopUpHead popUpHead = new PopUpHead();
-        popUpHead.showPopupWindow(view);
+        popUpHead.showPopupWindow(view, headPositionDataHub);
     }
 
 
@@ -344,11 +373,14 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         // TODO: Pop up window asking for ip and port
         final Handler handler = new Handler();
 
+        // Create new popup window and get Host Port
+
+
         Thread thread = new Thread((new Runnable() {
             @Override
             public void run() {
                 try {
-                    Socket s = new Socket("172.20.10.12", 80);
+                    Socket s = new Socket("192.168.1.78", 80);
                     OutputStream out = s.getOutputStream();
                     PrintWriter output = new PrintWriter(out);
                     output.println("command");
@@ -359,7 +391,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                         final String st = input.readLine();
                         onUpdateGyro(st);
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(250);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -378,8 +410,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         String[] arr = g.split(",", 2);
         try {
             String out = arr[0] + '\n' + arr[1];
-            double angle = Double.parseDouble(arr[1]);
-            gyro_data = angle;
+            gyro_data = Double.parseDouble(arr[1]);
+
+            // Update camera direction
+            updateDirection();
+
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
