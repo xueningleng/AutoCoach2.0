@@ -9,7 +9,7 @@ public class GyroDataHub extends HardwareDataHub {
     private final static int DELAY = 100; // 30ms between data points
 
     private final ReentrantLock queueLock = new ReentrantLock();
-    private final List<String> rawData = new ArrayList<>();
+    private final List<Double> rawData = new ArrayList<>();
     private final int queueSize;
 
     private Thread t = null;
@@ -41,7 +41,34 @@ public class GyroDataHub extends HardwareDataHub {
                 if (response == null)
                     continue;
 
-                response = response.replace(',', '\n');
+                String[] separated = response.split(",");
+
+                double x, y;
+                try {
+                    x = Double.parseDouble(separated[0]);
+                    y = Double.parseDouble(separated[1]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try {
+                        Thread.sleep(DELAY);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    continue;
+                }
+
+
+
+                double angle =(double) Math.toDegrees(Math.atan(y / x));
+                if (x<0 &&y<0)
+                    angle= angle;
+                else if (x>0&&y<0)
+                    angle= angle+180.0;
+                else if (x>0&&y>0)
+                    angle=angle-180.0;
+                else
+                    angle= angle;
+
 
                 // Add data to queue
                 queueLock.lock();
@@ -51,7 +78,7 @@ public class GyroDataHub extends HardwareDataHub {
                     rawData.remove(0);
                 }
 
-                rawData.add(response);
+                rawData.add(angle);
 
                 queueLock.unlock();
 
@@ -66,7 +93,7 @@ public class GyroDataHub extends HardwareDataHub {
         t.start();
     }
 
-    public String getLastValue() {
+    public Double getLastValue() {
         queueLock.lock();
 
         if (rawData.size() == 0) {
@@ -74,7 +101,7 @@ public class GyroDataHub extends HardwareDataHub {
             return null;
         }
 
-        String val = rawData.get(rawData.size() - 1);
+        Double val = rawData.get(rawData.size() - 1);
         queueLock.unlock();
 
         return val;

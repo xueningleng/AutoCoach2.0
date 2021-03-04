@@ -361,28 +361,15 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     }
 
     private void updateGyro() {
-        String gyroData = gyroDataHub.getLastValue();
+        Double gyroData = gyroDataHub.getLastValue();
 
         if (gyroData == null)
-            gyroData = "";
+            gyro_data = 10000.0;
+        else
+            gyro_data = gyroData;
 
-        // TODO: generate angle from gyro data
-        // TODO: now use Y value as angle
 
-        String[] split = gyroData.split("\n");
-
-        if (split.length != 2) {
-            gyro_data = 0;
-        } else {
-            try {
-                gyro_data = Double.parseDouble(split[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-                gyro_data = 0.0;
-            }
-        }
-
-        String outValue = gyroData;
+        String outValue = String.format("%.2f", gyro_data);
         handler.post(() -> {
             gyroIndicator.setText(outValue);
         });

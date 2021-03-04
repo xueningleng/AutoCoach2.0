@@ -39,6 +39,7 @@ public class HardwareDataHub {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             connected = true;
         } catch (IOException e) {
+            e.printStackTrace();
             close();
         }
 
@@ -54,7 +55,7 @@ public class HardwareDataHub {
             try {
                 in.close();
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
             in = null;
         }
@@ -68,7 +69,7 @@ public class HardwareDataHub {
             try {
                 socket.close();
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
             socket = null;
         }
@@ -90,7 +91,8 @@ public class HardwareDataHub {
         try {
             response = in.readLine();
         } catch (IOException e) {
-            connected = false;
+            e.printStackTrace();
+            close();
             return null;
         }
 
