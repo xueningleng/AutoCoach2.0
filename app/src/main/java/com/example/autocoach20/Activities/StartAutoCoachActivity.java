@@ -871,7 +871,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Socket s = new Socket("192.168.43.240", 80);
+                    Socket s = new Socket("172.20.10.12", 80);
                     OutputStream out = s.getOutputStream();
                     PrintWriter output = new PrintWriter(out);
                     output.println("command");
@@ -882,7 +882,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                         final String st = input.readLine();
                         onUpdateGyro(st);
                         try{
-                            Thread.sleep(100);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
