@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.autocoach20.R;
 
-public class MainActivity extends AppCompatActivity implements LaunchDialogFragment.LaunchDialogListener{
+public class MainActivity extends AppCompatActivity implements LaunchDialogFragment.LaunchDialogListener {
     public static MainActivity mainActivity;
 
     ImageButton sufolder;
@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity implements LaunchDialogFragm
     SignInActivity authActivity = new SignInActivity();
 
 
+    public MainActivity() {
+        mainActivity = this;
+    }
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,45 +41,41 @@ public class MainActivity extends AppCompatActivity implements LaunchDialogFragm
         initializeUI();
     }
 
-    public void initializeUI(){
+    public void initializeUI() {
         title = findViewById(R.id.projectTitle);
         sufolder = findViewById(R.id.signUpFolder);
         sifolder = findViewById(R.id.signInFolder);
         Button signIn = (Button) findViewById(R.id.buttonSignIn);
-        signIn.setOnClickListener(new View.OnClickListener(){
+        signIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 signIn(view);
             }
         });
 
         Button signUp = (Button) findViewById(R.id.buttonSignUp);
-        signUp.setOnClickListener(new View.OnClickListener(){
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 signUp(view);
             }
         });
         showAckDialog();
     }
+
     private void showAckDialog() {
         DialogFragment dialog = new LaunchDialogFragment();
-        dialog.show(getSupportFragmentManager(),"LaunchDialogFragment");
+        dialog.show(getSupportFragmentManager(), "LaunchDialogFragment");
     }
-    public void signIn(View view){
+
+    public void signIn(View view) {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
-    public void signUp(View view){
+
+    public void signUp(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
-    }
-    public MainActivity(){
-        mainActivity = this;
-    }
-
-    public static MainActivity getMainActivity(){
-        return mainActivity;
     }
 
     @Override

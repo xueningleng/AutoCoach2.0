@@ -18,22 +18,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignInActivity extends AppCompatActivity{
+public class SignInActivity extends AppCompatActivity {
 
     EditText userEmail, userPassword;
     TextView pwordHint;
     Button signInBtn, homeBtn;
     private FirebaseAuth mAuth;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         initializeUI();
         mAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
-        signInBtn.setOnClickListener(new View.OnClickListener(){
+        signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 signIn();
             }
         });
@@ -44,14 +45,16 @@ public class SignInActivity extends AppCompatActivity{
             }
         });
     }
-    private void initializeUI(){
-        userEmail = (EditText)findViewById(R.id.uEmail);
-        userPassword = (EditText)findViewById(R.id.uPword);
+
+    private void initializeUI() {
+        userEmail = (EditText) findViewById(R.id.uEmail);
+        userPassword = (EditText) findViewById(R.id.uPword);
         signInBtn = findViewById(R.id.signInButton);
         pwordHint = findViewById(R.id.result);
         homeBtn = findViewById(R.id.returnButton);
     }
-    private void signIn (){
+
+    private void signIn() {
         String email, password;
         email = userEmail.getText().toString();
         password = userPassword.getText().toString();

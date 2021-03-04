@@ -17,48 +17,33 @@ import com.example.autocoach20.R;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PopUpHead{
+public class PopUpHead {
+    final AtomicBoolean stopSignal = new AtomicBoolean(false);
+    final AtomicBoolean threadStopped = new AtomicBoolean(false);
     ScrollView scroll;
     TextView terminal;
-
     TextView leftIndicator;
     TextView frontIndicator;
     TextView rightIndicator;
-
     EditText hostInput;
     EditText portInput;
     TextView leftCalibrateAngle;
     TextView frontCalibrateAngle;
     TextView rightCalibrateAngle;
     EditText intervalInput;
-
     TextView connectionIndicator;
     Button connectButton;
     Button calibrateButton;
     Button startButton;
-
     boolean connected;
     boolean calibrated;
-
     float leftCalibrationAngle;
     float frontCalibrationAngle;
     float rightCalibrationAngle;
-
     boolean running;
-
     HeadPositionDataHub hpdh;
-
     Thread runner;
-    final AtomicBoolean stopSignal = new AtomicBoolean(false);
-    final AtomicBoolean threadStopped = new AtomicBoolean(false);
-
     Operations dbOperations = new Operations();
-    enum Direction{
-        NONE,
-        LEFT,
-        FRONT,
-        RIGHT
-    }
 
     public void showPopupWindow(final View view) {
         //****following section setting pop up window***
@@ -143,12 +128,12 @@ public class PopUpHead{
         });
     }
 
-    void displayDirection(HeadPositionDebugActivity.Direction direction){
+    void displayDirection(HeadPositionDebugActivity.Direction direction) {
         leftIndicator.setVisibility(View.INVISIBLE);
         frontIndicator.setVisibility(View.INVISIBLE);
         rightIndicator.setVisibility(View.INVISIBLE);
 
-        switch(direction){
+        switch (direction) {
             case NONE:
                 break;
             case LEFT:
@@ -163,29 +148,29 @@ public class PopUpHead{
         }
     }
 
-    void connect(){
+    void connect() {
         String host = hostInput.getText().toString();
         int port;
-        try{
-            port=Integer.parseInt(portInput.getText().toString());
-        }catch (Exception e){
+        try {
+            port = Integer.parseInt(portInput.getText().toString());
+        } catch (Exception e) {
             return;
         }
 
         hpdh = new HeadPositionDataHub(host, port);
-        connected=true;
+        connected = true;
         connectionIndicator.setText("Connected");
         connectButton.setText("Disconnect");
         hostInput.setEnabled(false);
         portInput.setEnabled(false);
 
-        if(calibrated)
-            hpdh.setRegularizationParam(frontCalibrationAngle, leftCalibrationAngle,rightCalibrationAngle);
+        if (calibrated)
+            hpdh.setRegularizationParam(frontCalibrationAngle, leftCalibrationAngle, rightCalibrationAngle);
     }
 
-    void disconnect(){
-        hpdh=null;
-        connected=false;
+    void disconnect() {
+        hpdh = null;
+        connected = false;
         connectionIndicator.setText("Disconnected");
         connectButton.setText("Connect");
         hostInput.setEnabled(true);
@@ -193,19 +178,19 @@ public class PopUpHead{
     }
 
     public void btnConnectHandler(View view) {
-        if(running){
+        if (running) {
             //Toast.makeText(getContext(),"Please stop running before disconnecting", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(connected)
+        if (connected)
             disconnect();
         else
             connect();
     }
 
-    boolean tryCalibrate(){
-        final int delay=3000;
+    boolean tryCalibrate() {
+        final int delay = 3000;
 
         // Front
         displayDirection(HeadPositionDebugActivity.Direction.FRONT);
@@ -227,39 +212,46 @@ public class PopUpHead{
 
         displayDirection(HeadPositionDebugActivity.Direction.NONE);
 
-        if(front==null || left==null || right==null)
+        if (front == null || left == null || right == null)
             return false;
 
-        leftCalibrationAngle=left;
-        frontCalibrationAngle=front;
-        rightCalibrationAngle=right;
+        leftCalibrationAngle = left;
+        frontCalibrationAngle = front;
+        rightCalibrationAngle = right;
         return true;
     }
 
-
     public void btnCalibrateHandler(View view) {
-        if(!connected){
+        if (!connected) {
             //Toast.makeText(this, "Please connect to the device first", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(running){
+        if (running) {
             //Toast.makeText(this, "Please stop running before calibration", Toast.LENGTH_SHORT).show();
             return;
         }
 
         boolean success = tryCalibrate();
 
-        if(success){
+        if (success) {
             //Toast.makeText(this,"Calibration Success",Toast.LENGTH_SHORT).show();
-            calibrated=true;
+            calibrated = true;
             leftCalibrateAngle.setText(Float.toString(leftCalibrationAngle));
             frontCalibrateAngle.setText(Float.toString(frontCalibrationAngle));
             rightCalibrateAngle.setText(Float.toString(rightCalibrationAngle));
             hpdh.setRegularizationParam(frontCalibrationAngle, leftCalibrationAngle, rightCalibrationAngle);
-        }else{
+        } else {
             //Toast.makeText(this,"Calibration Failed",Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    enum Direction {
+        NONE,
+        LEFT,
+        FRONT,
+        RIGHT
     }
 
 //    boolean run(){

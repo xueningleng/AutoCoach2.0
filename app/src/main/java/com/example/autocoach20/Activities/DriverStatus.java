@@ -12,13 +12,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class DriverStatus extends AppCompatActivity {
-    private User user;
-    private int userAge, userGender;
+    public final static String
+            MESSAGE_KEY = "com.example.autocoach20.message_key";
     String oBP, oHR, oF;
     TextView outTxtBP, outTxtHR, outTxtF;
     boolean checkBP, checkHR, checkF;
-    public final static String
-            MESSAGE_KEY ="com.example.autocoach20.message_key";
+    private User user;
+    private int userAge, userGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,31 +29,37 @@ public class DriverStatus extends AppCompatActivity {
         //userGender = intent.getIntExtra(MESSAGE_KEY,0);
 
     }
-    private void initializeUI(){
+
+    private void initializeUI() {
         outTxtBP = (TextView) findViewById(R.id.outputBP);
         outTxtHR = (TextView) findViewById(R.id.outputHR);
         outTxtF = (TextView) findViewById(R.id.outputF);
     }
-    private void updateUI(){
+
+    private void updateUI() {
         outTxtBP.setText(oBP);
         outTxtHR.setText(oHR);
         outTxtF.setText(oF);
     }
-    public void setUpUser(int curHR, int curBPmin, int curBPmax){
+
+    public void setUpUser(int curHR, int curBPmin, int curBPmax) {
         FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
-        user = new User(u ,userAge, userGender);
+        user = new User(u, userAge, userGender);
         user.setCurrentHeartRate(curHR); //enter measured heartrate from device
-        user.setCurrentBloodPressure(curBPmax,curBPmin); //enter measured bloodpressure from device
+        user.setCurrentBloodPressure(curBPmax, curBPmin); //enter measured bloodpressure from device
     }
-    public void runCheck(){
+
+    public void runCheck() {
         oBP = user.checkBloodPressure();
         oHR = user.checkHeartRate();
         oF = "COMING SOON"; //add face examination result
     }
-    public User getReadyUser(){
+
+    public User getReadyUser() {
         return user;
     }
-    public void sendInfo(){
+
+    public void sendInfo() {
         Intent intent = new Intent(getBaseContext(), StartAutoCoachActivity.class);
         intent.putExtra(MESSAGE_KEY, (Parcelable) user);
         startActivity(intent);

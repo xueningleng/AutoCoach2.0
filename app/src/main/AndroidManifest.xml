@@ -9,11 +9,6 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--
- @author: Zahraa
-         @date: 08/11/2020
-         @reason: to resolve E/Perf: getFolderSize() : Exception_1 = java.lang.NullPointerException
-    -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -56,10 +51,7 @@
             android:name=".Activities.StartAutoCoachActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".Activities.CommunicationActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="landscape" />
+
 
         <meta-data
             android:name="preloaded_fonts"

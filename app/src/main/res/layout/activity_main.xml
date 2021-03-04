@@ -12,23 +12,23 @@
         android:id="@+id/signUpFolder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="70dp"
         android:layout_marginTop="100dp"
-        app:srcCompat="@drawable/sign_up_folder"
-        app:layout_constraintTop_toBottomOf="@id/projectTitle"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf ="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/projectTitle"
+        app:srcCompat="@drawable/sign_up_folder" />
 
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
         android:backgroundTint="@color/warm2"
         android:fontFamily="@font/stalinist_one"
         android:text="@string/sign_up"
         android:textColor="@color/warm1"
         android:textSize="15sp"
-        android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toTopOf="@id/signUpFolder"
         app:layout_constraintStart_toStartOf="@id/signUpFolder" />
 
@@ -36,26 +36,26 @@
         android:id="@+id/signInFolder"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginLeft="200dp"
         android:layout_marginTop="130dp"
         android:layout_marginBottom="70dp"
-        android:layout_marginLeft="200dp"
-        app:srcCompat="@drawable/sign_in_folder"
-        app:layout_constraintTop_toBottomOf="@id/projectTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf ="parent" />
+        app:layout_constraintTop_toBottomOf="@id/projectTitle"
+        app:srcCompat="@drawable/sign_in_folder" />
 
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
         android:backgroundTint="@color/warm3"
         android:fontFamily="@font/stalinist_one"
-        android:layout_marginLeft="16dp"
         android:text="@string/sign_in"
         android:textColor="@color/warm1"
         android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@id/signInFolder"
-        app:layout_constraintBottom_toTopOf="@+id/signInFolder" />
+        app:layout_constraintBottom_toTopOf="@+id/signInFolder"
+        app:layout_constraintStart_toStartOf="@id/signInFolder" />
 
     <TextView
         android:id="@+id/projectTitle"
@@ -77,37 +77,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/signInFolder"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toBottomOf="@id/signInFolder">
 
         <TextView
             android:id="@+id/contactMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="CONTACT US"
             android:fontFamily="@font/orbitron_bold"
+            android:text="CONTACT US"
             android:textColor="@color/dark_orange"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/contactEmail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
             ></TextView>
 
         <TextView
-                android:id="@+id/contactEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="16dp"
-                android:textSize="10dp"
-                android:text="Email: xueningl@uci.edu / yuehanc@uci.edu / fangzhod@uci.edu / wenxuaw2@uci.edu / txiang2@uci.edu; "
-                android:fontFamily="@font/orbitron_bold"
-                android:textColor="@color/warm4"
-                app:layout_constraintTop_toBottomOf="@id/contactEmail"
-                app:layout_constraintStart_toStartOf="parent"
-            ></TextView>
+            android:id="@+id/contactEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/orbitron_bold"
+            android:text="Email: xueningl@uci.edu / yuehanc@uci.edu / fangzhod@uci.edu / wenxuaw2@uci.edu / txiang2@uci.edu; "
+            android:textColor="@color/warm4"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactEmail"></TextView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

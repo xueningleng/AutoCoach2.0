@@ -3,8 +3,8 @@ package com.example.autocoach20.Activities;
 import android.os.SystemClock;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class HeadPositionDataHub {
     final static String UPDATE_COMMAND = "UPDATE";
@@ -90,12 +90,12 @@ public class HeadPositionDataHub {
             if (!update()) continue;
 
             // Use last value because it is the most recent
-            float rawAngle = rawData.get(rawData.size()-1);
+            float rawAngle = rawData.get(rawData.size() - 1);
 
-            if(rawAngle>frontAngle)
-                return (rawAngle-frontAngle)/(rightAngle-frontAngle)*100.0f;
+            if (rawAngle > frontAngle)
+                return (rawAngle - frontAngle) / (rightAngle - frontAngle) * 100.0f;
             else
-                return (frontAngle-rawAngle)/(frontAngle-leftAngle)*-100.0f;
+                return (frontAngle - rawAngle) / (frontAngle - leftAngle) * -100.0f;
         }
 
         return null;

@@ -49,53 +49,54 @@ import java.util.List;
  * @since AutoCoach2.0
  */
 public class StartAutoCoachActivity extends AppCompatActivity {
-    public static StartAutoCoachActivity mainActivity;
     private static final String TAG = "StartAutoCoachActivity";
+    public static StartAutoCoachActivity mainActivity;
+    public int DBTripId;
+    public Trip trip;
+    public User user;
+    public FirebaseUser fbUser; //currentUser
+    TextView gyro;
+    double gyro_data = 0;
+    TextView leftIndicator;
+    //raspberry pi
+    TextView frontIndicator;
+    TextView rightIndicator;
+    boolean running;
+    //trip info
+    Operations dbOperations = new Operations();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LocationManager locationManager;
-
     //ui items
     private Button end_btn;
     private TextView display_uname;
     private TextView display_score;
     private TextView display_speed;
     private int speed = -1;
-    //raspberry pi
+    // ************************************************************************** //
+    // LOCATION MANAGER LISTENER
+    // ************************************************************************** //
+    LocationListener locationListener = new LocationListener() {
 
-    TextView gyro;
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+        //Updates every 2 seconds
+        @Override
+        public void onLocationChanged(Location location) {
+            // update speed by current location
+            updateSpeedByLocation(location);
+        }
+    };
     private String new_rpi_input = "";
-    double gyro_data = 0;
-
-    TextView leftIndicator;
-    TextView frontIndicator;
-    TextView rightIndicator;
-
-
-    boolean running;
-
-
-    //trip info
-    Operations dbOperations = new Operations();
-    public int DBTripId;
-
-    public int getDBTripId() {
-        return DBTripId;
-    }
-
-    public Trip trip;
-    public User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public FirebaseUser fbUser; //currentUser
-
-    public FirebaseUser getFbUser() {
-        return fbUser;
-    }
-
-
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -118,6 +119,18 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     public static StartAutoCoachActivity getMainActivity() {
         return mainActivity;
+    }
+
+    public int getDBTripId() {
+        return DBTripId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public FirebaseUser getFbUser() {
+        return fbUser;
     }
 
     @Override
@@ -247,7 +260,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         });
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
@@ -263,32 +275,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         return super.onCreateView(name, context, attrs);
     }
-
-
-    // ************************************************************************** //
-    // LOCATION MANAGER LISTENER
-    // ************************************************************************** //
-    LocationListener locationListener = new LocationListener() {
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
-
-        //Updates every 2 seconds
-        @Override
-        public void onLocationChanged(Location location) {
-            // update speed by current location
-            updateSpeedByLocation(location);
-        }
-    };
 
     //This calculates the speed -- no need to change it
     private int updateSpeedByLocation(Location location) {
