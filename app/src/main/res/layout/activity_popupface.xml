@@ -210,7 +210,6 @@
                         android:textSize="15sp" />
 
 
-
                     <EditText
                         android:id="@+id/headpositiondebug_gyrohostedit"
                         android:layout_width="150dp"
@@ -236,6 +235,7 @@
                         android:text="Connect"
                         android:textSize="15sp" />
                 </TableRow>
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -250,7 +250,6 @@
                         android:gravity="center"
                         android:text="Gyroscope Port"
                         android:textSize="15sp" />
-
 
 
                     <EditText

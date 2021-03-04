@@ -372,7 +372,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         if (split.length != 2) {
             gyro_data = 0;
-        }else {
+        } else {
             try {
                 gyro_data = Double.parseDouble(split[1]);
             } catch (Exception e) {

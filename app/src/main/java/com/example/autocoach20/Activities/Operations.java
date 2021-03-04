@@ -101,7 +101,6 @@ public class Operations {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            dbHelper.onUpgrade(db, 0, 1);
             Log.d(TAG, "Inserting Trip: ");
 
             // Create a new map of values, where column names are the keys
@@ -130,7 +129,6 @@ public class Operations {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            dbHelper.onUpgrade(db, 1, 2);
             Log.d(TAG, "Inserting Speed Record: ");
 
             // Create a new map of values, where column names are the keys
@@ -145,7 +143,7 @@ public class Operations {
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD, null, TripValues);
 
-            Log.i(TAG, "Primary Id of the inserted row into TABLE TRIP =" + newRowId);
+            Log.i(TAG, "Primary Id of the inserted row into TABLE SPEED RECORD is" + newRowId);
 
         } catch (Exception e) {
             e.printStackTrace();

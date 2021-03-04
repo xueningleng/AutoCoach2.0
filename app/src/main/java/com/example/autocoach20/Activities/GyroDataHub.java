@@ -66,7 +66,7 @@ public class GyroDataHub extends HardwareDataHub {
         t.start();
     }
 
-    public String getLastValue(){
+    public String getLastValue() {
         queueLock.lock();
 
         if (rawData.size() == 0) {

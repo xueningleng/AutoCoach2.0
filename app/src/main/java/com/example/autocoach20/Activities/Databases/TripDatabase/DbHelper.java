@@ -3,6 +3,7 @@ package com.example.autocoach20.Activities.Databases.TripDatabase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * @author Zahraa Marafie
@@ -11,6 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @since AutoCoach2.0
  */
 public class DbHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = "DBHelper";
 
     // If you change the database schema, you must increment the database version.
     // New in version 11: added filtered data
@@ -103,6 +106,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG, "In onCreate");
         db.execSQL(SQL_CREATE_USER);
         db.execSQL(SQL_CREATE_TRIP);
         db.execSQL(SQL_CREATE_SPEEDRECORD);
@@ -112,6 +116,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG, "In onUpgrade, oldVersion: " + oldVersion + " newVersion: " + newVersion);
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_USER);
@@ -125,12 +130,14 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void closeDB(SQLiteDatabase db) {
+        Log.d(TAG, "In closeDB");
         //db = getReadableDatabase();
-        if (db != null || db.isOpen())
+        if (db != null && db.isOpen())
             db.close();
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG, "In onDowngrade");
         onUpgrade(db, oldVersion, newVersion);
     }
 }
