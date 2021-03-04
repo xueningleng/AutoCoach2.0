@@ -35,12 +35,6 @@ import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -54,33 +48,48 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private static final String TAG = "StartAutoCoachActivity";
     private static final int DATA_QUEUE_SIZE = 30;
     private static final float HEAD_DIR_THRESHOLD = 66.6f;
+    private static final int UPDATE_INTERVAL_MS = 250;
+
     // Handler
     final Handler handler = new Handler();
+
     //
     public StartAutoCoachActivity mainActivity;
     public int DBTripId;
     public Trip trip;
     public User user;
     public FirebaseUser fbUser; //currentUser
-    TextView gyro;
-    double gyro_data = 0;
-    TextView leftIndicator;
+
     //raspberry pi
+    TextView leftIndicator;
     TextView frontIndicator;
     TextView rightIndicator;
-    boolean running;
+    TextView gyroIndicator;
+
     //trip info
     Operations dbOperations = new Operations();
+
     // Data Hubs
     HeadPositionDataHub headPositionDataHub = new HeadPositionDataHub(DATA_QUEUE_SIZE, HEAD_DIR_THRESHOLD);
+    GyroDataHub gyroDataHub = new GyroDataHub(DATA_QUEUE_SIZE);
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LocationManager locationManager;
+
     //ui items
     private Button end_btn;
     private TextView display_uname;
     private TextView display_score;
     private TextView display_speed;
+
+    // Data to be send to DB
     private int speed = -1;
+    private double gyro_data = 0.0;
+    private int headPosition = 0;
+
+    // Worker thread
+    Thread t;
+
     // ************************************************************************** //
     // LOCATION MANAGER LISTENER
     // ************************************************************************** //
@@ -151,7 +160,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         end_btn = findViewById(R.id.endBtn);
         //gyro module
-        gyro = findViewById(R.id.gyrodata);
+        gyroIndicator = findViewById(R.id.gyrodata);
 
         leftIndicator = (TextView) findViewById(R.id.headpositiondebug_onleft);
         frontIndicator = (TextView) findViewById(R.id.headpositiondebug_onfront);
@@ -206,7 +215,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 Toast.makeText(this, "Current Speed is " + currentSpeed,
                         Toast.LENGTH_SHORT).show();
-                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp, new_rpi_input, gyro_data);
+                dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp, headPosition, gyro_data);
             }
 
             //Set the timer for 2 seconds to request location information
@@ -251,7 +260,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         end_btn.setOnClickListener(v -> {
             Log.d("END", "END BUTTON CLICKED");
 
-            running = false; // This variable controls the Feedback Activity Threads while loop
+
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
             dbOperations.onClose(this);
@@ -259,10 +268,37 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             op.updateTripRecord(this, getDBTripId(), tripEndTime, fbUser.getUid(), trip.getTripScore());
             op.onClose(this);
 
-
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
+
+        // Start thread to write data to db
+        t = new Thread(() -> {
+            while (true) {
+                // Collect speed, gyro_data, and headPosition
+                updateDirection();
+                updateGyro();
+
+
+                // Write to DB
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                dbOperations.addToTableSpeedRecord(
+                        getApplicationContext(),
+                        getDBTripId(),
+                        speed,
+                        timestamp,
+                        headPosition,
+                        gyro_data);
+
+                // Sleep
+                try {
+                    Thread.sleep(UPDATE_INTERVAL_MS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
     }
 
     @Nullable
@@ -300,15 +336,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         TextView viewToUpdate = null;
         switch (dir) {
             case NONE:
+                headPosition = 0;
                 break;
             case LEFT:
                 viewToUpdate = leftIndicator;
+                headPosition = 1;
                 break;
             case RIGHT:
                 viewToUpdate = rightIndicator;
+                headPosition = 2;
                 break;
             case FRONT:
                 viewToUpdate = frontIndicator;
+                headPosition = 3;
                 break;
         }
 
@@ -317,6 +357,34 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             handler.post(() -> {
                 v.setVisibility(View.VISIBLE);
             });
+    }
+
+    private void updateGyro() {
+        String gyroData = gyroDataHub.getLastValue();
+
+        if (gyroData == null)
+            gyroData = "";
+
+        // TODO: generate angle from gyro data
+        // TODO: now use Y value as angle
+
+        String[] split = gyroData.split("\n");
+
+        if (split.length != 2) {
+            gyro_data = 0;
+        }else {
+            try {
+                gyro_data = Double.parseDouble(split[1]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                gyro_data = 0.0;
+            }
+        }
+
+        String outValue = gyroData;
+        handler.post(() -> {
+            gyroIndicator.setText(outValue);
+        });
     }
 
 
@@ -352,7 +420,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     public void onClickHeadBtn(View view) {
         PopUpHead popUpHead = new PopUpHead();
-        popUpHead.showPopupWindow(view, headPositionDataHub);
+        popUpHead.showPopupWindow(view, headPositionDataHub, gyroDataHub);
     }
 
 
@@ -371,60 +439,4 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     }
 
 
-    public void gyroService(View view) {
-        // TODO: Pop up window asking for ip and port
-        // TODO: Move this part to GyroDataHub
-        final Handler handler = new Handler();
-
-        // Create new popup window and get Host Port
-
-
-        Thread thread = new Thread((new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Socket s = new Socket("192.168.1.78", 80);
-                    OutputStream out = s.getOutputStream();
-                    PrintWriter output = new PrintWriter(out);
-                    output.println("command");
-                    output.flush();
-
-                    while (true) {
-                        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                        final String st = input.readLine();
-                        onUpdateGyro(st);
-                        try {
-                            Thread.sleep(250);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
-
-        thread.start();
-    }
-
-    private void onUpdateGyro(String g) {
-        String[] arr = g.split(",", 2);
-        try {
-            String out = arr[0] + '\n' + arr[1];
-            gyro_data = Double.parseDouble(arr[1]);
-
-            // Update camera direction
-            updateDirection();
-
-
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), speed, timestamp, new_rpi_input, gyro_data);
-            gyro.setText(out);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

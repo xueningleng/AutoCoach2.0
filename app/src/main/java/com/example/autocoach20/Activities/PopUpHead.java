@@ -23,26 +23,27 @@ public class PopUpHead {
     final AtomicBoolean threadStopped = new AtomicBoolean(false);
 
 
-    TextView leftIndicator;
-    TextView frontIndicator;
-    TextView rightIndicator;
-    EditText hostInput;
-    EditText portInput;
+    EditText cameraHostInput;
+    EditText cameraPortInput;
     TextView leftCalibrateAngle;
     TextView frontCalibrateAngle;
     TextView rightCalibrateAngle;
-    EditText intervalInput;
-    TextView connectionIndicator;
-    Button connectButton;
+
+    EditText gyroHostInput;
+    EditText gyroPortInput;
+
+    Button cameraConnectButton;
     Button calibrateButton;
-    Button returnButton;
+    Button GyroConnectButton;
 
 
     HeadPositionDataHub headPositionDataHub;
+    GyroDataHub gyroDataHub;
 
 
-    public void showPopupWindow(final View view, final HeadPositionDataHub headPositionDataHub) {
+    public void showPopupWindow(final View view, HeadPositionDataHub headPositionDataHub, GyroDataHub gyroDataHub) {
         this.headPositionDataHub = headPositionDataHub;
+        this.gyroDataHub = gyroDataHub;
 
         //****following section setting pop up window***
         //Create a View object yourself through inflater
@@ -64,29 +65,28 @@ public class PopUpHead {
 
         //****End of section setting pop up window***
 
-        leftIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onleft);
-        frontIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onfront);
-        rightIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_onright);
 
-        hostInput = (EditText) popupView.findViewById(R.id.headpositiondebug_hostedit);
-        portInput = (EditText) popupView.findViewById(R.id.headpositiondebug_portedit);
+        cameraHostInput = (EditText) popupView.findViewById(R.id.headpositiondebug_camerahostedit);
+        cameraPortInput = (EditText) popupView.findViewById(R.id.headpositiondebug_cameraportedit);
         leftCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_leftanglevalue);
         frontCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_frontanglevalue);
         rightCalibrateAngle = (TextView) popupView.findViewById(R.id.headpositiondebug_rightanglevalue);
-        intervalInput = (EditText) popupView.findViewById(R.id.headpositiondebug_intervaledit);
 
-        connectionIndicator = (TextView) popupView.findViewById(R.id.headpositiondebug_connstatus);
-        connectButton = (Button) popupView.findViewById(R.id.headpositiondebug_connectbtn);
-        connectButton.setOnClickListener(new View.OnClickListener() {
+        gyroHostInput = (EditText) popupView.findViewById(R.id.headpositiondebug_gyrohostedit);
+        gyroPortInput = (EditText) popupView.findViewById(R.id.headpositiondebug_gyroportedit);
+
+
+        cameraConnectButton = (Button) popupView.findViewById(R.id.headpositiondebug_cameraconnectbtn);
+        cameraConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String host = hostInput.getText().toString();
-                int port = Integer.parseInt(portInput.getText().toString());
+                String host = cameraHostInput.getText().toString();
+                int port = Integer.parseInt(cameraPortInput.getText().toString());
 
                 headPositionDataHub.run(host, port);
 
 
-                Toast.makeText(view.getContext(), "Connected to server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "Connected to Camera", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -193,11 +193,17 @@ public class PopUpHead {
         });
 
 
-        returnButton = (Button) popupView.findViewById(R.id.headpositiondebug_returnbtn);
-        returnButton.setOnClickListener(new View.OnClickListener() {
+        GyroConnectButton = (Button) popupView.findViewById(R.id.headpositiondebug_gyroconnectbtn);
+        GyroConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+
+                String host = gyroHostInput.getText().toString();
+                int port = Integer.parseInt(gyroPortInput.getText().toString());
+
+                gyroDataHub.run(host, port);
+
+                Toast.makeText(view.getContext(), "Connected to Gyro", Toast.LENGTH_SHORT).show();
             }
         });
 

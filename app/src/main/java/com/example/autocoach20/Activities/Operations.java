@@ -124,7 +124,7 @@ public class Operations {
         }
     }
 
-    synchronized public void addToTableSpeedRecord(Context context, int tripId, int speed, Timestamp time, String rpi_data, double gyro_data) {
+    synchronized public void addToTableSpeedRecord(Context context, int tripId, int speed, Timestamp time, int head_position, double gyro_data) {
         dbHelper = new DbHelper(context);
 
         // Gets the data repository in write mode
@@ -138,7 +138,7 @@ public class Operations {
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_TRIP_ID, tripId);
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_SPEED, speed);
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP, String.valueOf(time));
-            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_RASPI, rpi_data);
+            TripValues.put(FeedReaderContract.FeedEntry.COLUMN_RASPI, head_position);
             TripValues.put(FeedReaderContract.FeedEntry.COLUMN_GYRO, gyro_data);
 
 

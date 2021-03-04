@@ -41,7 +41,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + " INTEGER, " +
                     FeedReaderContract.FeedEntry.COLUMN_SPEED + " INT, " +
                     FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP + " TIMESTAMP, " +
-                    FeedReaderContract.FeedEntry.COLUMN_RASPI + " VARCHAR, " +
+                    FeedReaderContract.FeedEntry.COLUMN_RASPI + " INT, " +
                     FeedReaderContract.FeedEntry.COLUMN_GYRO + " DOUBLE , " +
                     "FOREIGN KEY (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ") REFERENCES " + FeedReaderContract.FeedEntry.TABLE_TRIP + " (" + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + ")" +
                     ")";
