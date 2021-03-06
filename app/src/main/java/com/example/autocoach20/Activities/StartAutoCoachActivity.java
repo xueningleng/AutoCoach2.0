@@ -1,12 +1,16 @@
 package com.example.autocoach20.Activities;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -23,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.autocoach20.Activities.Model.Trip;
@@ -426,5 +431,20 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     }
 
+
+    public void dangerAlert(View v){
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(),alarmSound);
+        mp.start();
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(StartAutoCoachActivity.this, "dangerAlert" )
+                        .setSmallIcon(R.drawable. ic_launcher_foreground )
+                        .setContentTitle( "Danger" )
+                        .setContentText( "Drive Careful" ) ;
+        NotificationManager mNotificationManager = (NotificationManager)
+                getSystemService(Context. NOTIFICATION_SERVICE );
+        mNotificationManager.notify(( int ) System. currentTimeMillis () ,
+                mBuilder.build());
+    }
 
 }

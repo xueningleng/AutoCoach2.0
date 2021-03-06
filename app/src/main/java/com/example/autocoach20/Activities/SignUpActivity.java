@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
     EditText userEmail;
     EditText userPassword;
     EditText userName;
-    Button btn_signIn, homeBtn;
+    Button btn_signUp, homeBtn;
     TextView consent;
     boolean checked;
     Operations dbOperations = new Operations();
@@ -66,17 +66,21 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
             @Override
             public void onClick(View v) {
                 showConsentDialog();
+                checked = true;
             }
         });
-        if (checked) {
-            showConsentDialog();
-            btn_signIn.setOnClickListener(new View.OnClickListener() {
+            //showConsentDialog();
+            btn_signUp.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    createAccount();
+                    if (checked) createAccount();
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please Accept Privacy Policy First", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
-        }
+
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
         userEmail = (EditText) findViewById(R.id.uEmail);
         userPassword = (EditText) findViewById(R.id.uPword);
         userName = (EditText) findViewById(R.id.uName);
-        btn_signIn = findViewById(R.id.signUpButton);
+        btn_signUp = findViewById(R.id.signUpButton);
         homeBtn = findViewById(R.id.returnButton);
         consent = findViewById(R.id.consent);
     }
@@ -117,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity implements NoticeDialogFra
             Toast.makeText(getApplicationContext(), "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
+        Toast.makeText(getApplicationContext(), "Pushing Registration", Toast.LENGTH_LONG).show();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

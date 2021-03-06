@@ -9,28 +9,26 @@
 
     <LinearLayout
         android:id="@+id/groupdisplay"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:weightSum="3"
         app:layout_constraintTop_toBottomOf="@id/display_name">
 
         <LinearLayout
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
             android:weightSum="2">
 
-
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 android:weightSum="3"
                 app:layout_constraintBottom_toTopOf="@+id/headBtn"
@@ -47,7 +45,7 @@
                     android:gravity="center"
                     android:text="Left"
                     android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/headpositiondebug_onfront"
@@ -59,7 +57,7 @@
                     android:gravity="center"
                     android:text="Front"
                     android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/headpositiondebug_onright"
@@ -71,14 +69,14 @@
                     android:gravity="center"
                     android:text="Right"
                     android:textColor="@color/dark_pink"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/headBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="@color/warm1"
                 android:fontFamily="@font/stalinist_one"
                 android:onClick="onClickHeadBtn"
@@ -143,7 +141,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
@@ -184,6 +182,7 @@
                 android:textColor="@color/warm4"
                 android:textSize="10dp" />
         </LinearLayout>
+
     </LinearLayout>
 
 
