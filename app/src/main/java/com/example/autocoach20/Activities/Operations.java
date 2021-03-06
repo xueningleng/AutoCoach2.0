@@ -62,7 +62,7 @@ public class Operations {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
         }
     }
 
@@ -90,7 +90,7 @@ public class Operations {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            //dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
         }
     }
 
@@ -125,7 +125,7 @@ public class Operations {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
         }
     }
 
@@ -135,7 +135,7 @@ public class Operations {
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            Log.d(TAG, "Inserting Speed Record: ");
+//            Log.d(TAG, "Inserting Speed Record: ");
 
             // Create a new map of values, where column names are the keys
             ContentValues TripValues = new ContentValues();
@@ -149,12 +149,12 @@ public class Operations {
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD, null, TripValues);
 
-            Log.i(TAG, "Primary Id of the inserted row into TABLE SPEED RECORD is" + newRowId);
+//            Log.i(TAG, "Primary Id of the inserted row into TABLE SPEED RECORD is" + newRowId);
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
         }
     }
 
@@ -199,7 +199,7 @@ public class Operations {
 
             Log.d(TAG, "Error while trying to get trip details from database");
         } finally {
-            //dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
             if (cursor != null || !cursor.isClosed()) {
                 cursor.close();
             }
@@ -243,7 +243,7 @@ public class Operations {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            //dbHelper.closeDB(db);
+            dbHelper.closeDB(db);
         }
 
         return isUpdated;

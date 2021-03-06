@@ -58,16 +58,15 @@ public class GyroDataHub extends HardwareDataHub {
                 }
 
 
-
-                double angle =(double) Math.toDegrees(Math.atan(y / x));
-                if (x<0 &&y<0)
-                    angle= angle;
-                else if (x>0&&y<0)
-                    angle= angle+180.0;
-                else if (x>0&&y>0)
-                    angle=angle-180.0;
+                double angle = (double) Math.toDegrees(Math.atan(y / x));
+                if (x < 0 && y < 0)
+                    angle = angle;
+                else if (x > 0 && y < 0)
+                    angle = angle + 180.0;
+                else if (x > 0 && y > 0)
+                    angle = angle - 180.0;
                 else
-                    angle= angle;
+                    angle = angle;
 
 
                 // Add data to queue
