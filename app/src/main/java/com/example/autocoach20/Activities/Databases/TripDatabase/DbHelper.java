@@ -130,7 +130,6 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void closeDB(SQLiteDatabase db) {
-        Log.d(TAG, "In closeDB");
         //db = getReadableDatabase();
         if (db != null && db.isOpen())
             db.close();

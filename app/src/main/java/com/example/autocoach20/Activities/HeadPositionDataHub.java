@@ -131,7 +131,6 @@ public class HeadPositionDataHub extends HardwareDataHub {
         float rawAngle = rawData.get(rawData.size() - 1);
         queueLock.unlock();
 
-        System.out.println("Angle " + Float.toString(rawAngle));
 
         // Regularize angle and return
         if (rawAngle > frontAngle)
