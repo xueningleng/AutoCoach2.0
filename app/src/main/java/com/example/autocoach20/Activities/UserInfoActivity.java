@@ -102,7 +102,7 @@ public class UserInfoActivity extends AppCompatActivity implements DatePickerDia
         int age = today.get(Calendar.YEAR) - year;
         userAge = age;
         month++;
-        String d = month + "/" + dayOfMonth + "/" + year + " (mm/dd/yyyy)";
+        String d = month + "/" + dayOfMonth + "/" + year;
         dateText.setText(d);
     }
 
