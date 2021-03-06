@@ -10,10 +10,11 @@
     <LinearLayout
         android:id="@+id/groupdisplay"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/endBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/display_name">
@@ -82,7 +83,7 @@
                 android:backgroundTint="@color/warm1"
                 android:fontFamily="@font/stalinist_one"
                 android:onClick="onClickHeadBtn"
-                android:text="Connect Camera"
+                android:text="Connect Devices"
                 android:textColor="@color/warm4"
                 android:textSize="10dp"
 
@@ -118,7 +119,7 @@
             <TextView
                 android:id="@+id/speednum"
                 android:layout_width="130dp"
-                android:layout_height="40dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:ems="10"
                 android:fontFamily="@font/stalinist_one"
@@ -163,7 +164,7 @@
             <TextView
                 android:id="@+id/gyrodata"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="40dp"
                 android:ems="6"
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
@@ -172,17 +173,6 @@
                 android:textColorHighlight="@color/warm2"
                 android:textSize="22dp" />
 
-            <Button
-                android:id="@+id/Gyro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/dark_pink"
-                android:fontFamily="@font/stalinist_one"
-                android:text="Connect Gyro"
-                android:textColor="@color/warm4"
-                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -258,6 +248,7 @@
         android:id="@+id/endBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/dark_orange"
         android:fontFamily="@font/stalinist_one"
         android:text="END TRIP"
@@ -265,8 +256,7 @@
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/groupdisplay" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
