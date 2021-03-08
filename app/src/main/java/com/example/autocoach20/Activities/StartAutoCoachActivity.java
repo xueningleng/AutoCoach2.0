@@ -94,6 +94,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     // data for realtime feedback
     private long headStart = 0;
+    private long headCountStart = 0;
+    private int headCount = 0;
     private SpeedRecord sr = new SpeedRecord();
     // Worker thread
     Thread t;
@@ -228,6 +230,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 int currentSpeed = updateSpeedByLocation(location);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                //backward conversion: long tsTime2 = ts2.getTime();
                 Toast.makeText(this, "Current Speed is " + currentSpeed,
                         Toast.LENGTH_SHORT).show();
                 dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp, headPosition, gyro_data);
@@ -348,6 +351,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         sr = dbOperations.lastSpeedRecord(getApplicationContext());
         int last_speed =sr.speed;
         long last_time = sr.current_t;
+
         acc = (cur_speed-last_speed)/(System.currentTimeMillis()-last_time);
         return acc;
     }
@@ -375,19 +379,34 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                     Toast.makeText(this, "Time without looking front is " + timepassed/1000,
                             Toast.LENGTH_SHORT).show();
                     if (timepassed >= 3000) dangerAlert(); //dangerous operation #1: looking away over X=3 seconds
+                    headStart = 0;
                 }
                 break;
             case RIGHT:
                 viewToUpdate = rightIndicator;
                 headPosition = 2;
-                if (headStart == 0) headStart = System.currentTimeMillis();
+                if (headStart == 0) {
+                    headCount++;
+                    headCountStart = System.currentTimeMillis();
+                    headStart = System.currentTimeMillis();
+                }
                 break;
 
             case FRONT:
                 viewToUpdate = frontIndicator;
                 headPosition = 3;
-                if (headStart == 0) headStart = System.currentTimeMillis();
+                if (headStart == 0){
+                    headCount++;
+                    headCountStart = System.currentTimeMillis();
+                    headStart = System.currentTimeMillis();
+                }
                 break;
+        }
+        if (headCount >=3 ){// dangerous operation #1
+            long timepassed = System.currentTimeMillis()-headCountStart;
+            if (timepassed<=10000){//10seconds
+                dangerAlert();
+            }
         }
 
         final TextView v = viewToUpdate;
@@ -405,6 +424,15 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         else
             gyro_data = gyroData;
 
+        if (gyro_data>15) {//lane change, turn, etc
+            long timepassed = System.currentTimeMillis()-headStart;
+            if (timepassed<=5000){// looked aside in 5s
+
+            }
+            else{// dangerous operation #5
+                dangerAlert();
+            }
+        }
         if (gyro_data>45) { // dangerous operation #3
             if ((speed>40)&&(acc>0)){
                 dangerAlert();
