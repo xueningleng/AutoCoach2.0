@@ -401,7 +401,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         Double gyroData = gyroDataHub.getLastValue();
 
         if (gyroData == null)
-            gyro_data = 10000.0;
+            gyro_data = 0.0;
         else
             gyro_data = gyroData;
 
