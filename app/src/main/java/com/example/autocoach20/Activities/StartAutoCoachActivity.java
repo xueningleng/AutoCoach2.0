@@ -405,6 +405,17 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         else
             gyro_data = gyroData;
 
+        if (gyro_data>45) { // dangerous operation #3
+            if ((speed>40)&&(acc>0)){
+                dangerAlert();
+            }
+            
+        }
+        if (gyro_data>90) { // dangerous operation #4
+            if ((speed>20)&&(acc>0)){
+                dangerAlert();
+            }
+        }
         String outValue = String.format("%.2f", gyro_data);
         handler.post(() -> {
             gyroIndicator.setText(outValue);
