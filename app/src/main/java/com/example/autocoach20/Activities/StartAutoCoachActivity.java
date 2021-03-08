@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.autocoach20.Activities.Model.SpeedRecord;
 import com.example.autocoach20.Activities.Model.Trip;
 import com.example.autocoach20.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,16 +81,20 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private LocationManager locationManager;
 
     //ui items
-    private Button end_btn;
+    private Button end_btn,warn_btn;
     private TextView display_uname;
     private TextView display_score;
     private TextView display_speed;
 
     // Data to be send to DB
     private int speed = -1;
+    private float acc = 0;
     private double gyro_data = 0.0;
     private int headPosition = 0;
 
+    // data for realtime feedback
+    private long headStart = 0;
+    private SpeedRecord sr = new SpeedRecord();
     // Worker thread
     Thread t;
 
@@ -162,6 +167,13 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         display_speed = findViewById(R.id.speednum);
 
         end_btn = findViewById(R.id.endBtn);
+        warn_btn = findViewById(R.id.warnBtn);
+        warn_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dangerAlert();
+            }
+        });
         //gyro module
         gyroIndicator = findViewById(R.id.gyrodata);
 
@@ -327,7 +339,17 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private int updateSpeedByLocation(Location location) {
         speed = (int) (location.getSpeed() * 2.23694); // m/s --> 3.6 for Km/h --> 2.23694 mph
         display_speed.setText(String.valueOf(speed));
+        updateAccBySpeed(speed);
         return speed;
+    }
+
+    private float updateAccBySpeed(int cur_speed){
+        //retrieve last stored speed and calculate acceleration
+        sr = dbOperations.lastSpeedRecord(getApplicationContext());
+        int last_speed =sr.speed;
+        long last_time = sr.current_t;
+        acc = (cur_speed-last_speed)/(System.currentTimeMillis()-last_time);
+        return acc;
     }
 
     private void updateDirection() {
@@ -347,14 +369,24 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             case LEFT:
                 viewToUpdate = leftIndicator;
                 headPosition = 1;
+                if (headStart != 0){
+                    //head turned back
+                    long timepassed = System.currentTimeMillis()-headStart;
+                    Toast.makeText(this, "Time without looking front is " + timepassed/1000,
+                            Toast.LENGTH_SHORT).show();
+                    if (timepassed >= 3000) dangerAlert(); //dangerous operation #1: looking away over X=3 seconds
+                }
                 break;
             case RIGHT:
                 viewToUpdate = rightIndicator;
                 headPosition = 2;
+                if (headStart == 0) headStart = System.currentTimeMillis();
                 break;
+
             case FRONT:
                 viewToUpdate = frontIndicator;
                 headPosition = 3;
+                if (headStart == 0) headStart = System.currentTimeMillis();
                 break;
         }
 
@@ -372,7 +404,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             gyro_data = 10000.0;
         else
             gyro_data = gyroData;
-
 
         String outValue = String.format("%.2f", gyro_data);
         handler.post(() -> {
@@ -431,9 +462,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     }
 
-
-    public void dangerAlert(View v){
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+    public void dangerAlert(){
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(),alarmSound);
         mp.start();
         NotificationCompat.Builder mBuilder =
@@ -445,6 +475,14 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 getSystemService(Context. NOTIFICATION_SERVICE );
         mNotificationManager.notify(( int ) System. currentTimeMillis () ,
                 mBuilder.build());
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                mp.stop();
+            }
+        }, 5000);
     }
 
+    public void notFront40(View v){
+
+    }
 }

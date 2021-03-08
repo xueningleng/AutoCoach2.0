@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.autocoach20.Activities.Databases.TripDatabase.DbHelper;
 import com.example.autocoach20.Activities.Databases.TripDatabase.FeedReaderContract;
+import com.example.autocoach20.Activities.Model.SpeedRecord;
 import com.example.autocoach20.Activities.Model.Trip;
 import com.example.autocoach20.BuildConfig;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +30,7 @@ public class Operations {
     private static final String TAG = "DataBaseOperations";
     private static DbHelper dbHelper;
 
+
     // ****************************************************************** //
     // WRITE OPERATIONS
     // ****************************************************************** //
@@ -37,6 +39,7 @@ public class Operations {
      * @param documentReference is the user UID
      * @param context           is the application context
      */
+
     synchronized public void addToTableUser(DocumentReference documentReference, Context context, FirebaseUser currentUser) {
         dbHelper = new DbHelper(context);
 
@@ -163,6 +166,43 @@ public class Operations {
     // READ OPERATIONS
     // ****************************************************************** //
 
+    public SpeedRecord lastSpeedRecord(Context context){
+        dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD +
+                " WHERE " + FeedReaderContract.FeedEntry.COLUMN_TRIP_ID + " = (SELECT MAX(" +
+                FeedReaderContract.FeedEntry.COLUMN_RECORD_ID + ") FROM " +
+                FeedReaderContract.FeedEntry.TABLE_SPEEDRECORD + ")";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        SpeedRecord sr = new SpeedRecord();
+
+        try {
+            while (cursor.moveToNext()) {
+                sr.record_id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_RECORD_ID));
+                sr.trip_id = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_TRIP_ID));
+                sr.current_t = cursor.getLong(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_TIMESTAMP));
+                sr.speed = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_SPEED));
+                sr.raspi = cursor.getInt(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_RASPI));
+                sr.gyro = cursor.getFloat(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_GYRO));
+            }
+
+            /*if (gyro!=10000){
+                if (gyro > 0){//cw turn ; right turn
+                }
+            }*/
+        } catch (Exception e) {
+
+            Log.d(TAG, "Error while trying to get trip details from database");
+        } finally {
+            dbHelper.closeDB(db);
+            if (cursor != null || !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return sr;
+    }
+
     public Trip readCurrentTripDetails(Context context) {
         Trip trip = null;
 
@@ -248,6 +288,7 @@ public class Operations {
 
         return isUpdated;
     }
+
 
 
     public void onClose(Context context) {
