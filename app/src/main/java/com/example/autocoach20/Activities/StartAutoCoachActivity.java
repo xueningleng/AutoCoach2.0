@@ -96,7 +96,10 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private long headStart = 0;
     private long headCountStart = 0;
     private int headCount = 0;
+    private int last_speed;
+    private long last_time;
     private SpeedRecord sr = new SpeedRecord();
+
     // Worker thread
     Thread t;
 
@@ -340,19 +343,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     //This calculates the speed -- no need to change it
     private int updateSpeedByLocation(Location location) {
+        if (speed != -1) last_speed = speed;
+        else last_speed = 0;
+        last_time = System.currentTimeMillis();
         speed = (int) (location.getSpeed() * 2.23694); // m/s --> 3.6 for Km/h --> 2.23694 mph
-        display_speed.setText(String.valueOf(speed));
         updateAccBySpeed(speed);
         return speed;
     }
 
     private float updateAccBySpeed(int cur_speed){
         //retrieve last stored speed and calculate acceleration
-        sr = dbOperations.lastSpeedRecord(getApplicationContext());
-        int last_speed =sr.speed;
-        long last_time = sr.current_t;
-
-        acc = (cur_speed-last_speed)/(System.currentTimeMillis()-last_time);
+        //sr = dbOperations.lastSpeedRecord(getApplicationContext());
+        //if (sr == null) return acc;
+        if ((System.currentTimeMillis()-last_time)!=0) acc = (cur_speed-last_speed)/(System.currentTimeMillis()-last_time);
         return acc;
     }
 
