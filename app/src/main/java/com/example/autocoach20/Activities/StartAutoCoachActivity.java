@@ -429,7 +429,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
         if (gyro_data>15) {//lane change, turn, etc
             long timepassed = System.currentTimeMillis()-headStart;
-            if (timepassed<=5000){// looked aside in 5s
+            if (timepassed<=3000){// looked aside in 5s
 
             }
             else{// dangerous operation #5
@@ -437,13 +437,13 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             }
         }
         if (gyro_data>45) { // dangerous operation #3
-            if ((speed>40)&&(acc>0)){
+            if ((speed>20)&&(acc>0)){
                 dangerAlert();
             }
             
         }
         if (gyro_data>90) { // dangerous operation #4
-            if ((speed>20)&&(acc>0)){
+            if ((speed>10)&&(acc>0)){
                 dangerAlert();
             }
         }
