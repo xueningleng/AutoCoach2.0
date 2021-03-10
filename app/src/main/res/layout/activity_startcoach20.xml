@@ -125,7 +125,7 @@
                 android:fontFamily="@font/stalinist_one"
                 android:gravity="center"
                 android:text=""
-                android:textColor="@color/dark_orange"
+                android:textColor="@color/warm4"
                 android:textColorHighlight="@color/warm4"
                 android:textSize="30dp" />
 

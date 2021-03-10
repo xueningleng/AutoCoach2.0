@@ -99,6 +99,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private int last_speed;
     private long last_time;
     private SpeedRecord sr = new SpeedRecord();
+    private int score = 100;
 
     // Worker thread
     Thread t;
@@ -176,7 +177,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         warn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dangerAlert();
+                dangerAlert(v, 2);
             }
         });
         //gyro module
@@ -193,6 +194,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         dbOperations.addToTableTrip(getApplicationContext(), fbUser.getUid(), 0, tripStartTime, 0, 0);
         trip = dbOperations.readCurrentTripDetails(this); //Read trip information
         DBTripId = trip.getTripId();
+        display_uname.setText(user.getUser_name());
         updateUI();
 
         //android library
@@ -224,18 +226,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         //which means locationListener would update the location info every 5 sec or 5 meters
         //Toast.makeText(this, ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION),Toast.LENGTH_LONG).show();
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Entered location check ...",
-                    Toast.LENGTH_SHORT).show();
-
             Location location = locationManager.getLastKnownLocation(provider);
             if (location != null) {
-                Toast.makeText(this, "Current Location is " + location,
-                        Toast.LENGTH_SHORT).show();
+
                 int currentSpeed = updateSpeedByLocation(location);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                //backward conversion: long tsTime2 = ts2.getTime();
-                Toast.makeText(this, "Current Speed is " + currentSpeed,
-                        Toast.LENGTH_SHORT).show();
                 dbOperations.addToTableSpeedRecord(getApplicationContext(), getDBTripId(), currentSpeed, timestamp, headPosition, gyro_data);
             }
 
@@ -279,8 +274,6 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         // ************************************************************************** //
         end_btn.setMovementMethod(LinkMovementMethod.getInstance());
         end_btn.setOnClickListener(v -> {
-            Log.d("END", "END BUTTON CLICKED");
-
 
             //Update end time for the trip
             long tripEndTime = System.currentTimeMillis();
@@ -376,13 +369,18 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             case LEFT:
                 viewToUpdate = leftIndicator;
                 headPosition = 1;
-                if (headStart != 0){
+                if (headStart != 0) {
                     //head turned back
-                    long timepassed = System.currentTimeMillis()-headStart;
-                    Toast.makeText(this, "Time without looking front is " + timepassed/1000,
+                    long timepassed = System.currentTimeMillis() - headStart;
+                    Toast.makeText(this, "Time without looking front is " + timepassed / 1000,
                             Toast.LENGTH_SHORT).show();
-                    if (timepassed >= 3000) dangerAlert(); //dangerous operation #1: looking away over X=3 seconds
+                    if (timepassed >= 3000){
+                        View v = new View(this);
+                        dangerAlert(v, 1);
+
+                    }
                     headStart = 0;
+
                 }
                 break;
             case RIGHT:
@@ -405,10 +403,12 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 }
                 break;
         }
-        if (headCount >=3 ){// dangerous operation #1
+        if (headCount >=3 ){// dangerous operation #2
             long timepassed = System.currentTimeMillis()-headCountStart;
             if (timepassed<=10000){//10seconds
-                dangerAlert();
+                View v = new View(this);
+                dangerAlert(v, 2);
+
             }
         }
 
@@ -433,18 +433,24 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
             }
             else{// dangerous operation #5
-                dangerAlert();
+                View v = new View(this);
+                dangerAlert(v, 5);
+
             }
         }
         if (gyro_data>45) { // dangerous operation #3
             if ((speed>20)&&(acc>0)){
-                dangerAlert();
+                View v = new View(this);
+                dangerAlert(v, 3);
+
             }
             
         }
         if (gyro_data>90) { // dangerous operation #4
             if ((speed>10)&&(acc>0)){
-                dangerAlert();
+                View v = new View(this);
+                dangerAlert(v, 4);
+
             }
         }
         String outValue = String.format("%.2f", gyro_data);
@@ -491,8 +497,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
 
     private void updateUI() {
-        display_uname.setText(user.getUser_name());
-        display_score.setText("100/100");
+        display_score.setText(score+"/100");
     }
 
     @Override
@@ -504,7 +509,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     }
 
-    public void dangerAlert(){
+    public void dangerAlert(View v, int type){
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         MediaPlayer mp = MediaPlayer.create(getApplicationContext(),alarmSound);
         mp.start();
@@ -517,14 +522,30 @@ public class StartAutoCoachActivity extends AppCompatActivity {
                 getSystemService(Context. NOTIFICATION_SERVICE );
         mNotificationManager.notify(( int ) System. currentTimeMillis () ,
                 mBuilder.build());
+        /*Toast toast = Toast.makeText(this, "CAREFUL!",Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();*/
+        PopUpAlert alert = new PopUpAlert(type);
+        alert.showPopupAlert(v);
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 mp.stop();
             }
         }, 5000);
+        switch (type){
+            case 1:
+                score -= 20;
+                updateUI();
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                score -= 10;
+                updateUI();
+                break;
+            default:
+        }
     }
 
-    public void notFront40(View v){
-
-    }
 }
