@@ -74,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             pwordHint.setText("Login Successful!");
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignInActivity.this, StartAutoCoachActivity.class);
                             startActivity(intent);
                         } else {

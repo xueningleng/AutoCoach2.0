@@ -285,7 +285,8 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             // Export DB
             dbOperations.exportDB();
 
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SummaryActivity.class);
+            intent.putExtra("SCORE", score+"/100");
             startActivity(intent);
         });
 
