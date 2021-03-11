@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ import java.util.List;
  */
 public class StartAutoCoachActivity extends AppCompatActivity {
     private static final String TAG = "StartAutoCoachActivity";
-    private static final int DATA_QUEUE_SIZE = 30;
+    private static final int DATA_QUEUE_SIZE = 10;
     private static final float HEAD_DIR_THRESHOLD = 66.6f;
     private static final int UPDATE_INTERVAL_MS = 250;
 
@@ -81,7 +80,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private LocationManager locationManager;
 
     //ui items
-    private Button end_btn,warn_btn;
+    private Button end_btn, warn_btn;
     private TextView display_uname;
     private TextView display_score;
     private TextView display_speed;
@@ -97,9 +96,11 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private long headCountStart = 0;
     private int headCount = 0;
     private int last_speed;
-    private long last_time;
+    private long last_time = 0;
+    private long lastTurnTime = 0;
     private SpeedRecord sr = new SpeedRecord();
-    private int score = 100;
+    private int score = 1000;
+    boolean turning=false;
 
     // Worker thread
     Thread t;
@@ -286,7 +287,7 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             dbOperations.exportDB();
 
             Intent intent = new Intent(this, SummaryActivity.class);
-            intent.putExtra("SCORE", score+"/100");
+            intent.putExtra("SCORE", score + "/1000");
             startActivity(intent);
         });
 
@@ -339,17 +340,26 @@ public class StartAutoCoachActivity extends AppCompatActivity {
     private int updateSpeedByLocation(Location location) {
         if (speed != -1) last_speed = speed;
         else last_speed = 0;
-        last_time = System.currentTimeMillis();
+
+
         speed = (int) (location.getSpeed() * 2.23694); // m/s --> 3.6 for Km/h --> 2.23694 mph
+
         updateAccBySpeed(speed);
+
+        last_time = System.currentTimeMillis();
+
+        display_speed.setText(Integer.toString(speed));
+
         return speed;
     }
 
-    private float updateAccBySpeed(int cur_speed){
+    private float updateAccBySpeed(int cur_speed) {
         //retrieve last stored speed and calculate acceleration
         //sr = dbOperations.lastSpeedRecord(getApplicationContext());
         //if (sr == null) return acc;
-        if ((System.currentTimeMillis()-last_time)!=0) acc = (cur_speed-last_speed)/(System.currentTimeMillis()-last_time);
+        if ((System.currentTimeMillis() - last_time) != 0)
+            acc = (cur_speed - last_speed) / (System.currentTimeMillis() - last_time);
+
         return acc;
     }
 
@@ -367,15 +377,19 @@ public class StartAutoCoachActivity extends AppCompatActivity {
             case NONE:
                 headPosition = 0;
                 break;
-            case LEFT:
-                viewToUpdate = leftIndicator;
+
+            case FRONT:
+                viewToUpdate = frontIndicator;
                 headPosition = 1;
                 if (headStart != 0) {
                     //head turned back
                     long timepassed = System.currentTimeMillis() - headStart;
-                    Toast.makeText(this, "Time without looking front is " + timepassed / 1000,
-                            Toast.LENGTH_SHORT).show();
-                    if (timepassed >= 3000){
+
+                    if (timepassed >= 3000) {
+                        handler.post(() -> {
+                            Toast.makeText(this, "Time without looking front is " + timepassed / 1000,
+                                    Toast.LENGTH_SHORT).show();
+                        });
                         View v = new View(this);
                         dangerAlert(v, 1);
 
@@ -384,33 +398,45 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
                 }
                 break;
-            case RIGHT:
-                viewToUpdate = rightIndicator;
+
+            case LEFT:
+                viewToUpdate = leftIndicator;
                 headPosition = 2;
+                lastTurnTime = System.currentTimeMillis();
                 if (headStart == 0) {
-                    headCount++;
-                    headCountStart = System.currentTimeMillis();
                     headStart = System.currentTimeMillis();
+
+                    headCount++;
+                    if (headCountStart == 0)
+                        headCountStart = System.currentTimeMillis();
                 }
                 break;
 
-            case FRONT:
-                viewToUpdate = frontIndicator;
+            case RIGHT:
+                viewToUpdate = rightIndicator;
                 headPosition = 3;
-                if (headStart == 0){
-                    headCount++;
-                    headCountStart = System.currentTimeMillis();
+                lastTurnTime = System.currentTimeMillis();
+                if (headStart == 0) {
                     headStart = System.currentTimeMillis();
+
+                    headCount++;
+                    if (headCountStart == 0)
+                        headCountStart = System.currentTimeMillis();
                 }
                 break;
         }
-        if (headCount >=3 ){// dangerous operation #2
-            long timepassed = System.currentTimeMillis()-headCountStart;
-            if (timepassed<=10000){//10seconds
+        if (headCount >= 3) {// dangerous operation #2
+            long timepassed = System.currentTimeMillis() - headCountStart;
+            if (timepassed <= 10000) {//10seconds
                 View v = new View(this);
                 dangerAlert(v, 2);
-
+                handler.post(() -> {
+                    Toast.makeText(this, "Don't looking around for more than 3 times within 10 seconds.",
+                            Toast.LENGTH_SHORT).show();
+                });
             }
+            headCount = 0;
+            headCountStart = 0;
         }
 
         final TextView v = viewToUpdate;
@@ -428,29 +454,46 @@ public class StartAutoCoachActivity extends AppCompatActivity {
         else
             gyro_data = gyroData;
 
-        if (gyro_data>15) {//lane change, turn, etc
-            long timepassed = System.currentTimeMillis()-headStart;
-            if (timepassed<=3000){// looked aside in 5s
+        double absGyroData = Math.abs(gyro_data);
 
-            }
-            else{// dangerous operation #5
-                View v = new View(this);
-                dangerAlert(v, 5);
+        if(absGyroData<45)
+            turning=false;
 
+        if (absGyroData > 45) {//lane change, turn, etc
+            if(!turning) {
+                turning=true;
+                long timepassed = System.currentTimeMillis() - lastTurnTime;
+                if (timepassed > 3000) {// dangerous operation #5
+                    View v = new View(this);
+                    dangerAlert(v, 5);
+                    handler.post(()->{
+                        Toast.makeText(this, "Please look to the side before turning" ,
+                                Toast.LENGTH_SHORT).show();
+                    });
+
+                }
             }
         }
-        if (gyro_data>45) { // dangerous operation #3
-            if ((speed>20)&&(acc>0)){
+        if (absGyroData > 90) { // dangerous operation #3
+            if (speed > 20) {
                 View v = new View(this);
                 dangerAlert(v, 3);
-
+                handler.post(() -> {
+                    Toast.makeText(this, "Reduce speed below 20 when turn > 45 degree",
+                            Toast.LENGTH_SHORT).show();
+                });
             }
-            
+
         }
-        if (gyro_data>90) { // dangerous operation #4
-            if ((speed>10)&&(acc>0)){
+        if (absGyroData > 130) { // dangerous operation #4
+            if (speed > 10) {
                 View v = new View(this);
                 dangerAlert(v, 4);
+
+                handler.post(() -> {
+                    Toast.makeText(this, "Reduce speed below 10 when turn > 90 degree",
+                            Toast.LENGTH_SHORT).show();
+                });
 
             }
         }
@@ -498,7 +541,9 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
 
     private void updateUI() {
-        display_score.setText(score+"/100");
+        handler.post(() -> {
+            display_score.setText(score + "/1000");
+        });
     }
 
     @Override
@@ -510,30 +555,34 @@ public class StartAutoCoachActivity extends AppCompatActivity {
 
     }
 
-    public void dangerAlert(View v, int type){
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(),alarmSound);
-        mp.start();
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(StartAutoCoachActivity.this, "dangerAlert" )
-                        .setSmallIcon(R.drawable. ic_launcher_foreground )
-                        .setContentTitle( "Danger" )
-                        .setContentText( "Drive Careful" ) ;
-        NotificationManager mNotificationManager = (NotificationManager)
-                getSystemService(Context. NOTIFICATION_SERVICE );
-        mNotificationManager.notify(( int ) System. currentTimeMillis () ,
-                mBuilder.build());
-        /*Toast toast = Toast.makeText(this, "CAREFUL!",Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER,0,0);
-        toast.show();*/
-        PopUpAlert alert = new PopUpAlert(type);
-        alert.showPopupAlert(v);
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                mp.stop();
-            }
-        }, 5000);
-        switch (type){
+    public void dangerAlert(View v, int type) {
+        Log.d("Danger Alert", "Type:" + type);
+
+        handler.post(() -> {
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            RingtoneManager.getRingtone(getApplicationContext(), alarmSound).play();
+
+//            NotificationCompat.Builder mBuilder =
+//                    new NotificationCompat.Builder(StartAutoCoachActivity.this, "dangerAlert")
+//                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                            .setContentTitle("Danger")
+//                            .setContentText("Drive Careful");
+//            NotificationManager mNotificationManager = (NotificationManager)
+//                    getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify((int) System.currentTimeMillis(),
+//                    mBuilder.build());
+
+
+            PopUpAlert alert = new PopUpAlert(type);
+            alert.showPopupAlert(v);
+        });
+
+//        (new Handler()).postDelayed(new Runnable() {
+//            public void run() {
+//                mp.stop();
+//            }
+//        }, 5000);
+        switch (type) {
             case 1:
                 score -= 20;
                 updateUI();
